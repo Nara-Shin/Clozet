@@ -1,0 +1,3 @@
+mysql : http://125.209.199.91/php
+ssh : sgen@125.209.196.133 -p 1024
+pw : sgenbori
