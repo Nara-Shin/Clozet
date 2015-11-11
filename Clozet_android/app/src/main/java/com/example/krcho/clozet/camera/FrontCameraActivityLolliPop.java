@@ -25,7 +25,11 @@ import com.example.krcho.clozet.R;
 import java.util.Arrays;
 
 
+// this project
 // http://jylee-world.blogspot.kr/2014/12/a-tutorial-of-androidhardwarecamera2.html
+
+// example more
+// https://github.com/googlesamples/android-Camera2Basic/blob/master/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java
 
 public class FrontCameraActivityLolliPop extends Activity {
 
