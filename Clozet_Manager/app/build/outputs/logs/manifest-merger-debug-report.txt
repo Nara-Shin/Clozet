@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:2:1-21:12
+ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:2:1-28:12
 	xmlns:android
 		ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:2:11-69
 	package
@@ -14,7 +14,7 @@ ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:2:1-21:12
 		INJECTED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml
 		INJECTED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml
 application
-ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:5:5-19:19
+ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:5:5-26:19
 MERGED from [com.android.support:appcompat-v7:23.0.1] D:\Clozet\Clozet_Manager\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:22:5-20
 MERGED from [com.android.support:support-v4:23.0.1] D:\Clozet\Clozet_Manager\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\AndroidManifest.xml:22:5-20
 	android:label
@@ -41,6 +41,12 @@ category#android.intent.category.LAUNCHER
 ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:16:17-77
 	android:name
 		ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:16:27-74
+activity#com.example.krcho.clozetmanager.TestCustomDialogActivity
+ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:19:9-20:47
+	android:label
+		ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:20:13-45
+	android:name
+		ADDED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml:19:19-59
 uses-sdk
 INJECTED from D:\Clozet\Clozet_Manager\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:appcompat-v7:23.0.1] D:\Clozet\Clozet_Manager\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.0.1\AndroidManifest.xml:20:5-43
