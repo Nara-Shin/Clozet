@@ -7,41 +7,42 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.example.krcho.clozetmanager.R;
 
-public class CustomDialog extends Dialog{
-//1개 신청 시
+public class ListDialog extends Dialog{
+//2개 이상 신청 시
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//윈도우 매니저 : 최상단 뷰 추가.
-		WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();    
+		WindowManager.LayoutParams lpWindow = new WindowManager.LayoutParams();
 		lpWindow.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 		lpWindow.dimAmount = 0.8f;
 		getWindow().setAttributes(lpWindow);
-		//setContentView : 화면전환 -> 레이아웃.커스텀 다이얼로그로!
-		setContentView(R.layout.custom_dialog);
-		
+		//setContentView : 화면전환 -> 레이아웃.리스트 다이얼로그로!
+		setContentView(R.layout.list_dialog);
+
 		setLayout();
 		setTitle(mTitle);
 		setContent(mContent);
 		setClickListener(mLeftClickListener , mRightClickListener);
 	}
-	
-	public CustomDialog(Context context) {
+
+	public ListDialog(Context context) {
 		// Dialog 배경을 투명 처리 해준다.
 		super(context , android.R.style.Theme_Translucent_NoTitleBar);
 	}
-	
-	public CustomDialog(Context context , String title , 
-			View.OnClickListener singleListener) {
+
+	public ListDialog(Context context, String title,
+					  View.OnClickListener singleListener) {
 		super(context , android.R.style.Theme_Translucent_NoTitleBar);
 		this.mTitle = title;
 		this.mLeftClickListener = singleListener;
 	}
-	
-	public CustomDialog(Context context , String title , String content , 
-			View.OnClickListener leftListener ,	View.OnClickListener rightListener) {
+
+	public ListDialog(Context context, String title, String content,
+					  View.OnClickListener leftListener, View.OnClickListener rightListener) {
 		super(context , android.R.style.Theme_Translucent_NoTitleBar);
 		this.mTitle = title;
 		this.mContent = content;
