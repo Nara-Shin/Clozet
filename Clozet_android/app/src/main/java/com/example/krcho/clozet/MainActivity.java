@@ -11,6 +11,8 @@ import android.widget.Button;
 
 import com.example.krcho.clozet.camera.FrontCameraActivity;
 import com.example.krcho.clozet.camera.FrontCameraActivityLolliPop;
+import com.hojung.nfc.HojungNFCCheckingLibrary;
+import com.hojung.nfc.model.NfcModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), FrontCameraActivityLolliPop.class));
             }
         });
+
+
+    }
+
+    private void initNFC() {
+        HojungNFCCheckingLibrary nfc = new HojungNFCCheckingLibrary(this);
+        NfcModel model = nfc.getNFCData(getIntent());
+        model.getPayloadStr(); // tag에 저장된 string
     }
 
     @Override
@@ -45,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initNFC();
     }
 
     @Override
