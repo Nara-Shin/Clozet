@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/Seohyung/Desktop/android/Clozet/app/libs/core-3.2.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="2287494d4f5f9f3a9a2bb6980e3f32053721b315">
+        <dex dex="/Users/Seohyung/Desktop/android/Clozet/app/build/intermediates/pre-dexed/debug/core-3.2.1-5ca5cba3df0d5fa5a884a9a0c2b7af5ae0b04615.jar" />
+    </item>
+
+</items>
