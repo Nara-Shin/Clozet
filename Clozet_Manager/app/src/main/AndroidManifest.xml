@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.krcho.clozetmanager" >
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".TestCustomDialogActivity"
+            android:label="@string/app_name"/>
+        <!--android:theme="@android:style/Theme.Dialog"-->
+        <!--위에 주석 : 팝업 다이얼로그로 만들기 !-->
+        <!--현재는 커스텀 다이얼로그임(주석을 name 과 lable 사이에 끼워넣고-->
+        <!-- TestCustomDialogActivity에 팝업다이얼로그로 만들기 주석 해제하기-->
+
+    </application>
+
+</manifest>
