@@ -4,36 +4,49 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.nfc"/>
+    <uses-permission android:name="android.permission.nfc" />
 
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-feature android:name="android.hardware.camera.front" android:required="true"/>
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme.NoActionBar"
-        android:screenOrientation="portrait">
+        android:screenOrientation="portrait"
+        android:theme="@style/AppTheme.NoActionBar" >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".camera.FrontCameraActivityLolliPop"
             android:label="@string/title_activity_front_camera"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".camera.FrontCameraActivity"
             android:label="@string/title_activity_front_camera"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".barcode.BarcodeDetactActivity"
+            android:label="@string/title_activity_barcode_detact" >
+        </activity>
+        <activity
+            android:name=".request.SelectOptionsActivity"
+            android:label="@string/title_activity_select_options" >
         </activity>
     </application>
 

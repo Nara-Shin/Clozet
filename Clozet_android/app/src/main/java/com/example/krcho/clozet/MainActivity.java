@@ -1,14 +1,25 @@
 package com.example.krcho.clozet;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+
+import com.example.krcho.clozet.barcode.BarcodeDetactActivity;
+import com.example.krcho.clozet.camera.FrontCameraActivity;
+import com.example.krcho.clozet.camera.FrontCameraActivityLolliPop;
 
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
+    private ViewPager viewPager;
+    private TextView change, shot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +28,32 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        setViewPager();
+
+        change = (TextView) findViewById(R.id.txt_change);
+        change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), BarcodeDetactActivity.class));
+            }
+        });
+        shot = (TextView) findViewById(R.id.txt_shot);
+        shot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+                    startActivity(new Intent(getApplicationContext(), FrontCameraActivity.class));
+                }else {
+                    startActivity(new Intent(getApplicationContext(), FrontCameraActivityLolliPop.class));
+                }
+
+            }
+        });
+
+    }
+
+    public void setViewPager(){
 
     }
 
