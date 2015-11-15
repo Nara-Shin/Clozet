@@ -40,10 +40,10 @@ public class CustomDialog extends Dialog{
 		this.mLeftClickListener = singleListener;
 	}
 	
-	public CustomDialog(Context context , String title , String content , 
+	public CustomDialog(Context context , String content ,
 			View.OnClickListener leftListener ,	View.OnClickListener rightListener) {
 		super(context , android.R.style.Theme_Translucent_NoTitleBar);
-		this.mTitle = title;
+		//this.mTitle = title;
 		this.mContent = content;
 		this.mLeftClickListener = leftListener;
 		this.mRightClickListener = rightListener;

@@ -21,7 +21,7 @@ public class ListDialog extends Dialog{
 		lpWindow.dimAmount = 0.8f;
 		getWindow().setAttributes(lpWindow);
 		//setContentView : 화면전환 -> 레이아웃.리스트 다이얼로그로!
-		setContentView(R.layout.list_dialog);
+		setContentView(R.layout.recycler_dialog);
 
 		setLayout();
 		setTitle(mTitle);
@@ -68,7 +68,7 @@ public class ListDialog extends Dialog{
 			
 		}
 	}
-	
+
 	/*
 	 * Layout
 	 */
@@ -79,10 +79,10 @@ public class ListDialog extends Dialog{
 	private String mTitle;
 	private String mContent;
 	
-	
+
 	private View.OnClickListener mLeftClickListener;
 	private View.OnClickListener mRightClickListener;
-	
+
 	/*
 	 * Layout
 	 */
