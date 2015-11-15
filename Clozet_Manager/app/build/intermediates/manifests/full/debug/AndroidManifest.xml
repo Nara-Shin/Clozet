@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="15"
+        android:minSdkVersion="16"
         android:targetSdkVersion="23" />
 
     <application
@@ -30,6 +30,10 @@
         <!-- 현재는 커스텀 다이얼로그임(주석을 name 과 lable 사이에 끼워넣고 -->
         <!-- TestCustomDialogActivity에 팝업다이얼로그로 만들기 주석 해제하기 -->
 
+        <activity
+            android:name="com.example.krcho.clozetmanager.recycle.RecyclerExampleActivity"
+            android:label="@string/title_activity_recycler_example" >
+        </activity>
     </application>
 
 </manifest>

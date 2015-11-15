@@ -12,39 +12,42 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.w3c.dom.Text;
+
 import java.util.List;
 
 /**
  * Created by ShinNara on 2015-11-13.
  */
-public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
     Context context;
     List<Recycler_item> items;
     int item_layout;
+
     public RecyclerAdapter(Context context, List<Recycler_item> items, int item_layout) {
-        this.context=context;
-        this.items=items;
-        this.item_layout=item_layout;
+        this.context = context;
+        this.items = items;
+        this.item_layout = item_layout;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_cardview,null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_cardview, null);
         return new ViewHolder(v);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Recycler_item item=items.get(position);
-        Drawable drawable=context.getResources().getDrawable(item.getImage());
+        final Recycler_item item = items.get(position);
+        Drawable drawable = context.getResources().getDrawable(item.getImage());
         holder.image.setBackground(drawable);
         holder.title.setText(item.getTitle());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,item.getTitle(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, item.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -61,9 +64,9 @@ public class RecyclerAdapter  extends RecyclerView.Adapter<RecyclerAdapter.ViewH
 
         public ViewHolder(View itemView) {
             super(itemView);
-            image=(ImageView)itemView.findViewById(R.id.image);
-            title=(TextView)itemView.findViewById(R.id.title);
-            cardview=(CardView)itemView.findViewById(R.id.cardview);
+            image = (ImageView) itemView.findViewById(R.id.image);
+            title = (TextView) itemView.findViewById(R.id.title);
+            cardview = (CardView) itemView.findViewById(R.id.cardview);
         }
     }
 }
