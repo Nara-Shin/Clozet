@@ -1,10 +1,12 @@
 package com.example.krcho.clozetmanager;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.Toast;
 // popup -> CustomDialog
 import com.example.krcho.clozetmanager.popup.CustomDialog;
@@ -17,8 +19,6 @@ public class TestCustomDialogActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //팝업다이얼로그로 만들기 (아래 주석)
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
         //버튼 2개 있는 메인화면
     }
@@ -27,19 +27,10 @@ public class TestCustomDialogActivity extends Activity {
         switch (v.getId()) {
             case R.id.bt_main://1개일 때
                 mCustomDialog = new CustomDialog(this,
-                        "해당 상품이 요청되었습니다.",
+                        "해당 상품이 요청되었습니다.", "X회 요청",
                         leftClickListener,
                         rightClickListener);
-                //mCustomDialog.setTitle("X번 룸");
-                mCustomDialog.show();
-                break;
-
-            case R.id.bt_second://2개 이상일 때 -> 다이얼로그로 구현해봐야 함
-                mCustomDialog = new CustomDialog(this,
-                        "상품이 요청되었습니다.",
-                        leftClickListener,
-                        rightClickListener);
-                //mCustomDialog.setTitle("XX번 룸");
+                mCustomDialog.setTitle("XX번 룸");
                 mCustomDialog.show();
                 break;
 
@@ -65,6 +56,7 @@ public class TestCustomDialogActivity extends Activity {
             //수락버튼 누른 경우
             Toast.makeText(getApplicationContext(), "수락!!",
                     Toast.LENGTH_SHORT).show();
+            mCustomDialog.dismiss();
         }
     };
 

@@ -46,6 +46,7 @@ public class RecyclerViewActivity extends Activity {
         }
 
         recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.recycler_main));
+
     }
 
    /* public RecyclerViewActivity(){

@@ -7,9 +7,9 @@
 
     <LinearLayout
         android:layout_width="300dip"
-        android:layout_height="200dip"
+        android:layout_height="300dip"
         android:orientation="vertical" 
-        android:background="@android:color/darker_gray"
+        android:background="@android:color/white"
         >
 
         <TextView
@@ -17,10 +17,34 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Title"
+            android:text="room"
             android:textSize="20sp" 
             android:textColor="@android:color/black"
             />
+
+        <ImageView
+            android:id="@+id/cloth_image"
+            android:gravity="center"
+            android:layout_width="100dip"
+            android:layout_height="100dip"
+            android:layout_gravity="center" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center">
+            <ImageView
+                android:id="@+id/size_image"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_gravity="center" />
+            <ImageView
+                android:id="@+id/color_image"
+                android:layout_width="30dip"
+                android:layout_height="30dip"
+                android:layout_gravity="center" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_content"
@@ -28,7 +52,15 @@
             android:layout_height="wrap_content" 
             android:gravity="center"
             android:textColor="@android:color/black"
-            android:textSize="40sp"
+            android:textSize="20sp"
+            />
+        <TextView
+            android:id="@+id/count_content"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
             />
 
         <!--<TextView
