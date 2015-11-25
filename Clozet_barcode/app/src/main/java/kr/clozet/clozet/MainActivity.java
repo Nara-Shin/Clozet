@@ -28,10 +28,8 @@ public class MainActivity extends AppCompatActivity {
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 
-                String packageString = getPackageName();
                 Intent intent = new Intent("com.google.zxing.client.android.SCAN");
-                intent.setPackage(packageString);
-                intent.putExtra("SCAN_MODE", "SCAN_MODE");
+                intent.putExtra("SCAN_MODE", "ALL");
                 startActivityForResult(intent, 123);
             }
         });

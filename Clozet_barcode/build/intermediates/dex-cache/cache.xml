@@ -2,11 +2,46 @@
 <items version="2" >
 
     <item
-        jar="/Users/Seohyung/Desktop/android/Clozet/app/libs/core-3.2.1.jar"
+        jar="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/jars/classes.jar"
         jumboMode="false"
-        revision="23.0.2"
+        revision="23.0.1"
+        sha1="d86429b0f0b3f3cafbeb78dda1b9d89119ccb05d">
+        <dex dex="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/pre-dexed/debug/classes-2727741808b6a45bd3fbaa0db67020867c56edc0.jar" />
+    </item>
+    <item
+        jar="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/pre-dexed/debug/internal_impl-23.0.1-b2b2425a44203fdcc28a8f5d79ea64136f6fe3e5.jar" />
+    </item>
+    <item
+        jar="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/pre-dexed/debug/classes-7171ad18b3156c5d67dda9b9f88f44687e1ff96d.jar" />
+    </item>
+    <item
+        jar="/Users/Seohyung/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/pre-dexed/debug/support-annotations-23.0.1-f22442da6a84423e7ced5f0465b4a93a33182879.jar" />
+    </item>
+    <item
+        jar="/Users/Seohyung/clozet/Clozet_barcode/app/libs/core-3.2.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
         sha1="2287494d4f5f9f3a9a2bb6980e3f32053721b315">
-        <dex dex="/Users/Seohyung/Desktop/android/Clozet/app/build/intermediates/pre-dexed/debug/core-3.2.1-5ca5cba3df0d5fa5a884a9a0c2b7af5ae0b04615.jar" />
+        <dex dex="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/pre-dexed/debug/core-3.2.1-89df13816ac22b5be41d151070735ced7f25ae8f.jar" />
+    </item>
+    <item
+        jar="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/exploded-aar/com.android.support/design/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e5c61a3169221a89654ffcaaed47bba51cf071ad">
+        <dex dex="/Users/Seohyung/clozet/Clozet_barcode/app/build/intermediates/pre-dexed/debug/classes-d5ea91758c96006ad6165a4d2e37b7fa3a8cfe0f.jar" />
     </item>
 
 </items>

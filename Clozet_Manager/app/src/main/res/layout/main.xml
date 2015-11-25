@@ -13,17 +13,10 @@
         />
 
     <Button
-        android:id="@+id/bt_second"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="2개 요청 시(다이얼로그)"
-        android:onClick="onClickView"
-        />
-    <Button
         android:id="@+id/bt_third"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="2개 요청 시(리싸이클러뷰)"
+        android:text="2개 이상 요청 시"
         android:onClick="onClickView"
         />
 

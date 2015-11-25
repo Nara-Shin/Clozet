@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.krcho.clozet.R;
+import com.loopj.android.http.RequestParams;
 
 import java.util.ArrayList;
 
@@ -34,14 +35,24 @@ public class SelectOptionsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                list.add(new Request());
-                adapter.setList(list);
-                Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_LONG).show();
+                addProduct("8801069178370");
             }
         });
 
         setRecyclerView();
 
+    }
+
+    public void addProduct(String barcode){
+
+        RequestParams params = new RequestParams();
+        params.put("barcode", barcode);
+
+
+
+        list.add(new Request());
+        adapter.setList(list);
+        Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_LONG).show();
     }
 
     public void setRecyclerView(){
