@@ -7,7 +7,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,24 @@ public class RecyclerViewActivity extends Activity {
         recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.recycler_main));
 
     }
+
+    private View.OnClickListener agreeClickListner = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //수락버튼 누른 경우
+            Toast.makeText(getApplicationContext(), "수락!!",
+                    Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private View.OnClickListener rejectClickListner = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //거절버튼 누른 경우
+            Toast.makeText(getApplicationContext(), "거절!!",
+                    Toast.LENGTH_SHORT).show();
+        }
+    };
 
    /* public RecyclerViewActivity(){
 

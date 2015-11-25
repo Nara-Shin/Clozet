@@ -6,18 +6,16 @@
 
     <Button
         android:id="@+id/bt_main"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="1개 요청 시"
-        android:onClick="onClickView" 
         />
 
     <Button
         android:id="@+id/bt_third"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="2개 이상 요청 시"
-        android:onClick="onClickView"
         />
 
 </LinearLayout>

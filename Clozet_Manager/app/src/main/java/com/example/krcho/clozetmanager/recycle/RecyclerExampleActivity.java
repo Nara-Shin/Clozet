@@ -1,11 +1,14 @@
 package com.example.krcho.clozetmanager.recycle;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.krcho.clozetmanager.R;
 
@@ -16,6 +19,7 @@ public class RecyclerExampleActivity extends AppCompatActivity {
     LinearLayoutManager recyclerLayoutManager;
     ExampleRecyclerAdapter adapter;
     ArrayList<Request> list = new ArrayList<>();
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,4 +64,20 @@ public class RecyclerExampleActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private View.OnClickListener agreeClickListner = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //수락버튼 누른 경우
+            Toast.makeText(context, "수락!!", Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    private View.OnClickListener rightClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //거절버튼 누른 경우
+            Toast.makeText(context, "거절!!", Toast.LENGTH_SHORT).show();
+        }
+    };
 }

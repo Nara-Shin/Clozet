@@ -54,6 +54,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 Toast.makeText(context, item.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
     private void setClickListener(View.OnClickListener left , View.OnClickListener right){
