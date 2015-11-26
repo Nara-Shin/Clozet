@@ -1,20 +1,28 @@
 package com.example.krcho.clozet.request;
 
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.krcho.clozet.R;
+import com.example.krcho.clozet.network.CommonHttpClient;
+import com.example.krcho.clozet.network.NetDefine;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+
+import cz.msebera.android.httpclient.Header;
 
 public class SelectOptionsActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -41,21 +49,36 @@ public class SelectOptionsActivity extends AppCompatActivity {
 
         setRecyclerView();
 
+        addProduct(getIntent().getStringExtra("barcode"));
+
     }
 
-    public void addProduct(String barcode){
+
+    public void addProduct(String barcode) {
 
         RequestParams params = new RequestParams();
+//        params.put("barcode", rawResult.getText()); // 8801069178370
         params.put("barcode", barcode);
 
+        CommonHttpClient.post(NetDefine.SEARCH_BARCODE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+                Log.d("response", response.toString());
+                list.add(new Request());
 
 
-        list.add(new Request());
-        adapter.setList(list);
-        Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_LONG).show();
+                adapter.setList(list);
+                Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
     }
 
-    public void setRecyclerView(){
+    public void setRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new RecyclerAdapter(list);
