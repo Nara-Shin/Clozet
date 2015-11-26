@@ -100,6 +100,7 @@
     <orderEntry type="library" exported="" name="appcompat-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="core-3.2.1" level="project" />
     <orderEntry type="library" exported="" name="zxing-1.8.3" level="project" />
+    <orderEntry type="library" exported="" name="HojungNFCLibrary_v01" level="project" />
     <orderEntry type="library" exported="" name="core-1.8.3" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.0.1" level="project" />
     <orderEntry type="library" exported="" name="support-v4-23.0.1" level="project" />
