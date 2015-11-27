@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.krcho.clozetmanager.R;
 
@@ -16,6 +17,7 @@ import java.util.ArrayList;
  */
 public class ExampleRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     private ArrayList<Request> list = new ArrayList<>();
+
 
     public ExampleRecyclerAdapter(ArrayList<Request> list) {
         Log.d("test", "construct");
@@ -48,4 +50,7 @@ public class ExampleRecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHol
     public int getItemCount() {
         return list.size();
     }
+
+
 }
+

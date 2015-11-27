@@ -1,9 +1,11 @@
 package com.example.krcho.clozet.barcode;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
+import com.example.krcho.clozet.request.SelectOptionsActivity;
 import com.google.zxing.Result;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -43,5 +45,7 @@ public class BarcodeDetactActivity extends AppCompatActivity implements ZXingSca
     @Override
     public void handleResult(Result rawResult) {
         Toast.makeText(getApplicationContext(), rawResult.getText(), Toast.LENGTH_LONG).show(); // 화면전환 -->
+
+        startActivity(new Intent(getApplicationContext(), SelectOptionsActivity.class).putExtra("barcode", "8801069178370"));
     }
 }

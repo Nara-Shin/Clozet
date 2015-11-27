@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,11 +15,16 @@ import com.example.krcho.clozetmanager.R;
  */
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
     TextView room, name;
+    private Button mAgreeButton;
+    private Button mRejectButton;
+
 
     public RecyclerViewHolder(View itemView) {
         super(itemView);
         room = (TextView) itemView.findViewById(R.id.room);
         name = (TextView) itemView.findViewById(R.id.name);
+        mAgreeButton = (Button) itemView.findViewById(R.id.bt_agree);
+        mRejectButton = (Button) itemView.findViewById(R.id.bt_reject);
     }
 
     public void update(final Request data) {

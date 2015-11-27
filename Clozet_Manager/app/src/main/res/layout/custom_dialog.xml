@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:baselineAligned="false">
 
     <LinearLayout
         android:layout_width="300dip"
@@ -30,20 +31,27 @@
             android:layout_gravity="center" />
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
+            >
             <ImageView
                 android:id="@+id/size_image"
-                android:layout_width="30dip"
-                android:layout_height="30dip"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="20dp"
                 android:layout_gravity="center" />
-            <ImageView
+            <View
                 android:id="@+id/color_image"
-                android:layout_width="30dip"
-                android:layout_height="30dip"
-                android:layout_gravity="center" />
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="#000000"
+                android:layout_gravity="center">
+                <!--android:background="@color/material_blue_grey_800"-->
+
+            </View>
+
         </LinearLayout>
 
         <TextView
@@ -52,6 +60,7 @@
             android:layout_height="wrap_content" 
             android:gravity="center"
             android:textColor="@android:color/black"
+            android:text="xpxpxpxpxpprptm"
             android:textSize="20sp"
             />
         <TextView

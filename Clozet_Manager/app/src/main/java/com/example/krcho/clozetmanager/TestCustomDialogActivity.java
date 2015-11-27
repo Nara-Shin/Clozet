@@ -35,8 +35,6 @@ public class TestCustomDialogActivity extends Activity {
                 break;
 
             case R.id.bt_third://2개 이상일 때 -> 일단 리싸이클러뷰로 구현해보기
-
-
                 startActivity(new Intent(getApplicationContext(), RecyclerExampleActivity.class));
 
                 //Intent intent = new Intent(Activity1.this, Activity2.class);

@@ -1186,6 +1186,16 @@
     <style name="CardView.Light">
         <item name="cardBackgroundColor">@color/cardview_light_background</item>
     </style>
+    <!-- From: file:/C:/Users/ShinNara/Documents/clozet/Clozet_Manager/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="CustomDialog" parent="@android:style/Theme.Holo.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowMinWidthMajor">30dp</item>
+        <item name="android:windowMinWidthMinor">30dp</item>
+        <item name="android:borderlessButtonStyle">@style/Widget.Sphinx.Button.Borderless</item>
+        <item name="android:buttonBarStyle">@style/Sphinx.ButtonBar.AlertDialog</item>
+    </style>
     <!-- From: file:/C:/Users/ShinNara/Documents/clozet/Clozet_Manager/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
     <eat-comment/>
     <style name="Platform.AppCompat" parent="android:Theme">
@@ -1328,6 +1338,13 @@
     <style name="RtlOverlay.Widget.AppCompat.SearchView.MagIcon" parent="android:Widget">
         <item name="android:layout_marginLeft">@dimen/abc_dropdownitem_text_padding_left</item>
     </style>
+    <!-- From: file:/C:/Users/ShinNara/Documents/clozet/Clozet_Manager/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="Sphinx.ButtonBar.AlertDialog" parent="@android:style/Holo.ButtonBar.AlertDialog">
+        <item name="android:background">#000000</item>
+    </style>
+    <!-- From: file:/C:/Users/ShinNara/Documents/clozet/Clozet_Manager/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <eat-comment/>
     <style name="TextAppearance.AppCompat" parent="Base.TextAppearance.AppCompat"/>
     <style name="TextAppearance.AppCompat.Body1" parent="Base.TextAppearance.AppCompat.Body1"/>
     <style name="TextAppearance.AppCompat.Body2" parent="Base.TextAppearance.AppCompat.Body2"/>
@@ -1384,6 +1401,11 @@
     </style>
     <style name="TextAppearance.AppCompat.Widget.Switch" parent="Base.TextAppearance.AppCompat.Widget.Switch"/>
     <style name="TextAppearance.AppCompat.Widget.TextView.SpinnerItem" parent="Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"/>
+    <!-- From: file:/C:/Users/ShinNara/Documents/clozet/Clozet_Manager/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="TextAppearance.Sphinx.DialogButton" parent="@android:style/TextAppearance.Holo.Medium"/>
+    <!-- From: file:/C:/Users/ShinNara/Documents/clozet/Clozet_Manager/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/values/values.xml -->
+    <eat-comment/>
     <style name="TextAppearance.StatusBar.EventContent" parent=""/>
     <style name="TextAppearance.StatusBar.EventContent.Info" parent=""/>
     <style name="TextAppearance.StatusBar.EventContent.Line2" parent=""/>
@@ -1513,4 +1535,10 @@
     <style name="Widget.AppCompat.TextView.SpinnerItem" parent="Base.Widget.AppCompat.TextView.SpinnerItem"/>
     <style name="Widget.AppCompat.Toolbar" parent="Base.Widget.AppCompat.Toolbar"/>
     <style name="Widget.AppCompat.Toolbar.Button.Navigation" parent="Base.Widget.AppCompat.Toolbar.Button.Navigation"/>
+    <!-- From: file:/C:/Users/ShinNara/Documents/clozet/Clozet_Manager/app/src/main/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="Widget.Sphinx.Button.Borderless" parent="@android:style/Widget.Holo.Button.Borderless">
+        <item name="android:textColor">#000000</item>
+        <item name="android:textAppearance">@style/TextAppearance.Sphinx.DialogButton</item>
+    </style>
 </resources>
