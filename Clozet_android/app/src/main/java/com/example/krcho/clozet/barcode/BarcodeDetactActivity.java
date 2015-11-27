@@ -3,8 +3,11 @@ package com.example.krcho.clozet.barcode;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.krcho.clozet.R;
 import com.example.krcho.clozet.request.SelectOptionsActivity;
 import com.google.zxing.Result;
 
@@ -14,6 +17,7 @@ public class BarcodeDetactActivity extends AppCompatActivity implements ZXingSca
 
     private int mCameraId = -1; // 화면내에서 백/프론트 변경시 필요
     private ZXingScannerView mScannerView;
+    private boolean frontCamera = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +51,46 @@ public class BarcodeDetactActivity extends AppCompatActivity implements ZXingSca
         Toast.makeText(getApplicationContext(), rawResult.getText(), Toast.LENGTH_LONG).show(); // 화면전환 -->
 
         startActivity(new Intent(getApplicationContext(), SelectOptionsActivity.class).putExtra("barcode", "8801069178370"));
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_barcode_detact, menu);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_camera) {
+            if (frontCamera) {
+                frontCamera = false;
+                changeCamera();
+            } else {
+                frontCamera = true;
+                changeCamera();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void changeCamera() {
+        mScannerView.stopCamera();
+
+        if (frontCamera) {
+            mScannerView.startCamera(1);
+        } else {
+            mScannerView.startCamera(0);
+        }
     }
 }

@@ -32,6 +32,6 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         image.setImageUrl(data.getPhoto_url());
         brand.setText(data.getBrand());
         title.setText(data.getName());
-        price.setText(data.getPrice());
+//        price.setText(data.getPrice());
     }
 }
