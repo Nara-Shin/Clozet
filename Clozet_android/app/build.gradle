@@ -28,4 +28,5 @@ dependencies {
     compile 'com.loopj.android:android-async-http:1.4.9'
     compile 'me.dm7.barcodescanner:zxing:1.8.3'
     compile files('libs/HojungNFCLibrary_v01.jar')
+    compile files('libs/android-smart-image-view-1.0.0.jar')
 }

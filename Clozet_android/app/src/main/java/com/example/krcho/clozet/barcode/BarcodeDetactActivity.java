@@ -3,19 +3,11 @@ package com.example.krcho.clozet.barcode;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.example.krcho.clozet.network.CommonHttpClient;
-import com.example.krcho.clozet.network.NetDefine;
 import com.example.krcho.clozet.request.SelectOptionsActivity;
 import com.google.zxing.Result;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class BarcodeDetactActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {

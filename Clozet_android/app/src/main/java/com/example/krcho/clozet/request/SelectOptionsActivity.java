@@ -18,6 +18,7 @@ import com.example.krcho.clozet.network.NetDefine;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -66,9 +67,25 @@ public class SelectOptionsActivity extends AppCompatActivity {
                 super.onSuccess(statusCode, headers, response);
 
                 Log.d("response", response.toString());
-                list.add(new Request());
+                try {
+                    Request temp = new Request();
+                    temp.setCode(response.getString("product_code"));
+                    temp.setBrand(response.getString("product_brand"));
+                    temp.setName(response.getString("product_name"));
+                    temp.setDetail(response.getString("product_detail"));
+                    temp.setPrice(response.getInt("product_price"));
+                    temp.setPhoto_url(response.getString("product_photo"));
 
+                    String size = response.getString("product_sizes");
+                    temp.addSize(size.split(","));
 
+                    String colors = response.getString("product_colors");
+                    temp.addColors(colors.split(","));
+
+                    list.add(temp);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
                 adapter.setList(list);
                 Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_LONG).show();
 

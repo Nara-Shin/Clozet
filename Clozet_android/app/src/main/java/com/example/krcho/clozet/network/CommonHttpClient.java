@@ -11,6 +11,7 @@ public class CommonHttpClient {
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 
+
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
