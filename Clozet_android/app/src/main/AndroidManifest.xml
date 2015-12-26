@@ -38,10 +38,6 @@
             android:label="@string/title_activity_front_camera"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".camera.FrontCameraActivity"
-            android:label="@string/title_activity_front_camera"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".barcode.BarcodeDetactActivity"
             android:label="@string/title_activity_barcode_detact"
             android:theme="@style/AppTheme" />
