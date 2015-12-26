@@ -27,6 +27,5 @@ public class CameraGuideActivity extends AppCompatActivity {
 
         Timer timer = new Timer();
         timer.schedule(task, 2000);
-
     }
 }
