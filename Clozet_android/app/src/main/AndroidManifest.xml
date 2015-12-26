@@ -36,19 +36,24 @@
         <activity
             android:name=".camera.FrontCameraActivityLolliPop"
             android:label="@string/title_activity_front_camera"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".camera.FrontCameraActivity"
             android:label="@string/title_activity_front_camera"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".barcode.BarcodeDetactActivity"
             android:label="@string/title_activity_barcode_detact"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".request.SelectOptionsActivity"
             android:label="@string/title_activity_select_options"
-            android:launchMode="singleTop"></activity>
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".camera.CameraGuideActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>

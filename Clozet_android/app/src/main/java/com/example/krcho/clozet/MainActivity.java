@@ -18,8 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.krcho.clozet.barcode.BarcodeDetactActivity;
-import com.example.krcho.clozet.camera.FrontCameraActivity;
-import com.example.krcho.clozet.camera.FrontCameraActivityLolliPop;
+import com.example.krcho.clozet.camera.CameraGuideActivity;
 import com.hojung.nfc.HojungNFCReadLibrary;
 import com.hojung.nfc.interfaces.OnHojungNFCListener;
 import com.hojung.nfc.model.NfcModel;
@@ -58,11 +57,8 @@ public class MainActivity extends AppCompatActivity {
         shot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    startActivity(new Intent(getApplicationContext(), FrontCameraActivity.class));
-                } else {
-                    startActivity(new Intent(getApplicationContext(), FrontCameraActivityLolliPop.class));
-                }
+
+                startActivity(new Intent(getApplicationContext(), CameraGuideActivity.class));
 
             }
         });
@@ -70,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         //NFC
 
         //NFC is use?
-        android.nfc.NfcAdapter mNfcAdapter= android.nfc.NfcAdapter.getDefaultAdapter(mContext);
+        android.nfc.NfcAdapter mNfcAdapter = android.nfc.NfcAdapter.getDefaultAdapter(mContext);
 
         if (!mNfcAdapter.isEnabled()) {
 

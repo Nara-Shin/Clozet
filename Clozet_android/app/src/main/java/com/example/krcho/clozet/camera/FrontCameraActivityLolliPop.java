@@ -1,6 +1,7 @@
 package com.example.krcho.clozet.camera;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -181,6 +182,7 @@ public class FrontCameraActivityLolliPop extends Activity {
 
         mTextureView = (TextureView) findViewById(R.id.textureView1);
         mTextureView.setSurfaceTextureListener(mSurfaceTextureListner);
+
     }
 
     @Override
