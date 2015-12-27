@@ -23,7 +23,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.example.krcho.clozet.R;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
@@ -51,10 +50,11 @@ public class RegistrationIntentService extends IntentService {
             // See https://developers.google.com/cloud-messaging/android/start for details on this file.
             // [START get_token]
             InstanceID instanceID = InstanceID.getInstance(this);
-            String token = instanceID.getToken("807853303528",
+            String token = instanceID.getToken("174277417501",
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
             Log.i(TAG, "GCM Registration Token: " + token);
+            Log.i(TAG, "GCMID : " + instanceID.getId());
 
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
@@ -73,7 +73,7 @@ public class RegistrationIntentService extends IntentService {
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false).apply();
         }
-        // Notify UI that registration has completed, so the progress indicator can be hidden.
+        // Notify UI that registration has co   mpleted, so the progress indicator can be hidden.
         Intent registrationComplete = new Intent(QuickstartPreferences.REGISTRATION_COMPLETE);
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
