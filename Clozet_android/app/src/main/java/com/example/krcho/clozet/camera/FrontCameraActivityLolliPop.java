@@ -1,7 +1,5 @@
 package com.example.krcho.clozet.camera;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.SurfaceTexture;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
@@ -14,12 +12,16 @@ import android.hardware.camera2.params.StreamConfigurationMap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.krcho.clozet.R;
 
@@ -32,9 +34,11 @@ import java.util.Arrays;
 // example more
 // https://github.com/googlesamples/android-Camera2Basic/blob/master/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java
 
-public class FrontCameraActivityLolliPop extends Activity {
+public class FrontCameraActivityLolliPop extends AppCompatActivity implements View.OnClickListener {
 
     private final static String TAG = "SimpleCamera";
+    private boolean isFront = true;
+    private Button timer, transCamera, cencel, photo;
     private TextureView mTextureView = null;
     private TextureView.SurfaceTextureListener mSurfaceTextureListner = new TextureView.SurfaceTextureListener() {
 
@@ -66,31 +70,42 @@ public class FrontCameraActivityLolliPop extends Activity {
             // TODO Auto-generated method stub
             Log.i(TAG, "onSurfaceTextureAvailable()");
 
-            CameraManager manager = (CameraManager) getSystemService(CAMERA_SERVICE);
-            try {
-                String[] cameraList = manager.getCameraIdList();
-                String cameraId = null;
-                for(String id : cameraList){
-                    CameraCharacteristics characteristics
-                            = manager.getCameraCharacteristics(id);
-                    Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
+            setCameraManager();
+
+        }
+    };
+
+    public void setCameraManager(){
+        CameraManager manager = (CameraManager) getSystemService(CAMERA_SERVICE);
+        try {
+            String[] cameraList = manager.getCameraIdList();
+            String cameraId = null;
+            for(String id : cameraList){
+                CameraCharacteristics characteristics
+                        = manager.getCameraCharacteristics(id);
+                Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
+                if (isFront) {
                     if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
                         cameraId = id;
                         break;
                     }
+                } else {
+                    if (facing != null && facing == CameraCharacteristics.LENS_FACING_BACK) {
+                        cameraId = id;
+                        break;
+                    }
                 }
-//                String cameraId = manager.getCameraIdList()[0];
-                CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-                StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                mPreviewSize = map.getOutputSizes(SurfaceTexture.class)[0];
-
-                manager.openCamera(cameraId, mStateCallback, null);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
             }
+//                String cameraId = manager.getCameraIdList()[0];
+            CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
+            StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            mPreviewSize = map.getOutputSizes(SurfaceTexture.class)[0];
 
+            manager.openCamera(cameraId, mStateCallback, null);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
         }
-    };
+    }
 
     private Size mPreviewSize = null;
     private CameraDevice mCameraDevice = null;
@@ -174,7 +189,6 @@ public class FrontCameraActivityLolliPop extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //same as set-up android:screenOrientation="portrait" in <activity>, AndroidManifest.xml
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -183,6 +197,15 @@ public class FrontCameraActivityLolliPop extends Activity {
         mTextureView = (TextureView) findViewById(R.id.textureView1);
         mTextureView.setSurfaceTextureListener(mSurfaceTextureListner);
 
+        timer = (Button) findViewById(R.id.btn_timer);
+        transCamera = (Button) findViewById(R.id.btn_transCamera);
+        cencel = (Button) findViewById(R.id.btn_cancel);
+        photo = (Button) findViewById(R.id.btn_photo);
+
+        timer.setOnClickListener(this);
+        transCamera.setOnClickListener(this);
+        cencel.setOnClickListener(this);
+        photo.setOnClickListener(this);
     }
 
     @Override
@@ -196,5 +219,24 @@ public class FrontCameraActivityLolliPop extends Activity {
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_timer:
+                break;
 
+            case R.id.btn_transCamera:
+                isFront = !isFront;
+                setCameraManager();
+                Toast.makeText(getApplicationContext(), isFront + "", Toast.LENGTH_SHORT).show();
+                break;
+
+            case R.id.btn_cancel:
+                finish();
+                break;
+
+            case R.id.btn_photo:
+                break;
+        }
+    }
 }

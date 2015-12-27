@@ -11,4 +11,50 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:src="@drawable/guide_frame"-->
+        <!--/>-->
+
+    <Button
+        android:id="@+id/btn_timer"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:background="@drawable/btn_timer_3sc"
+        />
+
+    <Button
+        android:id="@+id/btn_transCamera"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="25dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/btn_transcamera"
+        />
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:layout_width="127dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="29dp"
+        android:layout_marginLeft="39dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_cancel"
+        />
+
+    <Button
+        android:id="@+id/btn_photo"
+        android:layout_width="127dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="29dp"
+        android:layout_marginRight="39dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/btn_photo"
+        />
+
 </RelativeLayout>

@@ -68,31 +68,35 @@ public class MainActivity extends AppCompatActivity {
         //NFC is use?
         android.nfc.NfcAdapter mNfcAdapter = android.nfc.NfcAdapter.getDefaultAdapter(mContext);
 
-        if (!mNfcAdapter.isEnabled()) {
+        try {
+            if (!mNfcAdapter.isEnabled()) {
 
-            AlertDialog.Builder alertbox = new AlertDialog.Builder(mContext);
-            alertbox.setTitle("Info");
-            alertbox.setMessage("본 서비스를 이용하기 위해 NFC를 사용하셔야 합니다.");
-            alertbox.setPositiveButton("Turn On", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
-                        startActivity(intent);
+                AlertDialog.Builder alertbox = new AlertDialog.Builder(mContext);
+                alertbox.setTitle("Info");
+                alertbox.setMessage("본 서비스를 이용하기 위해 NFC를 사용하셔야 합니다.");
+                alertbox.setPositiveButton("Turn On", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                            Intent intent = new Intent(Settings.ACTION_NFC_SETTINGS);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                            startActivity(intent);
+                        }
                     }
-                }
-            });
-            alertbox.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                });
+                alertbox.setNegativeButton("Close", new DialogInterface.OnClickListener() {
 
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-                }
-            });
-            alertbox.show();
+                    }
+                });
+                alertbox.show();
+
+            }
+        } catch (Exception e) {
 
         }
 
@@ -120,9 +124,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initNFC() {
-        Log.d("NFC", "intent : " + getIntent().getAction());
-        Intent intent = getIntent();
-        hojungNFCReadLibrary.onResume(intent);
+        try {
+            Log.d("NFC", "intent : " + getIntent().getAction());
+            Intent intent = getIntent();
+            hojungNFCReadLibrary.onResume(intent);
+        } catch (Exception e) {
+
+        }
 
     }
 
@@ -137,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         initNFC();
+
     }
 
     @Override

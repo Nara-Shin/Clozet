@@ -1,7 +1,6 @@
 package com.example.krcho.clozet.camera;
 
 import android.content.Intent;
-import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -15,7 +14,7 @@ public class CameraGuideActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_camera_guide2);
+        setContentView(R.layout.activity_camera_guide);
 
         TimerTask task = new TimerTask() {
             @Override
@@ -26,6 +25,6 @@ public class CameraGuideActivity extends AppCompatActivity {
         };
 
         Timer timer = new Timer();
-        timer.schedule(task, 2000);
+        timer.schedule(task, 1000);
     }
 }
