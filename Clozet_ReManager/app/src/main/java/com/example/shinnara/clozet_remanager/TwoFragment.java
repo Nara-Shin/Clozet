@@ -19,15 +19,14 @@ import java.util.ArrayList;
  */
 public class TwoFragment extends Fragment implements View.OnClickListener {
 
-    RecyclerView recyclerView;
+    static RecyclerView recyclerView;
     LinearLayoutManager recyclerLayoutManager;
     ExampleRecyclerAdapter adapter;
-    ArrayList<Request> list = new ArrayList<>();
+    static ArrayList<Request> list = new ArrayList<>();
     Context context;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.twofragment, container, false);
 
@@ -44,11 +43,6 @@ public class TwoFragment extends Fragment implements View.OnClickListener {
         recyclerView.setLayoutManager(recyclerLayoutManager);
         adapter = new ExampleRecyclerAdapter(list);
         recyclerView.setAdapter(adapter);
-
-
-
-
-
 
         return v;
     }
