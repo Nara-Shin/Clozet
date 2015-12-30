@@ -1,29 +1,27 @@
 package com.example.krcho.clozet.camera;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.SurfaceTexture;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CameraMetadata;
-import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.params.StreamConfigurationMap;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.hardware.Camera;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
+import android.os.Environment;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.Size;
-import android.view.Surface;
-import android.view.TextureView;
-import android.view.Window;
+import android.view.SurfaceHolder;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import com.example.krcho.clozet.R;
 
-import java.util.Arrays;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 // this project
@@ -32,169 +30,166 @@ import java.util.Arrays;
 // example more
 // https://github.com/googlesamples/android-Camera2Basic/blob/master/Application/src/main/java/com/example/android/camera2basic/Camera2BasicFragment.java
 
-public class FrontCameraActivityLolliPop extends Activity {
+public class FrontCameraActivityLolliPop extends AppCompatActivity implements View.OnClickListener {
 
-    private final static String TAG = "SimpleCamera";
-    private TextureView mTextureView = null;
-    private TextureView.SurfaceTextureListener mSurfaceTextureListner = new TextureView.SurfaceTextureListener() {
+    private static String TAG = "CAMERA";
+    private boolean isFront = true;
 
-        @Override
-        public void onSurfaceTextureUpdated(SurfaceTexture surface) {
-            // TODO Auto-generated method stub
-            //Log.i(TAG, "onSurfaceTextureUpdated()");
-
-        }
-
-        @Override
-        public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width,
-                                                int height) {
-            // TODO Auto-generated method stub
-            Log.i(TAG, "onSurfaceTextureSizeChanged()");
-
-        }
-
-        @Override
-        public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-            // TODO Auto-generated method stub
-            Log.i(TAG, "onSurfaceTextureDestroyed()");
-            return false;
-        }
-
-        @Override
-        public void onSurfaceTextureAvailable(SurfaceTexture surface, int width,
-                                              int height) {
-            // TODO Auto-generated method stub
-            Log.i(TAG, "onSurfaceTextureAvailable()");
-
-            CameraManager manager = (CameraManager) getSystemService(CAMERA_SERVICE);
-            try {
-                String[] cameraList = manager.getCameraIdList();
-                String cameraId = null;
-                for(String id : cameraList){
-                    CameraCharacteristics characteristics
-                            = manager.getCameraCharacteristics(id);
-                    Integer facing = characteristics.get(CameraCharacteristics.LENS_FACING);
-                    if (facing != null && facing == CameraCharacteristics.LENS_FACING_FRONT) {
-                        cameraId = id;
-                        break;
-                    }
-                }
-//                String cameraId = manager.getCameraIdList()[0];
-                CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
-                StreamConfigurationMap map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
-                mPreviewSize = map.getOutputSizes(SurfaceTexture.class)[0];
-
-                manager.openCamera(cameraId, mStateCallback, null);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
-
-        }
-    };
-
-    private Size mPreviewSize = null;
-    private CameraDevice mCameraDevice = null;
-    private CaptureRequest.Builder mPreviewBuilder = null;
-    private CameraCaptureSession mPreviewSession = null;
-    private CameraDevice.StateCallback mStateCallback = new CameraDevice.StateCallback() {
-
-        @Override
-        public void onOpened(CameraDevice camera) {
-            // TODO Auto-generated method stub
-            Log.i(TAG, "onOpened");
-            mCameraDevice = camera;
-
-            SurfaceTexture texture = mTextureView.getSurfaceTexture();
-            if (texture == null) {
-                Log.e(TAG, "texture is null");
-                return;
-            }
-
-            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
-            Surface surface = new Surface(texture);
-
-            try {
-                mPreviewBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
-
-            mPreviewBuilder.addTarget(surface);
-
-            try {
-                mCameraDevice.createCaptureSession(Arrays.asList(surface), mPreviewStateCallback, null);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @Override
-        public void onError(CameraDevice camera, int error) {
-            // TODO Auto-generated method stub
-            Log.e(TAG, "onError");
-
-        }
-
-        @Override
-        public void onDisconnected(CameraDevice camera) {
-            // TODO Auto-generated method stub
-            Log.e(TAG, "onDisconnected");
-
-        }
-    };
-    private CameraCaptureSession.StateCallback mPreviewStateCallback = new CameraCaptureSession.StateCallback() {
-
-        @Override
-        public void onConfigured(CameraCaptureSession session) {
-            // TODO Auto-generated method stub
-            Log.i(TAG, "onConfigured");
-            mPreviewSession = session;
-
-            mPreviewBuilder.set(CaptureRequest.CONTROL_MODE, CameraMetadata.CONTROL_MODE_AUTO);
-
-            HandlerThread backgroundThread = new HandlerThread("CameraPreview");
-            backgroundThread.start();
-            Handler backgroundHandler = new Handler(backgroundThread.getLooper());
-
-            try {
-                mPreviewSession.setRepeatingRequest(mPreviewBuilder.build(), null, backgroundHandler);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-        @Override
-        public void onConfigureFailed(CameraCaptureSession session) {
-            // TODO Auto-generated method stub
-            Log.e(TAG, "CameraCaptureSession Configure failed");
-        }
-    };
+    private Context mContext = this;
+    private Camera mCamera;
+    private CameraPreview mPreview;
+    private Button timer, transCamera, cancel, photo;
+    private FrameLayout preview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         //same as set-up android:screenOrientation="portrait" in <activity>, AndroidManifest.xml
         //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_front_camera);
 
-        mTextureView = (TextureView) findViewById(R.id.textureView1);
-        mTextureView.setSurfaceTextureListener(mSurfaceTextureListner);
+        mContext = this;
 
+        // 카메라 사용여부 체크
+        if(!checkCameraHardware(getApplicationContext())){
+            finish();
+        }
+
+        // 카메라 인스턴스 생성
+        mCamera = getCameraInstance();
+
+        // 프리뷰창을 생성하고 액티비티의 레아이웃으로 지정
+        mPreview = new CameraPreview(this, mCamera);
+        preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview.addView(mPreview);
+
+        timer = (Button) findViewById(R.id.btn_timer);
+        transCamera = (Button) findViewById(R.id.btn_transCamera);
+        cancel = (Button) findViewById(R.id.btn_cancel);
+        photo = (Button) findViewById(R.id.btn_photo);
+
+        timer.setOnClickListener(this);
+        transCamera.setOnClickListener(this);
+        cancel.setOnClickListener(this);
+        photo.setOnClickListener(this);
     }
 
-    @Override
-    protected void onPause() {
-        // TODO Auto-generated method stub
-        super.onPause();
 
-        if (mCameraDevice != null) {
-            mCameraDevice.close();
-            mCameraDevice = null;
+    /**
+     * 카메라 사용여부 가능 체크
+     * @param context
+     * @return
+     */
+
+    private boolean checkCameraHardware(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            Log.i(TAG, "Number of available camera : " + Camera.getNumberOfCameras());
+            return true;
+        } else {
+            Toast.makeText(context, "No camera found!", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 
+
+    /**
+     * 카메라 인스턴스 호출
+     * @return
+     */
+
+    public Camera getCameraInstance(){
+        try{
+            // open() 의 매개변수로 int 값을 받을 수 도 있는데, 일반적으로 0이 후면 카메라, 1이 전면 카메라를 의미합니다.
+            mCamera = Camera.open(1);
+        } catch(Exception e){
+            Log.i(TAG,"Error : Using Camera");
+            e.printStackTrace();
+        }
+        return mCamera;
+    }
+
+
+    /** 이미지를 저장할 파일 객체를 생성
+     * 저장되면 Picture 폴더에 MyCameraApp 폴더안에 저장된다. (MyCameraApp 폴더명은 변경가능)
+     */
+
+    private static File getOutputMediaFile(){
+        //SD 카드가 마운트 되어있는지 먼저 확인
+        // Environment.getExternalStorageState() 로 마운트 상태 확인 가능합니다
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyCameraApp");
+
+        // 없는 경로라면 따로 생성
+        if(!mediaStorageDir.exists()){
+            if(! mediaStorageDir.mkdirs()){
+                Log.d("MyCamera", "failed to create directory");
+                return null;
+            }
+        }
+
+        // 파일명을 적당히 생성, 여기선 시간으로 파일명 중복을 피한다
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + "IMG_" + timestamp + ".jpg");
+        Log.i("MyCamera", "Saved at"+Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
+        System.out.println(mediaFile.getPath());
+        return mediaFile;
+    }
+
+    private Camera.PictureCallback mPicture = new Camera.PictureCallback() {
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            // JPEG 이미지가 byte[] 형태로 들어옵니다.
+            File pictureFile = getOutputMediaFile();
+            if(pictureFile == null){
+                Toast.makeText(mContext, "Error camera image saving", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            try{
+                FileOutputStream fos = new FileOutputStream(pictureFile);
+                fos.write(data);
+                fos.close();
+                //Thread.sleep(500);
+                mCamera.startPreview();
+            } catch (FileNotFoundException e) {
+                Log.d(TAG, "File not found: " + e.getMessage());
+            } catch (IOException e) {
+                Log.d(TAG, "Error accessing file: " + e.getMessage());
+            }
+        }
+    };
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_timer:
+                break;
+
+            case R.id.btn_transCamera:
+                isFront = !isFront;
+
+                try {
+                    if (isFront) {
+                        mPreview.cameraChange(1);
+                    } else {
+                        mPreview.cameraChange(0);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case R.id.btn_cancel:
+                finish();
+                break;
+
+            case R.id.btn_photo:
+                mCamera.takePicture(null, null, mPicture);
+                Toast.makeText(getApplicationContext(), "찰칵!", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
 
 }
