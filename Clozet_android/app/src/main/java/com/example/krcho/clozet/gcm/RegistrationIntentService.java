@@ -20,14 +20,24 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.example.krcho.clozet.network.CommonHttpClient;
+import com.example.krcho.clozet.request.Request;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
+
+import cz.msebera.android.httpclient.Header;
 
 public class RegistrationIntentService extends IntentService {
 
@@ -53,8 +63,34 @@ public class RegistrationIntentService extends IntentService {
             String token = instanceID.getToken("174277417501",
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
+            String androidID=
+                    Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
             Log.i(TAG, "GCM Registration Token: " + token);
             Log.i(TAG, "GCMID : " + instanceID.getId());
+            Log.i(TAG, "ANDROID ID : " + androidID);
+
+            RequestParams requestParams=new RequestParams();
+            requestParams.put("gcm_id",instanceID.getId());
+            requestParams.put("android_id",androidID);
+            CommonHttpClient.post("member/join.php", requestParams,new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d(TAG, "Status : " + statusCode);
+                    String confirmMessage;
+                    String memberCode;
+                    try{
+                        confirmMessage = response.getString("confirm_message");
+                        memberCode = response.getString("member_code");
+                    }catch (Exception e){}
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    Log.d(TAG,"Status : "+statusCode);
+                }
+            });
+
 
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
