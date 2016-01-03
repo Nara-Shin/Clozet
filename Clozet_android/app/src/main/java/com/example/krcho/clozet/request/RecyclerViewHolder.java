@@ -23,10 +23,10 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         price = (TextView) itemView.findViewById(R.id.price);
     }
 
-    public void update(final Request data) {
-        image.setImageUrl(data.getPhoto_url());
-        brand.setText(data.getBrand());
-        title.setText(data.getName());
+    public void update(final Product data) {
+        image.setImageUrl(data.getProduct_photo());
+        brand.setText(data.getProduct_brand());
+        title.setText(data.getProduct_name());
 //        price.setText(data.getPrice());
     }
 }

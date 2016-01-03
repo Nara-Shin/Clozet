@@ -30,7 +30,7 @@ public class SelectOptionsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private RecyclerView recyclerView;
     RecyclerAdapter adapter;
-    private ArrayList<Request> list = new ArrayList<>();
+    private ArrayList<Product> list = new ArrayList<>();
     private FloatingActionButton fab;
 
     @Override
@@ -67,30 +67,10 @@ public class SelectOptionsActivity extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
-
                 Log.d("response", response.toString());
-                try {
-                    Request temp = new Request();
-                    temp.setCode(response.getString("product_code"));
-                    temp.setBrand(response.getString("product_brand"));
-                    temp.setName(response.getString("product_name"));
-                    temp.setDetail(response.getString("product_detail"));
-                    temp.setPrice(response.getInt("product_price"));
-                    temp.setPhoto_url(response.getString("product_photo"));
-
-                    String size = response.getString("product_sizes");
-                    temp.addSize(size.split(","));
-
-                    String colors = response.getString("product_colors");
-                    temp.addColors(colors.split(","));
-
-                    list.add(temp);
-                }catch (JSONException e){
-                    e.printStackTrace();
-                }
+                list.add(new Product(response));
                 adapter.setList(list);
                 Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_LONG).show();
-
             }
         });
 

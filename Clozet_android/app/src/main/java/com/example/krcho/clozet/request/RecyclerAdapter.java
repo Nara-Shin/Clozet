@@ -15,15 +15,15 @@ import java.util.ArrayList;
  * Created by krcho on 2015-11-15.
  */
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
-    private ArrayList<Request> list = new ArrayList<>();
+    private ArrayList<Product> list = new ArrayList<>();
 
-    public RecyclerAdapter(ArrayList<Request> list) {
+    public RecyclerAdapter(ArrayList<Product> list) {
         Log.d("test", "construct");
         this.list.clear();
         this.list.addAll(list);
     }
 
-    public void setList(ArrayList<Request> list) {
+    public void setList(ArrayList<Product> list) {
         this.list.clear();
         this.list.addAll(list);
         notifyDataSetChanged();
