@@ -125,6 +125,14 @@ public class MainActivity extends AppCompatActivity {
                 //0��° �� ���
                 // model- Ÿ�԰� ���̷ε�  �ƹ��ų� ��� ����(Write �ۿ��� ���� ����� �ν� ����.)
                 Toast.makeText(MainActivity.this, "type : " + models[0].getTypeStr() + " , " + "payload : " + models[0].getPayloadStr(), Toast.LENGTH_SHORT).show();
+
+                // ralph, bean
+
+                if (models[0].getTypeStr().equals("ralph")){
+                    cImage.setImageUrl("http://125.209.199.91/clozet/img/view/main/cont_2.png");
+                }else if (models[0].getTypeStr().equals("ralph")){
+                    cImage.setImageUrl("http://125.209.199.91/clozet/img/view/main/cont_1.png");
+                }
             }
 
             @Override

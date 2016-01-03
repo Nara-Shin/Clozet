@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.krcho.clozet.MyAccount;
 import com.example.krcho.clozet.R;
 import com.example.krcho.clozet.network.CommonHttpClient;
 import com.example.krcho.clozet.network.NetDefine;
@@ -60,6 +61,7 @@ public class SelectOptionsActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
 //        params.put("barcode", rawResult.getText()); // 8801069178370
         params.put("barcode", barcode);
+        params.put("member_code", MyAccount.getInstance().getMember_code());
 
         CommonHttpClient.post(NetDefine.SEARCH_BARCODE, params, new JsonHttpResponseHandler() {
             @Override
