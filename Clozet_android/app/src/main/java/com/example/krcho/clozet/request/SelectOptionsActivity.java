@@ -45,7 +45,7 @@ public class SelectOptionsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProduct("8801069178370");
+                addProduct("8801069178371");
             }
         });
 

@@ -20,8 +20,8 @@ public class Product {
     ArrayList<String> colors = new ArrayList<>();
     ArrayList<Options> options = new ArrayList<>();
 
-    public Product(JSONObject json){
-        try{
+    public Product(JSONObject json) {
+        try {
             this.setProduct_code(json.getString("product_code"));
             this.setProduct_brand(json.getString("product_brand"));
             this.setProduct_name(json.getString("product_name"));
@@ -34,7 +34,7 @@ public class Product {
 
             this.addOption(json.getJSONArray("options"));
 
-        }catch (JSONException e){
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
@@ -87,27 +87,39 @@ public class Product {
         this.product_photo = product_photo;
     }
 
-    public void addSize(String size){
+    public void addSize(String size) {
         String[] array = size.split(",");
-        for(String item : array){
+        for (String item : array) {
             this.sizes.add(item);
         }
     }
 
-    public void addColor(String color){
+    public void addColor(String color) {
         String[] array = color.split(",");
-        for(String item : array){
+        for (String item : array) {
             this.colors.add(item);
         }
     }
 
-    public void addOption(JSONArray ops){
-        for(int i=0; i<ops.length(); i++){
+    public void addOption(JSONArray ops) {
+        for (int i = 0; i < ops.length(); i++) {
             try {
                 this.options.add(new Options(ops.getJSONObject(i)));
-            }catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    public ArrayList<String> getSizes() {
+        return sizes;
+    }
+
+    public ArrayList<String> getColors() {
+        return colors;
+    }
+
+    public ArrayList<Options> getOptions() {
+        return options;
     }
 }
