@@ -32,7 +32,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     int mCurrentFragmentIndex;
     public final static int FRAGMENT_ONE = 0;
     public final static int FRAGMENT_TWO = 1;
-    public final static int FRAGMENT_THREE = 2;
     //GCM
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
@@ -43,12 +42,22 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent getIntent = getIntent();//인텐트
+        String roomNumber = getIntent.getStringExtra("roomNumber");
+        if(roomNumber!=null){//룸넘버를 받아왔으면
+            switch (roomNumber){
+                case "room 1": // room 1 인 경우
+                    OneFragment dialogFragment = OneFragment.newInstance();
+                    dialogFragment.show(getSupportFragmentManager(), "test");
+                    break; // onefragment 보내기
+
+            }
+        }
+
         Button bt_oneFragment = (Button) findViewById(R.id.bt_oneFragment);
         bt_oneFragment.setOnClickListener(this);
         Button bt_twoFragment = (Button) findViewById(R.id.bt_twoFragment);
         bt_twoFragment.setOnClickListener(this);
-        Button bt_threeFragment = (Button) findViewById(R.id.bt_threeFragment);
-        bt_threeFragment.setOnClickListener(this);
 
         mCurrentFragmentIndex = FRAGMENT_ONE;
 
@@ -119,9 +128,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case FRAGMENT_TWO:
                 newFragment = new TwoFragment();
                 break;
-            case FRAGMENT_THREE:
+            /*case FRAGMENT_THREE:
                 newFragment = new ThreeFragment();
-                break;
+                break;*/
 
             default:
                 Log.d(TAG, "Unhandle case");
@@ -139,16 +148,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             case R.id.bt_oneFragment:
 //                mCurrentFragmentIndex = FRAGMENT_ONE;
 //                fragmentReplace(mCurrentFragmentIndex);
-
                 OneFragment dialogFragment = OneFragment.newInstance();
                 dialogFragment.show(getSupportFragmentManager(), "test");
                 break;
             case R.id.bt_twoFragment:
                 mCurrentFragmentIndex = FRAGMENT_TWO;
-                fragmentReplace(mCurrentFragmentIndex);
-                break;
-            case R.id.bt_threeFragment:
-                mCurrentFragmentIndex = FRAGMENT_THREE;
                 fragmentReplace(mCurrentFragmentIndex);
                 break;
 

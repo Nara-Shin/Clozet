@@ -1,8 +1,10 @@
 package com.example.shinnara.clozet_remanager;
 
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,11 @@ public class OneFragment extends android.support.v4.app.DialogFragment implement
         frag.setArguments(args);
         return frag;
     }
+
+    public static boolean isScreenOn(Context context) {
+        return ((PowerManager)context.getSystemService(Context.POWER_SERVICE)).isScreenOn();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

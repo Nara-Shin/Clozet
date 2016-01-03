@@ -27,6 +27,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.shinnara.clozet_remanager.MainActivity;
+import com.example.shinnara.clozet_remanager.OneFragment;
 import com.example.shinnara.clozet_remanager.R;
 import com.google.android.gms.gcm.GcmListenerService;
 
@@ -45,11 +46,21 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
+        String roomNumber="room 1";//더미값
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
+        //one
+        Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.example.shinnara.clozet_remanager");
+        intent.putExtra("roomNumber",roomNumber);//key, value
+        //intent로 데이터 전달
+
+        if(intent!=null) {
+            startActivity(intent);
+        }
 
         if (from.startsWith("/topics/")) {
             // message received from some topic.
+
         } else {
             // normal downstream message.
         }
@@ -77,11 +88,13 @@ public class MyGcmListenerService extends GcmListenerService {
      * @param message GCM message received.
      */
     private void sendNotification(String message) {
-        //조건으로 ㅐone two 가르기!
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
                 PendingIntent.FLAG_ONE_SHOT);
+
+
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
