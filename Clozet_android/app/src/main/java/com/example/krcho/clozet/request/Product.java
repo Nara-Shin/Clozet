@@ -1,5 +1,6 @@
 package com.example.krcho.clozet.request;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,8 +20,6 @@ public class Product {
     ArrayList<String> colors = new ArrayList<>();
     ArrayList<Options> options = new ArrayList<>();
 
-    public Product(){}
-
     public Product(JSONObject json){
         try{
             this.setProduct_code(json.getString("product_code"));
@@ -32,6 +31,8 @@ public class Product {
 
             this.addSize(json.getString("product_sizes"));
             this.addColor(json.getString("product_colors"));
+
+            this.addOption(json.getJSONArray("options"));
 
         }catch (JSONException e){
             e.printStackTrace();
@@ -100,7 +101,13 @@ public class Product {
         }
     }
 
-    public void addOption(Options op){
-        this.options.add(op);
+    public void addOption(JSONArray ops){
+        for(int i=0; i<ops.length(); i++){
+            try {
+                this.options.add(new Options(ops.getJSONObject(i)));
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

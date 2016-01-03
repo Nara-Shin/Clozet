@@ -33,7 +33,7 @@ public class MainSideView extends LinearLayout implements View.OnClickListener {
     public void init(Context context){
         this.context=context;
         LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.view_main_sideBar, this, true);
+        inflater.inflate(R.layout.view_main_sidebar, this, true);
         frameLayout_sideBar_rightside=(FrameLayout)findViewById(R.id.frameLayout_sideBar_rightside);
         imageView_sidebar_promotion=(ImageView)findViewById(R.id.imageView_sidebar_promotion);
         imageView_sidebar_gallery=(ImageView)findViewById(R.id.imageView_sidebar_gallery);
