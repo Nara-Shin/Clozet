@@ -2,15 +2,10 @@ package com.example.krcho.clozet.request;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.krcho.clozet.R;
-import com.example.krcho.clozet.network.CommonHttpClient;
 import com.loopj.android.image.SmartImageView;
-
-import java.net.URI;
 
 /**
  * Created by krcho on 2015-11-15.
