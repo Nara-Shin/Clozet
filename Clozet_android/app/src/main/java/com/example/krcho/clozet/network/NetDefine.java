@@ -6,4 +6,5 @@ package com.example.krcho.clozet.network;
 public interface NetDefine {
     String BASE_URL = "http://125.209.199.91/clozet/";
     String SEARCH_BARCODE = "search/product.php";
+    String JOIN_SERVICE = "member/join.php";
 }

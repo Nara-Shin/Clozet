@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Google Inc. All Rights Reserved.
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,6 +25,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.example.krcho.clozet.network.CommonHttpClient;
+import com.example.krcho.clozet.network.NetDefine;
 import com.example.krcho.clozet.request.Request;
 import com.google.android.gms.gcm.GcmPubSub;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -63,31 +64,35 @@ public class RegistrationIntentService extends IntentService {
             String token = instanceID.getToken("174277417501",
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
-            String androidID=
+            String androidID =
                     Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
             Log.i(TAG, "GCM Registration Token: " + token);
             Log.i(TAG, "GCMID : " + instanceID.getId());
             Log.i(TAG, "ANDROID ID : " + androidID);
 
-            RequestParams requestParams=new RequestParams();
-            requestParams.put("gcm_id",instanceID.getId());
-            requestParams.put("android_id",androidID);
-            CommonHttpClient.post("member/join.php", requestParams,new JsonHttpResponseHandler(){
+            RequestParams requestParams = new RequestParams();
+            requestParams.put("gcm_id", token.substring(instanceID.getId().length() + 1));
+            requestParams.put("android_id", androidID);
+
+            Log.d("params", requestParams.toString());
+
+            CommonHttpClient.post(NetDefine.JOIN_SERVICE, requestParams, new JsonHttpResponseHandler() {
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     Log.d(TAG, "Status : " + statusCode);
                     String confirmMessage;
                     String memberCode;
-                    try{
+                    try {
                         confirmMessage = response.getString("confirm_message");
                         memberCode = response.getString("member_code");
-                    }catch (Exception e){}
+                    } catch (Exception e) {
+                    }
 
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Log.d(TAG,"Status : "+statusCode);
+                    Log.d(TAG, "Status : " + statusCode);
                 }
             });
 
