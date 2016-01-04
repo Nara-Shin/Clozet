@@ -44,7 +44,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         for(String item : data.getColors()){
             Button color = new Button(itemView.getContext());
-            color.setBackgroundColor(Color.parseColor(item));
+            color.setBackgroundColor(Color.parseColor("#"+item));
             color.setLayoutParams(new LinearLayout.LayoutParams(45, 45));
             this.colors.addView(color);
         }

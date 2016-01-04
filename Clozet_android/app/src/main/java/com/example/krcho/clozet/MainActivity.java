@@ -80,9 +80,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+*/
         cImage = (SmartImageView) findViewById(R.id.image);
-        cImage.setImageUrl("http://125.209.199.91/clozet/img/view/main/cont_nonfc.png");*/
+        cImage.setImageUrl("http://125.209.199.91/clozet/img/view/main/cont_nonfc.png");
 
         //NFC
 
