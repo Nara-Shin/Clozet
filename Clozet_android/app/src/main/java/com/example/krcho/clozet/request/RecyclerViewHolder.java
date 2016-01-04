@@ -37,15 +37,17 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         for(String item : data.getSizes()){
             Button size = new Button(itemView.getContext());
+            size.setBackgroundColor(Color.BLACK);
+            size.setTextColor(Color.WHITE);
             size.setText(item);
-            size.setLayoutParams(new LinearLayout.LayoutParams(45, 45));
+            size.setLayoutParams(new LinearLayout.LayoutParams(200, 200));
             this.sizes.addView(size);
         }
 
         for(String item : data.getColors()){
             Button color = new Button(itemView.getContext());
             color.setBackgroundColor(Color.parseColor("#"+item));
-            color.setLayoutParams(new LinearLayout.LayoutParams(45, 45));
+            color.setLayoutParams(new LinearLayout.LayoutParams(200, 200));
             this.colors.addView(color);
         }
     }
