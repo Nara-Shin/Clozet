@@ -31,6 +31,10 @@ import com.example.shinnara.clozet_remanager.OneFragment;
 import com.example.shinnara.clozet_remanager.R;
 import com.google.android.gms.gcm.GcmListenerService;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MyGcmListenerService extends GcmListenerService {
 
     private static final String TAG = "MyGcmListenerService";
@@ -53,6 +57,26 @@ public class MyGcmListenerService extends GcmListenerService {
         Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.example.shinnara.clozet_remanager");
         intent.putExtra("roomNumber",roomNumber);//key, value
         //intent로 데이터 전달
+
+
+        try {
+            JSONArray jArray = new JSONArray(message);
+            for (int i = 0; i < jArray.length(); i++) {
+                JSONObject jObject = jArray.getJSONObject(i);  // JSONObject 추출
+                String room = jObject.getString("room");
+                String prdname = jObject.getString("prdname");
+                String image = jObject.getString("img");
+                String size = jObject.getString("size");
+                String color = jObject.getString("color");
+                String count = jObject.getString("count");
+
+                Log.d(TAG, "room: " + room);
+                 }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
 
         if(intent!=null) {
             startActivity(intent);

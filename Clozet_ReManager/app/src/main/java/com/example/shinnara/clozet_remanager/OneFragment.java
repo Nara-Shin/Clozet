@@ -37,12 +37,23 @@ public class OneFragment extends android.support.v4.app.DialogFragment implement
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         int cont=1;
+        int roomNum=1;
 
         View v = inflater.inflate(R.layout.onefragment, container, false);
-
+        //방번호
+        TextView room = (TextView) v.findViewById(R.id.num_room);
+        room.setText("" + roomNum);
+        //이미지
         ImageView image = (ImageView) v.findViewById(R.id.img_cloth);
         image.setImageResource(R.drawable.cloth);
+        //사이즈
+        ImageView size = (ImageView) v.findViewById(R.id.img_size);
+        size.setImageResource(R.drawable.m);
+        //색상
+        LinearLayout color = (LinearLayout) v.findViewById(R.id.color);
+        color.setBackgroundColor(Color.rgb(25,26,28));
 
+        //요청횟수
         TextView count = (TextView) v.findViewById(R.id.count);
         count.setText(""+cont);
 
