@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView change, shot;
     private SmartImageView cImage;
+    private ImageView imageView_main_change,imageView_main_savepic,imageView_main_sidebar;
+    private FrameLayout frameLayout_sideBar_container,frameLayout_sideBar_close;
+    private MainSideView mainSideView;
 
     //NFC
     HojungNFCReadLibrary hojungNFCReadLibrary;
@@ -54,17 +59,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mContext = this;
+        mainSideView=new MainSideView(MainActivity.this);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        setViewPager();
+        setUIView();
 
-        change = (TextView) findViewById(R.id.txt_change);
+       /* change = (TextView) findViewById(R.id.txt_change);
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), BarcodeDetactActivity.class));
+
             }
         });
         shot = (TextView) findViewById(R.id.txt_shot);
@@ -72,13 +76,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(getApplicationContext(), CameraGuideActivity.class));
+
 
             }
         });
 
         cImage = (SmartImageView) findViewById(R.id.image);
-        cImage.setImageUrl("http://125.209.199.91/clozet/img/view/main/cont_nonfc.png");
+        cImage.setImageUrl("http://125.209.199.91/clozet/img/view/main/cont_nonfc.png");*/
 
         //NFC
 
@@ -180,7 +184,48 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void setViewPager() {
+    public void setUIView() {
+        imageView_main_change=(ImageView)findViewById(R.id.imageView_main_change);
+        imageView_main_savepic=(ImageView)findViewById(R.id.imageView_main_savepic);
+        imageView_main_sidebar=(ImageView)findViewById(R.id.imageView_main_sidebar);
+        frameLayout_sideBar_container=(FrameLayout)findViewById(R.id.frameLayout_sideBar_container);
+        frameLayout_sideBar_close=(FrameLayout)findViewById(R.id.frameLayout_sideBar_close);
+        imageView_main_change.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageView_main_change.setImageResource(R.drawable.change_btn_click);
+                imageView_main_savepic.setImageResource(R.drawable.csave_btn_unclick);
+                startActivity(new Intent(getApplicationContext(), BarcodeDetactActivity.class));
+
+            }
+        });
+        imageView_main_savepic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageView_main_change.setImageResource(R.drawable.change_btn_unclick);
+                imageView_main_savepic.setImageResource(R.drawable.csave_btn_click);
+                startActivity(new Intent(getApplicationContext(), CameraGuideActivity.class));
+            }
+        });
+        imageView_main_sidebar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                frameLayout_sideBar_container.setVisibility(View.VISIBLE);
+                frameLayout_sideBar_container.bringToFront();
+                frameLayout_sideBar_container.removeAllViews();
+                frameLayout_sideBar_container.addView(mainSideView);
+                frameLayout_sideBar_close.setVisibility(View.VISIBLE);
+
+
+            }
+        });
+        frameLayout_sideBar_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                frameLayout_sideBar_container.setVisibility(View.GONE);
+                frameLayout_sideBar_close.setVisibility(View.GONE);
+            }
+        });
 
     }
 

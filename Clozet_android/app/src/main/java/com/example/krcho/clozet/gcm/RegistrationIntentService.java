@@ -83,6 +83,9 @@ public class RegistrationIntentService extends IntentService {
                     try {
                         confirmMessage = response.getString("confirm_message");
                         memberCode = response.getString("member_code");
+
+                        Log.d(TAG,"confirmMessage : "+confirmMessage);
+                        Log.d(TAG,"memberCode : "+memberCode);
                     } catch (Exception e) {
                     }
 

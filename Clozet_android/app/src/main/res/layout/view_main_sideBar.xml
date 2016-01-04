@@ -3,16 +3,16 @@
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="122.67dp"
         android:layout_height="match_parent"
-        android:background="#ffffffff">
+        android:background="#ffffffff"
+        android:clickable="true">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="100dp"
             android:layout_height="108dp"
-            android:layout_marginTop="35.33dp"
             android:layout_gravity="center_horizontal">
 
             <ImageView
@@ -20,13 +20,12 @@
                 android:layout_height="match_parent"
                 android:id="@+id/imageView_sidebar_logo"
                 android:src="@drawable/btn_profile" />
-        </FrameLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="189.33dp">
+            android:layout_height="wrap_content">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -71,8 +70,7 @@
         <FrameLayout
             android:layout_width="44dp"
             android:layout_height="44dp"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="40.67dp">
+            android:layout_gravity="bottom|center_horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -81,11 +79,6 @@
                 android:src="@drawable/btn_cancel" />
         </FrameLayout>
 
-    </FrameLayout>
+    </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#bf000000"
-        android:id="@+id/frameLayout_sideBar_rightside"></FrameLayout>
 </LinearLayout>

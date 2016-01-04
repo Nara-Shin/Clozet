@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
+import com.example.shinnara.clozet_remanager.gcm.MyGcmListenerService;
 import com.example.shinnara.clozet_remanager.gcm.QuickstartPreferences;
 import com.example.shinnara.clozet_remanager.gcm.RegistrationIntentService;
 import com.google.android.gms.common.ConnectionResult;
@@ -64,7 +65,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         fragmentReplace(mCurrentFragmentIndex);
 
         //GCM
-
+        Intent intent2 = new Intent(this, MyGcmListenerService.class);
+        startService(intent2);
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -80,7 +82,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
         } else {
-            Log.d("asdfqwef", "jfwijeifojioadsf");
         }
     }
     private boolean checkPlayServices() {
