@@ -19,14 +19,35 @@
 		}
 	*/
 
-	// Query 1
-	$query = " select 'complete' as col from dual ";
+	$fitroom_code = $_POST[fitroom_code];
+
+	// Query 1 - 상점 정보 가져오기
+	$query = "SELECT Brand.BrandName, Shop.ShopName, Shop.ShopImage FROM ShopBrand Brand, ShopInfo Shop WHERE Brand.BrandCode = Shop.BrandCode AND Shop.ShopCode = (SELECT ShopCode FROM ShopFittingRoom WHERE FitRoomcode = '%s')";
+	
+	$query = sprintf("SELECT Brand.BrandName, Shop.ShopName, Shop.ShopImage FROM ShopBrand Brand, ShopInfo Shop WHERE Brand.BrandCode = Shop.BrandCode AND Shop.ShopCode = (SELECT ShopCode FROM ShopFittingRoom WHERE FitRoomcode = '%s')",
+		mysql_real_escape_string($fitroom_code));
 
 	$result = mysql_query($query);
 
-	while($row = mysql_fetch_array($result)) 
-	{
-	   echo $row['col'].'<br/>';
+	if(mysql_num_rows($result) > 0){
+		
+		while($row = mysql_fetch_array($result)){
+
+			$brand_name = $row[BrandName];
+			$branch_name = $row[ShopName];
+			$brand_img = "http://godeung.woobi.co.kr/clozet/shop/image/" . $row[ShopImage];
+		}
+
+	}else{
+
+		$brand_img = "http://godeung.woobi.co.kr/clozet/shop/image/100000.png";
+
 	}
+
+
+	// JSON으로 반환
+	$val = array("brand_name" => $brand_name, "branch_name" => $branch_name, "brand_img" => $brand_img);
+	$output = json_encode($val);
+	echo urldecode($output);
 
 ?>
