@@ -1,32 +1,87 @@
 <?
-	include "/www/clozet/lib/dbconnect.php";
+	header('Content-Type: application/json');
+	
+	include "../lib/dbconnect.php";
 	
 	/*
-		Á¡¿ø È¸¿ø°¡ÀÔ ¹× ·Î±×ÀÎ
+		ì ì› íšŒì›ê°€ìž… ë° ë¡œê·¸ì¸
 		-
 		2016.01.06 by Junseok
 
 		1. Request
-		gcm_id=±â±â¾ÆÀÌµð
-		android_id=Æù °íÀ¯°ª
+		gcm_id=ê¸°ê¸°ì•„ì´ë””
+		android_id=í° ê³ ìœ ê°’
 
 		2. Response
 		"{
-		"confirm_message":°á°ú ¸Þ½ÃÁö(success/fail)
-		"gcm_apikey":±¸±Û Å¬¶ó¿ìµå ¸Þ½ÃÁö API Key
-		"clerk_code":6ÀÚ¸® È¸¿øÄÚµå
+		"confirm_message":ê²°ê³¼ ë©”ì‹œì§€(success/fail)
+		"clerk_code":6ìžë¦¬ íšŒì›ì½”ë“œ
 		}"
 
 	*/
 
-	// Query 1
-	$query = " select 'complete' as col from dual ";
+	$gcm_id = $_POST[gcm_id];
+	$android_id = $_POST[android_id];
 
-	$result = mysql_query($query);
+	// Request Valueê°€ ë¹ˆ ê°’ì¼ ê²½ìš° ë¬´ì¡°ê±´ fail
+	if($gmc_id == "" || $android_id == ""){
 
-	while($row = mysql_fetch_array($result)) 
-	{
-	   echo $row['col'].'<br/>';
+		$confirm_message = "fail";
+
+	}else{
+
+		// Query 1 - íšŒì›ì¸ì§€ ì²´í¬í•˜ê¸°
+		$query = sprintf("SELECT * FROM ClerkInfo WHERE AndroidId = '%s'",
+		mysql_real_escape_string($android_id));
+
+		$result = mysql_query($query);
+
+		$rows = mysql_num_rows($result);
+
+		while($row = mysql_fetch_array($result)){
+		   $clerk_code = $row[ClerkCode];
+		}
+
+		if($rows > 0){ // ì´ë¯¸ íšŒì›ì¼ ê²½ìš°
+
+			$confirm_message = "success";
+
+		}else{ // íšŒì›ì´ ì•„ë‹ ê²½ìš°
+			
+			// Query 2 - íšŒì› ì½”ë“œ ê°€ì ¸ì˜¤ê¸°
+			$query = sprintf("SELECT MAX(ClerkCode)+1 AS ClerkCode FROM ClerkInfo");
+
+			$result = mysql_query($query);
+
+			while($row = mysql_fetch_array($result)){
+			   $clerk_code = $row[ClerkCode];
+			}
+			
+			// Query 3 - íšŒì›ê°€ìž… í•˜ê¸°
+			$query = sprintf("INSERT INTO ClerkInfo(`ClerkCode`, `ClerkName`, `WorkingShop`, `GcmRegId`, `AndroidId`, `RegDate`, `ModDate`) VALUES('%s', '%s', '%s', '%s', '%s', '%s', '%s')",
+			mysql_real_escape_string($clerk_code),
+			mysql_real_escape_string(""),
+			mysql_real_escape_string(""),
+			mysql_real_escape_string($gcm_id),
+			mysql_real_escape_string($android_id),
+			mysql_real_escape_string(date("Y-m-d H:i:s")),
+			mysql_real_escape_string(date("Y-m-d H:i:s")));
+
+			$result = mysql_query($query);
+
+			if($result){
+				$confirm_message = "success";
+			}else{
+				$confirm_message = "fail";
+			}
+
+		}
+
 	}
+
+	// JSONìœ¼ë¡œ ë°˜í™˜
+	$val = array("confirm_message" => $confirm_message, "clerk_code" => $clerk_code);
+	$output = json_encode($val);
+	echo urldecode($output);
 
 ?>

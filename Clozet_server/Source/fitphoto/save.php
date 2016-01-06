@@ -1,5 +1,7 @@
 <?
-	include "/www/clozet/lib/dbconnect.php";
+	header('Content-Type: application/json');
+	
+	include "../lib/dbconnect.php";
 	
 	/*
 		Âø¼¦ ÀúÀå

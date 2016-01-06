@@ -1,5 +1,7 @@
 <?
-	include "/www/clozet/lib/dbconnect.php";
+	header('Content-Type: application/json');
+	
+	include "../lib/dbconnect.php";
 	
 	/*
 		응답없을 시 교환 재요청

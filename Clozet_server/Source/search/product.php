@@ -1,5 +1,7 @@
 <?
-	include "/www/clozet/lib/dbconnect.php";
+	header('Content-Type: application/json');
+	
+	include "../lib/dbconnect.php";
 	
 	/*
 		상품검색
@@ -29,6 +31,9 @@
 		}
 	*/
 
+	$barcode = $_POST[barcode];
+	$member_code = $_POST[member_code];
+
 	// Query 1
 	$query = " select 'complete' as col from dual ";
 
@@ -38,5 +43,7 @@
 	{
 	   echo $row['col'].'<br/>';
 	}
+
+
 
 ?>

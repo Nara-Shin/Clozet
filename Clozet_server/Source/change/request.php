@@ -1,5 +1,7 @@
 <?
-	include "/www/clozet/lib/dbconnect.php";
+	header('Content-Type: application/json');
+	
+	include "../lib/dbconnect.php";
 	
 	/*
 		교환요청(고객용)
@@ -10,8 +12,6 @@
 		member_code=6자리 회원코드(중간평가 이전엔 임의값)
 		option_code=6자리 옵션 코드
 		fitroom_code=6자리 피팅룸 코드
-
-
 
 		2. Response
 		{
@@ -25,14 +25,51 @@
 
 	*/
 
-	// Query 1
-	$query = " select 'complete' as col from dual ";
+	$member_code = $_POST[member_code];
+	$option_code = $_POST[option_code];
+	$fitroom_code = $_POST[fitroom_code];
 
-	$result = mysql_query($query);
 
-	while($row = mysql_fetch_array($result)) 
-	{
-	   echo $row['col'].'<br/>';
+	// Request Value가 빈 값일 경우 무조건 fail
+	if($member_code == "" || $option_code == "" || $fitroom_code == ""){
+
+		$confirm_message = "fail";
+
+	}else{
+
+		// Query 1 - 요청 코드 가져오기
+		$query = sprintf("SELECT MAX(ReqCode)+1 AS ReqCode FROM ChangeRequest");
+
+		$result = mysql_query($query);
+
+		while($row = mysql_fetch_array($result)){
+		   $request_code = $row[ReqCode];
+		}
+				
+
+		// Query 2 - 요청 DB에 입력하기
+		$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s', '%s','%s', '%s','%s', '%s','%s', '%s')",
+		mysql_real_escape_string($request_code),
+		mysql_real_escape_string($member_code),
+		mysql_real_escape_string($option_code),
+		mysql_real_escape_string("201"),
+		mysql_real_escape_string($clerk_code),
+		mysql_real_escape_string(date("Y-m-d H:i:s",strtotime("+30 seconds"))),
+		mysql_real_escape_string(date("Y-m-d H:i:s")),
+		mysql_real_escape_string(date("Y-m-d H:i:s")));
+
+		$result = mysql_query($query);
+
+		while($row = mysql_fetch_array($result)){
+		   $clerk_code = $row[ClerkCode];
+		}
+
 	}
+		
+	// JSON으로 반환
+	$val = array("confirm_message" => $confirm_message, "clerk_code" => $clerk_code);
+	$output = json_encode($val);
+	echo urldecode($output);
 
+	// $rows = mysql_num_rows($result);
 ?>
