@@ -3,8 +3,13 @@ package com.example.krcho.clozet.camera;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -12,6 +17,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.krcho.clozet.R;
@@ -22,6 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 // this project
@@ -34,12 +42,18 @@ public class FrontCameraActivityLolliPop extends AppCompatActivity implements Vi
 
     private static String TAG = "CAMERA";
     private boolean isFront = true;
+    private boolean isTimer3 = true;
+    private int time = 3;
 
     private Context mContext = this;
-    private Camera mCamera;
-    private CameraPreview mPreview;
+    private Camera frontCamera, backCamera;
+    private CameraPreview frontPreview, backPreview;
     private Button timer, transCamera, cancel, photo;
+    private ImageView count;
     private FrameLayout preview;
+    private CountDownTimer countDown3, countDown5;
+    private SoundPool sound;
+    private int soundId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,17 +71,88 @@ public class FrontCameraActivityLolliPop extends AppCompatActivity implements Vi
         }
 
         // 카메라 인스턴스 생성
-        mCamera = getCameraInstance();
+        frontCamera = getFrontCameraInstance();
+        backCamera = getBackCameraInstance();
+
 
         // 프리뷰창을 생성하고 액티비티의 레아이웃으로 지정
-        mPreview = new CameraPreview(this, mCamera);
+        frontPreview = new CameraPreview(this, frontCamera);
+        backPreview = new CameraPreview(this, backCamera);
         preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
+        preview.addView(frontPreview);
+
+        // 효과음 인스턴스
+        sound = new SoundPool(1, AudioManager.STREAM_ALARM, 0);
+        soundId = sound.load(this, R.raw.camera, 1);
+
+        // 타이머 관련 인스턴스 생성
+        countDown3 = new CountDownTimer(4000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                switch (time) {
+                    case 1:
+                        count.setBackground(getDrawable(R.drawable.count_1));
+                        break;
+                    case 2:
+                        count.setBackground(getDrawable(R.drawable.count_2));
+                        break;
+                    case 3:
+                        count.setBackground(getDrawable(R.drawable.count_3));
+                        break;
+                }
+
+                time--;
+            }
+
+            @Override
+            public void onFinish() {
+                count.setVisibility(View.GONE);
+                frontCamera.takePicture(null, null, mPicture);
+                sound.play(soundId, 10.0F, 1.0F,  0,  0,  1.0F);
+                time = 3;
+            }
+        };
+
+        countDown5 = new CountDownTimer(6000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                switch (time) {
+                    case 1:
+                        count.setBackground(getDrawable(R.drawable.count_1));
+                        break;
+                    case 2:
+                        count.setBackground(getDrawable(R.drawable.count_2));
+                        break;
+                    case 3:
+                        count.setBackground(getDrawable(R.drawable.count_3));
+                        break;
+                    case 4:
+                        count.setBackground(getDrawable(R.drawable.count_4));
+                        break;
+                    case 5:
+                        count.setBackground(getDrawable(R.drawable.count_5));
+                        break;
+                }
+
+                time--;
+            }
+
+            @Override
+            public void onFinish() {
+                count.setVisibility(View.GONE);
+                frontCamera.takePicture(null, null, mPicture);
+                sound.play(soundId, 10.0F, 1.0F,  0,  0,  1.0F);
+                time = 5;
+            }
+        };
 
         timer = (Button) findViewById(R.id.btn_timer);
         transCamera = (Button) findViewById(R.id.btn_transCamera);
         cancel = (Button) findViewById(R.id.btn_cancel);
         photo = (Button) findViewById(R.id.btn_photo);
+        count = (ImageView) findViewById(R.id.camera_count);
 
         timer.setOnClickListener(this);
         transCamera.setOnClickListener(this);
@@ -98,15 +183,29 @@ public class FrontCameraActivityLolliPop extends AppCompatActivity implements Vi
      * @return
      */
 
-    public Camera getCameraInstance(){
+    public Camera getFrontCameraInstance(){
         try{
             // open() 의 매개변수로 int 값을 받을 수 도 있는데, 일반적으로 0이 후면 카메라, 1이 전면 카메라를 의미합니다.
-            mCamera = Camera.open(1);
+            frontCamera = Camera.open(1);
+
         } catch(Exception e){
             Log.i(TAG,"Error : Using Camera");
             e.printStackTrace();
         }
-        return mCamera;
+        return frontCamera;
+    }
+
+    public Camera getBackCameraInstance(){
+        try{
+            // open() 의 매개변수로 int 값을 받을 수 도 있는데, 일반적으로 0이 후면 카메라, 1이 전면 카메라를 의미합니다.
+            backCamera = Camera.open(0);
+
+
+        } catch(Exception e){
+            Log.i(TAG,"Error : Using Camera");
+            e.printStackTrace();
+        }
+        return backCamera;
     }
 
 
@@ -119,7 +218,7 @@ public class FrontCameraActivityLolliPop extends AppCompatActivity implements Vi
         // Environment.getExternalStorageState() 로 마운트 상태 확인 가능합니다
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "MyCameraApp");
 
-        // 없는 경로라면 따로 생성
+        // 없는 경로라면 따로 생성®
         if(!mediaStorageDir.exists()){
             if(! mediaStorageDir.mkdirs()){
                 Log.d("MyCamera", "failed to create directory");
@@ -147,12 +246,16 @@ public class FrontCameraActivityLolliPop extends AppCompatActivity implements Vi
                 return;
             }
 
-            try{
+            try {
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
                 //Thread.sleep(500);
-                mCamera.startPreview();
+                if (isFront) {
+                    frontCamera.startPreview();
+                } else {
+                    backCamera.startPreview();
+                }
             } catch (FileNotFoundException e) {
                 Log.d(TAG, "File not found: " + e.getMessage());
             } catch (IOException e) {
@@ -165,19 +268,35 @@ public class FrontCameraActivityLolliPop extends AppCompatActivity implements Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_timer:
+                isTimer3 = !isTimer3;
+                if (isTimer3) {
+                    timer.setBackground(getDrawable(R.drawable.btn_timer_3sc));
+                    time = 3;
+                } else {
+                    timer.setBackground(getDrawable(R.drawable.btn_timer_5sc));
+                    time = 5;
+                }
                 break;
 
             case R.id.btn_transCamera:
                 isFront = !isFront;
 
-                try {
-                    if (isFront) {
-                        mPreview.cameraChange(1);
-                    } else {
-                        mPreview.cameraChange(0);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                preview.removeAllViews();
+
+                if (isFront) {
+                    backCamera.release();
+                    frontCamera.release();
+                    frontCamera.open(1);
+//                    getFrontCameraInstance();
+                    preview.removeAllViews();
+                    preview.addView(frontPreview);
+                } else {
+                    frontCamera.release();
+                    backCamera.release();
+                    backCamera.open(0);
+//                    getBackCameraInstance();
+                    preview.removeAllViews();
+                    preview.addView(backPreview);
                 }
                 break;
 
@@ -186,8 +305,14 @@ public class FrontCameraActivityLolliPop extends AppCompatActivity implements Vi
                 break;
 
             case R.id.btn_photo:
-                mCamera.takePicture(null, null, mPicture);
-                Toast.makeText(getApplicationContext(), "찰칵!", Toast.LENGTH_SHORT).show();
+                count.setVisibility(View.VISIBLE);
+
+                if (isTimer3) {
+                    countDown3.start();
+                } else {
+                    countDown5.start();
+                }
+
                 break;
         }
     }
