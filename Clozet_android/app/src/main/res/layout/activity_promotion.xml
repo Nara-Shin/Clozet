@@ -67,7 +67,6 @@
                     android:text="빈폴"
                     android:textSize="9.33sp"
                     android:textColor="#536d79"
-                    androidhuman:typeface=".otf"
                     />
                 <ImageView
                     android:layout_width="20dp"
