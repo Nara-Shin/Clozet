@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:androidhuman="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.example.krcho.clozet.promotion.PromotionActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:gravity="center_vertical">
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="30.67dp"
+            android:layout_height="30.67dp"
+            android:layout_marginLeft="18.67dp"
+            android:layout_alignParentEnd="false"
+            android:src="@drawable/btn_back"
+            android:layout_centerVertical="true" />
+        <ImageView
+            android:layout_width="147.33dp"
+            android:layout_height="30.67dp"
+            android:src="@drawable/title_promotion"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/pink"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="1dp"
+                    android:src="@drawable/stroke_black"
+                    />
+                <TextView
+                    android:id="@+id/text_brand_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:text="빈폴"
+                    android:textSize="9.33sp"
+                    android:textColor="#536d79"
+                    androidhuman:typeface=".otf"
+                    />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="1dp"
+                    android:src="@drawable/stroke_black"
+                    />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/text_product_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9.33dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:text="버튼 투 포켓 티셔츠"
+                android:textSize="14sp"
+                android:textColor="#002496"
+                />
+            <TextView
+                android:id="@+id/text_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7.33dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:text="32,800"
+                android:textSize="14sp"
+                android:textColor="#000000"
+                />
+            <ImageView
+                android:id="@+id/image_"
+                android:layout_width="153.33dp"
+                android:layout_height="153.33dp"
+                android:layout_marginTop="9.33dp"
+                android:layout_marginBottom="10dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            >
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

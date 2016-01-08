@@ -11,25 +11,28 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.krcho.clozet.camera.CameraGuideActivity;
+import com.example.krcho.clozet.gallery.GalleryActivity;
 import com.example.krcho.clozet.gcm.QuickstartPreferences;
 import com.example.krcho.clozet.gcm.RegistrationIntentService;
 import com.example.krcho.clozet.network.CommonHttpClient;
 import com.example.krcho.clozet.network.NetDefine;
 import com.example.krcho.clozet.request.Product;
 import com.example.krcho.clozet.request.SelectOptionsActivity;
+import com.example.krcho.clozet.promotion.PromotionActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.hojung.nfc.HojungNFCReadLibrary;
@@ -45,11 +48,10 @@ import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar toolbar;
-    private TextView change, shot;
+    private DrawerLayout dlDrawer;
     private SmartImageView cImage;
-    private ImageView imageView_main_change,imageView_main_savepic,imageView_main_sidebar;
-    private FrameLayout frameLayout_sideBar_container,frameLayout_sideBar_close;
+    private LinearLayout profileBtn;
+    private ImageView imageView_main_change,imageView_main_savepic,imageView_main_sidebar, promotionBtn, galleryBtn, cancelBtn;
     private MainSideView mainSideView;
 
     //NFC
@@ -69,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
 
         mContext = this;
         mainSideView=new MainSideView(MainActivity.this);
-
 
         setUIView();
 
@@ -240,11 +241,39 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void setUIView() {
-        imageView_main_change=(ImageView)findViewById(R.id.imageView_main_change);
-        imageView_main_savepic=(ImageView)findViewById(R.id.imageView_main_savepic);
-        imageView_main_sidebar=(ImageView)findViewById(R.id.imageView_main_sidebar);
-        frameLayout_sideBar_container=(FrameLayout)findViewById(R.id.frameLayout_sideBar_container);
-        frameLayout_sideBar_close=(FrameLayout)findViewById(R.id.frameLayout_sideBar_close);
+        dlDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        imageView_main_change = (ImageView) findViewById(R.id.imageView_main_change);
+        imageView_main_savepic = (ImageView) findViewById(R.id.imageView_main_savepic);
+        imageView_main_sidebar = (ImageView) findViewById(R.id.imageView_main_sidebar);
+        profileBtn = (LinearLayout) findViewById(R.id.sidebar_btn_profile);
+        promotionBtn = (ImageView) findViewById(R.id.sidebar_btn_promotion);
+        galleryBtn = (ImageView) findViewById(R.id.sidebar_btn_gallery);
+        cancelBtn = (ImageView) findViewById(R.id.sidebar_btn_cancel);
+
+        profileBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        promotionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, PromotionActivity.class));
+            }
+        });
+        galleryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, GalleryActivity.class));
+            }
+        });
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dlDrawer.closeDrawers();
+            }
+        });
         imageView_main_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -265,20 +294,7 @@ public class MainActivity extends AppCompatActivity {
         imageView_main_sidebar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                frameLayout_sideBar_container.setVisibility(View.VISIBLE);
-                frameLayout_sideBar_container.bringToFront();
-                frameLayout_sideBar_container.removeAllViews();
-                frameLayout_sideBar_container.addView(mainSideView);
-                frameLayout_sideBar_close.setVisibility(View.VISIBLE);
-
-
-            }
-        });
-        frameLayout_sideBar_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                frameLayout_sideBar_container.setVisibility(View.GONE);
-                frameLayout_sideBar_close.setVisibility(View.GONE);
+                dlDrawer.openDrawer(GravityCompat.START);
             }
         });
 
