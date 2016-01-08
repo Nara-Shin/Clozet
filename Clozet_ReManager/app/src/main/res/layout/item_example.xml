@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="ㅠㅠ" />
+                android:text="방번호" />
 
 
 
@@ -37,7 +37,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
-                    android:text="ㅠㅠ" />
+                    android:text="고객" />
 
                 <Button
                     android:id="@+id/bt_agree"
