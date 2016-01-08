@@ -58,7 +58,7 @@ public class CameraGuideActivity extends AppCompatActivity implements View.OnCli
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mContext = this;
-        mCameraFacing  = Camera.CameraInfo.CAMERA_FACING_BACK;
+        mCameraFacing  = Camera.CameraInfo.CAMERA_FACING_FRONT;
 
         init();
 
@@ -310,6 +310,12 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
                 fos.close();
                 //Thread.sleep(500);
                 camera.startPreview();
+
+                Log.d("test", String.valueOf(pictureFile));
+
+//                Intent intent = new Intent(context, CameraPreviewActivity.class);
+//                intent.putExtra("file", pictureFile);
+//                context.startActivity(intent);
             } catch (FileNotFoundException e) {
                 Log.d("Camera", "File not found: " + e.getMessage());
             } catch (IOException e) {
