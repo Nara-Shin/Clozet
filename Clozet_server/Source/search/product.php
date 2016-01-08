@@ -57,8 +57,7 @@
 		$product_detail = $row[PrdDetail];
 		$product_price = $row[PrdPrice];
 		$product_image = "http://godeung.woobi.co.kr/clozet/product/image/" . $row[PrdImage];
-		$product_colors = $row[PrdCode];
-		$options = array("size" => $row[PrdSize], "color" => $row[PrdColor], "stock" => $row[PrdStock], "code" => $row[OptionCode]);
+		$options[] = array("size" => $row[PrdSize], "color" => $row[PrdColor], "stock" => $row[PrdStock], "code" => $row[OptionCode]);
 	}
 
 	// Query 3 - 상품 사이즈 정보 가져오기
@@ -103,7 +102,7 @@
 
 		
 	// JSON으로 반환
-	$val = array("product_code" => $product_code, "product_brand" => $product_brand, "product_detail" => $product_detail, "product_price" => $product_price, "product_image" => $product_image, "product_sizes" => $product_sizes, "product_colors" => $product_colors, "options" => $options);
+	$val = array("product_code" => $product_code, "product_brand" => $product_brand, "product_name" => $product_name, "product_detail" => $product_detail, "product_price" => $product_price, "product_image" => $product_image, "product_sizes" => $product_sizes, "product_colors" => $product_colors, "options" => $options);
 	$output = json_encode($val);
 	echo urldecode($output);
 

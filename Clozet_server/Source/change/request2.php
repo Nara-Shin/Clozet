@@ -59,11 +59,9 @@
 		$clerk_code = $clerk_codes[rand(0,count($clerk_codes))];
 
 		// Query 3 - 요청 DB에 입력하기
-		$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `RequestPrdOption2`, `RequestPrdOption3`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s','%s','%s','%s','%s', '%s','%s', '%s','%s', '%s')",
+		$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s', '%s','%s', '%s','%s', '%s','%s', '%s')",
 		mysql_real_escape_string($request_code),
 		mysql_real_escape_string($member_code),
-		mysql_real_escape_string($option_code),
-		mysql_real_escape_string($option_code),
 		mysql_real_escape_string($option_code),
 		mysql_real_escape_string("201"),
 		mysql_real_escape_string($clerk_code),
@@ -83,9 +81,9 @@
 			$result = mysql_query($query);
 
 			while($row = mysql_fetch_array($result)){
-				$req_product_name = $row[PrdName];
-				$req_product_size = $row[PrdSize];
-				$req_product_color = $row[PrdColor];
+				$prd_name = $row[PrdName];
+				$prd_size = $row[PrdSize];
+				$prd_color = $row[PrdColor];
 			}
 
 			// GCM으로 직원에게 발송
@@ -98,7 +96,7 @@
 	}
 		
 	// JSON으로 반환
-	$val = array("confirm_message" => $confirm_message, "request_code" => $request_code, "req_product_name" => $req_product_name, "req_product_size" => $req_product_size, "req_product_color" => $req_product_color, "fitting_room" => $fitroom_code);
+	$val = array("confirm_message" => $confirm_message, "request_code" => $request_code, "request_code" => $req_product_name, "req_product_name" => $prd_name, "req_product_size" => $prd_size, "req_product_color" => $prd_color, "fitting_room" => $fitroom_code);
 	$output = json_encode($val);
 	echo urldecode($output);
 

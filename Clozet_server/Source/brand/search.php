@@ -35,12 +35,12 @@
 
 			$brand_name = $row[BrandName];
 			$branch_name = $row[ShopName];
-			$brand_img = "http://godeung.woobi.co.kr/clozet/shop/image/" . $row[ShopImage];
+			$brand_img = "http://godeung.woobi.co.kr/clozet/img/view/main/" . $row[ShopImage];
 		}
 
 	}else{
 
-		$brand_img = "http://godeung.woobi.co.kr/clozet/shop/image/100000.png";
+		$brand_img = "http://godeung.woobi.co.kr/clozet/img/view/main/cont_nonfc.png";
 
 	}
 

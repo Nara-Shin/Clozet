@@ -24,7 +24,7 @@
 	$android_id = $_POST[android_id];
 
 	// Request Value가 빈 값일 경우 무조건 fail
-	if($gmc_id == "" || $android_id == ""){
+	if($gcm_id == "" || $android_id == ""){
 
 		$confirm_message = "fail";
 
