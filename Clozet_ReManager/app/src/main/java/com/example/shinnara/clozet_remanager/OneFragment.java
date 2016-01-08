@@ -14,12 +14,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.w3c.dom.Text;
 
 /**
  * Created by ShinNara on 2015-11-24.
  */
 public class OneFragment extends android.support.v4.app.DialogFragment implements View.OnClickListener {
+
+
+    TextView room;
+    ImageView image;
+    TextView count;
+    ImageView size;
+    LinearLayout colorLayout;
 
     public static OneFragment newInstance() {
         OneFragment frag = new OneFragment();
@@ -37,25 +46,19 @@ public class OneFragment extends android.support.v4.app.DialogFragment implement
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         int cont=1;
-        int roomNum=1;
 
         View v = inflater.inflate(R.layout.onefragment, container, false);
-        //방번호
-        TextView room = (TextView) v.findViewById(R.id.num_room);
-        room.setText("" + roomNum);
-        //이미지
-        ImageView image = (ImageView) v.findViewById(R.id.img_cloth);
-        image.setImageResource(R.drawable.cloth);
-        //사이즈
-        ImageView size = (ImageView) v.findViewById(R.id.img_size);
-        size.setImageResource(R.drawable.m);
-        //색상
-        LinearLayout color = (LinearLayout) v.findViewById(R.id.color);
-        color.setBackgroundColor(Color.rgb(25,26,28));
 
-        //요청횟수
-        TextView count = (TextView) v.findViewById(R.id.count);
+
+        room=(TextView) v.findViewById(R.id.num_room);
+
+        image = (ImageView) v.findViewById(R.id.img_cloth);
+        image.setImageResource(R.drawable.cloth);
+
+        count = (TextView) v.findViewById(R.id.count);
         count.setText(""+cont);
+
+        size=(ImageView) v.findViewById(R.id.img_size);
 
 
         Button button = (Button) v.findViewById(R.id.bt_one);
@@ -64,7 +67,7 @@ public class OneFragment extends android.support.v4.app.DialogFragment implement
         Button buttonReject = (Button) v.findViewById(R.id.bt_reject);
         buttonReject.setOnClickListener(this);
 
-        LinearLayout colorLayout = (LinearLayout) v.findViewById(R.id.color);
+        colorLayout = (LinearLayout) v.findViewById(R.id.color);
         colorLayout.setBackgroundColor(Color.rgb(100, 100, 100));
 
         return v;
@@ -87,5 +90,39 @@ public class OneFragment extends android.support.v4.app.DialogFragment implement
         }
 
     }
+
+    public void setRoom(String roomNumber){
+        room.setText(roomNumber + " 번방");
+    }
+
+    public  void setImage(String imageURL){
+        try{
+            Glide.with(getContext()).load(imageURL).into(image);
+        }catch (Exception e){
+            image.setImageResource(R.drawable.ic_stat_ic_notification);
+        }
+    }
+
+    public void  setCount(String countR){
+        count.setText(countR);
+    }
+
+    public void setSize(String sizeURL){
+        try {
+            Glide.with(getContext()).load(sizeURL).into(size);
+        }catch (Exception e){
+            size.setImageResource(R.drawable.ic_stat_ic_notification);
+        }
+    }
+
+    public void setColorLayout(String color){
+        try{
+            colorLayout.setBackgroundColor(Color.parseColor("#"+color));
+        }catch (Exception e){
+            colorLayout.setBackgroundColor(Color.parseColor("#000000"));
+        }
+
+    }
+
 
 }

@@ -31,9 +31,9 @@ import com.example.shinnara.clozet_remanager.OneFragment;
 import com.example.shinnara.clozet_remanager.R;
 import com.google.android.gms.gcm.GcmListenerService;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.net.URLEncoder;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -50,33 +50,73 @@ public class MyGcmListenerService extends GcmListenerService {
     @Override
     public void onMessageReceived(String from, Bundle data) {
         String message = data.getString("message");
-        String roomNumber="room 1";//더미값
+       // String roomNumber="room 1";//더미값
+        String roomNumber="";
+        String prdName="";
+        String imageUrl="";
+        String sizeUrl="";
+        String count="";
+        String color="";
+
         Log.d(TAG, "From: " + from);
         Log.d(TAG, "Message: " + message);
+        StringBuffer sb=new StringBuffer(message);
+
+
+        char [] msg = message.toCharArray();
+        String newMsg="";
+        for(int i=0; i< msg.length;i++) {
+            try {
+                if (msg[i] != '\\') {
+                    newMsg = newMsg + msg[i];
+                }
+            } catch (Exception e) {
+
+            }
+
+
+        }
+        Log.d(TAG, "Message1: " + newMsg);
         //one
-        Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.example.shinnara.clozet_remanager");
-        intent.putExtra("roomNumber",roomNumber);//key, value
-        //intent로 데이터 전달
 
+        try{
+            String query="";
+            query = URLEncoder.encode(newMsg,"utf-8");
+            JSONObject product = new JSONObject(newMsg);
+            if(product.has("room")){
+                roomNumber=product.getString("room");
+            }
+            if(product.has("prdname")){
+                prdName=product.getString("prdname");
+            }
+            if(product.has("img")){
+                imageUrl=product.getString("img");
+            }
+            if(product.has("size")){
+                sizeUrl=product.getString("size");
+            }
 
-        try {
-            JSONArray jArray = new JSONArray(message);
-            for (int i = 0; i < jArray.length(); i++) {
-                JSONObject jObject = jArray.getJSONObject(i);  // JSONObject 추출
-                String room = jObject.getString("room");
-                String prdname = jObject.getString("prdname");
-                String image = jObject.getString("img");
-                String size = jObject.getString("size");
-                String color = jObject.getString("color");
-                String count = jObject.getString("count");
-
-                Log.d(TAG, "room: " + room);
-                 }
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if(product.has("count")){
+                count=product.getString("count");
+                Log.d(TAG, "count: " + count);
+            }
+            if(product.has("color")){
+                color=product.getString("color");
+            }
+        }catch (Exception e){
+            Log.d(TAG, "Ex: " +e.getMessage());
         }
 
 
+        Intent intent = this.getPackageManager().getLaunchIntentForPackage("com.example.shinnara.clozet_remanager");
+        intent.putExtra("roomNumber",roomNumber);//key, value
+        intent.putExtra("prdName",prdName);//key, value
+        intent.putExtra("imageUrl",imageUrl);//key, value
+        intent.putExtra("sizeUrl",sizeUrl);//key, value
+        intent.putExtra("count",count);//key, value
+        intent.putExtra("color",color);//key, value
+
+        //intent로 데이터 전달
 
         if(intent!=null) {
             startActivity(intent);
