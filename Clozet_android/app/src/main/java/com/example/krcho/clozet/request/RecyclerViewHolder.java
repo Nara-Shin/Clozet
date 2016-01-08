@@ -35,19 +35,33 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         title.setText(data.getProduct_name());
         price.setText(data.getProduct_price()+"");
 
-        for(String item : data.getSizes()){
+        sizes.removeAllViews();
+        for(final String item : data.getSizes()){
             Button size = new Button(itemView.getContext());
             size.setBackgroundColor(Color.BLACK);
             size.setTextColor(Color.WHITE);
             size.setText(item);
             size.setLayoutParams(new LinearLayout.LayoutParams(200, 200));
+            size.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    data.setSelectedSize(item);
+                }
+            });
             this.sizes.addView(size);
         }
 
-        for(String item : data.getColors()){
+        colors.removeAllViews();
+        for(final String item : data.getColors()){
             Button color = new Button(itemView.getContext());
             color.setBackgroundColor(Color.parseColor("#"+item));
             color.setLayoutParams(new LinearLayout.LayoutParams(200, 200));
+            color.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    data.setSelectedColor(item);
+                }
+            });
             this.colors.addView(color);
         }
     }

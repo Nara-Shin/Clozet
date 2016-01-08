@@ -24,6 +24,7 @@ import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.example.krcho.clozet.MyAccount;
 import com.example.krcho.clozet.network.CommonHttpClient;
 import com.example.krcho.clozet.network.NetDefine;
 import com.google.android.gms.gcm.GcmPubSub;
@@ -61,42 +62,7 @@ public class RegistrationIntentService extends IntentService {
             InstanceID instanceID = InstanceID.getInstance(this);
             String token = instanceID.getToken("174277417501",
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-            // [END get_token]
-            String androidID =
-                    Settings.Secure.getString(this.getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
-            Log.i(TAG, "GCM Registration Token: " + token);
-            Log.i(TAG, "GCMID : " + instanceID.getId());
-            Log.i(TAG, "ANDROID ID : " + androidID);
-
-            RequestParams requestParams = new RequestParams();
-            requestParams.put("gcm_id", token.substring(instanceID.getId().length() + 1));
-            requestParams.put("android_id", androidID);
-
-            Log.d("params", requestParams.toString());
-
-            CommonHttpClient.post(NetDefine.JOIN_SERVICE, requestParams, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    Log.d(TAG, "Status : " + statusCode);
-                    String confirmMessage;
-                    String memberCode;
-                    try {
-                        confirmMessage = response.getString("confirm_message");
-                        memberCode = response.getString("member_code");
-
-                        Log.d(TAG,"confirmMessage : "+confirmMessage);
-                        Log.d(TAG,"memberCode : "+memberCode);
-                    } catch (Exception e) {
-                    }
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    Log.d(TAG, "Status : " + statusCode);
-                }
-            });
-
+            sharedPreferences.edit().putString("gcm", token).commit();
 
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token);
@@ -107,7 +73,9 @@ public class RegistrationIntentService extends IntentService {
             // You should store a boolean that indicates whether the generated token has been
             // sent to your server. If the boolean is false, send the token to your server,
             // otherwise your server should have already received the token.
+
             sharedPreferences.edit().putBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, true).apply();
+
             // [END register_for_gcm]
         } catch (Exception e) {
             Log.d(TAG, "Failed to complete token refresh", e);
@@ -130,6 +98,7 @@ public class RegistrationIntentService extends IntentService {
      */
     private void sendRegistrationToServer(String token) {
         // Add custom implementation, as needed.
+
     }
 
     /**

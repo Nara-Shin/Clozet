@@ -23,16 +23,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.krcho.clozet.barcode.BarcodeDetactActivity;
 import com.example.krcho.clozet.camera.CameraGuideActivity;
 import com.example.krcho.clozet.gcm.QuickstartPreferences;
 import com.example.krcho.clozet.gcm.RegistrationIntentService;
+import com.example.krcho.clozet.network.CommonHttpClient;
+import com.example.krcho.clozet.network.NetDefine;
+import com.example.krcho.clozet.request.Product;
+import com.example.krcho.clozet.request.SelectOptionsActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.hojung.nfc.HojungNFCReadLibrary;
 import com.hojung.nfc.interfaces.OnHojungNFCListener;
 import com.hojung.nfc.model.NfcModel;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 import com.loopj.android.image.SmartImageView;
+
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         });
 */
         cImage = (SmartImageView) findViewById(R.id.image);
-        cImage.setImageUrl("http://125.209.199.91/clozet/img/view/main/cont_nonfc.png");
+        cImage.setImageUrl(NetDefine.BASE_URL + "img/view/main/cont_nonfc.png");
 
         //NFC
 
@@ -128,15 +137,21 @@ public class MainActivity extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 //0��° �� ���
                 // model- Ÿ�԰� ���̷ε�  �ƹ��ų� ��� ����(Write �ۿ��� ���� ����� �ν� ����.)
-                Toast.makeText(MainActivity.this, "type : " + models[0].getTypeStr() + " , " + "payload : " + models[0].getPayloadStr(), Toast.LENGTH_SHORT).show();
-
+//                Toast.makeText(MainActivity.this, "type : " + models[0].getTypeStr() + " , " + "payload : " + models[0].getPayloadStr(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, models[0].getTypeStr() + " 피팅룸에 입장했습니다!", Toast.LENGTH_SHORT).show();
                 // ralph, bean
+                RequestParams params = new RequestParams();
+                params.put("fitroom_code", models[0].getPayloadStr());
 
-                if (models[0].getTypeStr().equals("ralph")){
-                    cImage.setImageUrl("http://125.209.199.91/clozet/img/view/main/cont_2.png");
-                }else if (models[0].getTypeStr().equals("ralph")){
-                    cImage.setImageUrl("http://125.209.199.91/clozet/img/view/main/cont_1.png");
-                }
+                CommonHttpClient.post(NetDefine.FIND_BRAND_INFO, params, new JsonHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        super.onSuccess(statusCode, headers, response);
+                        Log.d("response", response.toString());
+                        CurrentFittingRoom.getInstance().setInfo(response);
+                        cImage.setImageUrl(CurrentFittingRoom.getInstance().getImg_url());
+                    }
+                });
             }
 
             @Override
@@ -156,6 +171,46 @@ public class MainActivity extends AppCompatActivity {
                         PreferenceManager.getDefaultSharedPreferences(context);
                 boolean sentToken = sharedPreferences
                         .getBoolean(QuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+
+                if (sentToken) {
+                    String token = sharedPreferences.getString("gcm", "");
+                    String androidID =
+                            Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                    Log.i(TAG, "GCM Registration Token: " + token);
+//        Log.i(TAG, "GCMID : " + instanceID.getId());
+                    Log.i(TAG, "ANDROID ID : " + androidID);
+
+                    RequestParams requestParams = new RequestParams();
+                    requestParams.put("gcm_id", token);
+                    requestParams.put("android_id", androidID);
+
+                    Log.d("params", requestParams.toString());
+
+                    CommonHttpClient.post(NetDefine.JOIN_SERVICE, requestParams, new JsonHttpResponseHandler() {
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            Log.d(TAG, response.toString());
+                            Log.d(TAG, "Status : " + statusCode);
+                            String confirmMessage;
+                            String memberCode;
+                            try {
+                                confirmMessage = response.getString("confirm_message");
+                                memberCode = response.getString("member_code");
+                                MyAccount.getInstance().setMember_code(memberCode);
+
+                                Log.d(TAG, "confirmMessage : " + confirmMessage);
+                                Log.d(TAG, "memberCode : " + memberCode);
+                            } catch (Exception e) {
+                            }
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            Log.d(TAG, "Status : " + statusCode);
+                        }
+                    });
+                }
             }
         };
 
@@ -195,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 imageView_main_change.setImageResource(R.drawable.change_btn_click);
                 imageView_main_savepic.setImageResource(R.drawable.csave_btn_unclick);
-                startActivity(new Intent(getApplicationContext(), BarcodeDetactActivity.class));
+                startActivity(new Intent(getApplicationContext(), SelectOptionsActivity.class));
 
             }
         });

@@ -20,6 +20,9 @@ public class Product {
     ArrayList<String> colors = new ArrayList<>();
     ArrayList<Options> options = new ArrayList<>();
 
+    String selected_size;
+    String selected_color;
+
     public Product(JSONObject json) {
         try {
             this.setProduct_code(json.getString("product_code"));
@@ -27,7 +30,7 @@ public class Product {
             this.setProduct_name(json.getString("product_name"));
             this.setProduct_detail(json.getString("product_detail"));
             this.setProduct_price(json.getInt("product_price"));
-            this.setProduct_photo(json.getString("product_photo"));
+            this.setProduct_photo(json.getString("product_image"));
 
             this.addSize(json.getString("product_sizes"));
             this.addColor(json.getString("product_colors"));
@@ -121,5 +124,22 @@ public class Product {
 
     public ArrayList<Options> getOptions() {
         return options;
+    }
+
+    public void setSelectedSize(String size){
+        this.selected_size = size;
+    }
+
+    public void setSelectedColor(String color){
+        this.selected_color = color;
+    }
+
+    public String getOptionCode() {
+        for(Options op : options){
+            if (op.getSize().equals(selected_size) && op.getColor().equals(selected_color)){
+                return op.getCode();
+            }
+        }
+        return "-1";
     }
 }

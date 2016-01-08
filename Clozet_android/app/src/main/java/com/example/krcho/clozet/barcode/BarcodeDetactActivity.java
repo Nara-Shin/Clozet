@@ -48,9 +48,8 @@ public class BarcodeDetactActivity extends AppCompatActivity implements ZXingSca
 
     @Override
     public void handleResult(Result rawResult) {
-        Toast.makeText(getApplicationContext(), rawResult.getText(), Toast.LENGTH_LONG).show(); // 화면전환 -->
-
-        startActivity(new Intent(getApplicationContext(), SelectOptionsActivity.class).putExtra("barcode", "8801069178370"));
+        setResult(RESULT_OK, new Intent().putExtra("barcode", rawResult.getText()));
+        finish();
     }
 
 

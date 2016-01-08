@@ -1,5 +1,6 @@
 package com.example.krcho.clozet.request;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -14,11 +15,13 @@ import android.widget.Toast;
 
 import com.example.krcho.clozet.MyAccount;
 import com.example.krcho.clozet.R;
+import com.example.krcho.clozet.barcode.BarcodeDetactActivity;
 import com.example.krcho.clozet.network.CommonHttpClient;
 import com.example.krcho.clozet.network.NetDefine;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,21 +48,30 @@ public class SelectOptionsActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProduct("8801069178371");
+                openBarcodeDection();
             }
         });
 
         setRecyclerView();
-
-        addProduct(getIntent().getStringExtra("barcode"));
-
+        openBarcodeDection();
     }
 
+    public void openBarcodeDection() {
+        startActivityForResult(new Intent(getApplicationContext(), BarcodeDetactActivity.class), 1000);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000 && resultCode == RESULT_OK && data.getStringExtra("barcode") != null) {
+            addProduct(data.getStringExtra("barcode"));
+        }
+    }
 
     public void addProduct(String barcode) {
 
         RequestParams params = new RequestParams();
-//        params.put("barcode", rawResult.getText()); // 8801069178370
         params.put("barcode", barcode);
         params.put("member_code", MyAccount.getInstance().getMember_code());
 
@@ -71,6 +83,10 @@ public class SelectOptionsActivity extends AppCompatActivity {
                 list.add(new Product(response));
                 adapter.setList(list);
                 Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_LONG).show();
+
+                if (list.size() >= 2) {
+                    fab.hide();
+                }
             }
         });
 
@@ -100,7 +116,44 @@ public class SelectOptionsActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.request) {
-            Toast.makeText(getApplicationContext(), "요청", Toast.LENGTH_LONG).show();
+//            member_code=6자리 회원코드
+//            option_code=6자리 옵션 코드
+            RequestParams params = new RequestParams();
+            params.put("member_code", MyAccount.getInstance().getMember_code());
+            String code = "";
+            for (Product prod : list) {
+                code += prod.getOptionCode() + "#";
+            }
+            if (code.contains("-1")) {
+                Toast.makeText(getApplicationContext(), "선택하지 않은 옵션이 있습니다", Toast.LENGTH_LONG).show();
+                return false;
+            }
+            params.put("option_code", code);
+            params.put("fitroom_code", "100001");
+
+            CommonHttpClient.post(NetDefine.REQUEST_CHANGE, params, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    super.onSuccess(statusCode, headers, response);
+                    Log.d("response", response.toString());
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    super.onFailure(statusCode, headers, responseString, throwable);
+                }
+            });
             return true;
         }
 
