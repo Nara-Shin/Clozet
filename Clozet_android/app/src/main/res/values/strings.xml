@@ -7,4 +7,5 @@
     <string name="title_activity_barcode_detact">BarcodeDetactActivity</string>
     <string name="title_activity_select_options">SelectOptionsActivity</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_camera_preview">CameraPreviewActivity</string>
 </resources>
