@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 //0��° �� ���
                 // model- Ÿ�԰� ���̷ε�  �ƹ��ų� ��� ����(Write �ۿ��� ���� ����� �ν� ����.)
 //                Toast.makeText(MainActivity.this, "type : " + models[0].getTypeStr() + " , " + "payload : " + models[0].getPayloadStr(), Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this, models[0].getTypeStr() + " 피팅룸에 입장했습니다!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, models[0].getTypeStr() + "의 피팅룸에 입장했습니다!", Toast.LENGTH_SHORT).show();
                 // ralph, bean
                 RequestParams params = new RequestParams();
                 params.put("fitroom_code", models[0].getPayloadStr());
