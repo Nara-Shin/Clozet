@@ -10,30 +10,14 @@
         android:orientation="vertical">
 
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/num_room"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center">
-
-            <TextView
-                android:id="@+id/num_room"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:text="X"
-                android:textSize="30dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="10dp"
-                android:text="번방"
-                android:textSize="30dp" />
-        </LinearLayout>
-
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:text="0번방"
+            android:textSize="30dp" />
 
         <ImageView
             android:id="@+id/img_cloth"

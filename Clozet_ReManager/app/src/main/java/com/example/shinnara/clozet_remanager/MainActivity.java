@@ -22,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 
-import com.example.shinnara.clozet_remanager.gcm.MyGcmListenerService;
 import com.example.shinnara.clozet_remanager.gcm.QuickstartPreferences;
 import com.example.shinnara.clozet_remanager.gcm.RegistrationIntentService;
 import com.google.android.gms.common.ConnectionResult;
@@ -45,11 +44,25 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         Intent getIntent = getIntent();//인텐트
         String roomNumber = getIntent.getStringExtra("roomNumber");
+        String count = getIntent.getStringExtra("count");
+        String color = getIntent.getStringExtra("color");
+        String prdName = getIntent.getStringExtra("prdName");
+        String sizeUrl = getIntent.getStringExtra("sizeUrl");
+        String imageUrl = getIntent.getStringExtra("imageUrl");
+
+
         if(roomNumber!=null){//룸넘버를 받아왔으면
             switch (roomNumber){
-                case "room 1": // room 1 인 경우
+                case "1": // 1 인 경우
                     OneFragment dialogFragment = OneFragment.newInstance();
                     dialogFragment.show(getSupportFragmentManager(), "test");
+//
+//                    dialogFragment.setRoom(roomNumber);
+//                    dialogFragment.setCount(count);
+//                    dialogFragment.setColorLayout(color);
+//                    dialogFragment.setImage(imageUrl);
+//                    dialogFragment.setSize(sizeUrl);
+
                     break; // onefragment 보내기
 
             }
@@ -65,8 +78,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         fragmentReplace(mCurrentFragmentIndex);
 
         //GCM
-        Intent intent2 = new Intent(this, MyGcmListenerService.class);
-        startService(intent2);
+
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -82,6 +94,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
             Intent intent = new Intent(this, RegistrationIntentService.class);
             startService(intent);
         } else {
+            Log.d("asdfqwef", "jfwijeifojioadsf");
         }
     }
     private boolean checkPlayServices() {
