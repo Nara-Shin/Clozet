@@ -8,4 +8,7 @@
     <string name="title_activity_select_options">SelectOptionsActivity</string>
     <string name="title_activity_splash">SplashActivity</string>
     <string name="title_activity_camera_preview">CameraPreviewActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
