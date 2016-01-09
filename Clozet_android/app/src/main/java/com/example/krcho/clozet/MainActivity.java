@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.krcho.clozet.camera.CameraGuideActivity;
@@ -48,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout dlDrawer;
     private SmartImageView cImage;
+    private RelativeLayout cancelBtn;
     private LinearLayout profileBtn;
-    private ImageView imageView_main_change,imageView_main_savepic,imageView_main_sidebar, promotionBtn, galleryBtn, cancelBtn;
-    private MainSideView mainSideView;
+    private ImageView imageView_main_change,imageView_main_savepic,imageView_main_sidebar, promotionBtn, galleryBtn;
 
     //NFC
     HojungNFCReadLibrary hojungNFCReadLibrary;
@@ -68,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mContext = this;
-        mainSideView=new MainSideView(MainActivity.this);
 
         setUIView();
 
@@ -246,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         profileBtn = (LinearLayout) findViewById(R.id.sidebar_btn_profile);
         promotionBtn = (ImageView) findViewById(R.id.sidebar_btn_promotion);
         galleryBtn = (ImageView) findViewById(R.id.sidebar_btn_gallery);
-        cancelBtn = (ImageView) findViewById(R.id.sidebar_btn_cancel);
+        cancelBtn = (RelativeLayout) findViewById(R.id.sidebar_btn_cancel);
 
         profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -275,8 +275,6 @@ public class MainActivity extends AppCompatActivity {
         imageView_main_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageView_main_change.setImageResource(R.drawable.change_btn_click);
-                imageView_main_savepic.setImageResource(R.drawable.csave_btn_unclick);
                 startActivity(new Intent(getApplicationContext(), SelectOptionsActivity.class));
 
             }
@@ -284,8 +282,6 @@ public class MainActivity extends AppCompatActivity {
         imageView_main_savepic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageView_main_change.setImageResource(R.drawable.change_btn_unclick);
-                imageView_main_savepic.setImageResource(R.drawable.csave_btn_click);
                 startActivity(new Intent(getApplicationContext(), CameraGuideActivity.class));
             }
         });

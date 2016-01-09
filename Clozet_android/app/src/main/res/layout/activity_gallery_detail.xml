@@ -1,61 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    tools:context="com.example.krcho.clozet.gallery.GalleryDetailActivity">
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/gallery_detail_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.example.krcho.clozet.promotion.PromotionActivity">
+        android:scaleType="centerCrop"
+        android:src="@drawable/cont_1"
+        />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/abc_action_bar_default_height_material"
-            android:gravity="center_vertical">
-            <RelativeLayout
-                android:id="@+id/btn_back"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_marginLeft="6dp"
-                android:gravity="center"
-                >
-                <ImageView
-                    android:layout_width="30.67dp"
-                    android:layout_height="30.67dp"
-                    android:src="@drawable/btn_back" />
-            </RelativeLayout>
-            <ImageView
-                android:layout_width="147.33dp"
-                android:layout_height="30.67dp"
-                android:src="@drawable/title_promotion"
-                android:layout_alignWithParentIfMissing="false"
-                android:layout_centerInParent="true" />
-        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:gravity="center_vertical"
+        >
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="51dp"
+            android:layout_height="51dp"
+            android:src="@drawable/background_gallery_back" />
+        <ImageView
+            android:id="@+id/btn_share"
+            android:layout_width="51.33dp"
+            android:layout_height="51.33dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/background_gallery_share" />
+        <ImageView
+            android:id="@+id/btn_like"
+            android:layout_width="51.33dp"
+            android:layout_height="51.33dp"
+            android:layout_toLeftOf="@id/btn_share"
+            android:src="@drawable/background_gallery_detail_like" />
+        <ImageView
+            android:id="@+id/btn_barcode"
+            android:layout_width="51.33dp"
+            android:layout_height="51.33dp"
+            android:layout_toLeftOf="@id/btn_like"
+            android:src="@drawable/btn_gallery_barcode_on" />
+        <ImageView
+            android:id="@+id/btn_delete"
+            android:layout_width="51.33dp"
+            android:layout_height="51.33dp"
+            android:layout_toLeftOf="@id/btn_barcode"
+            android:src="@drawable/background_gallery_delete" />
+    </RelativeLayout>
+    
+    <ImageView
+        android:id="@+id/btn_tshirts"
+        android:layout_width="80.67dp"
+        android:layout_height="80.67dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="181.33dp"
+        android:src="@drawable/background_gallery_tshirts"
+        />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/pink"
-            />
-
-        <GridView
-            android:id="@+id/promotion_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:numColumns="2"
-            android:drawSelectorOnTop="true"
-            />
-
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/btn_skirt"
+        android:layout_width="80.67dp"
+        android:layout_height="80.67dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="194dp"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/background_gallery_skirt"
+        />
 
     <LinearLayout
-        android:id="@+id/promotion_popup"
+        android:id="@+id/gallery_detail_popup"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_transparency"
@@ -154,4 +168,4 @@
         </RelativeLayout>
     </LinearLayout>
 
-</FrameLayout>
+</RelativeLayout>
