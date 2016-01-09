@@ -80,7 +80,11 @@ public class SelectOptionsActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
                 Log.d("response", response.toString());
-                list.add(new Product(response));
+                try {
+                    list.add(new Product(response));
+                }catch (Exception e){
+                    Toast.makeText(getApplicationContext(), "잘못된 데이터입니다. 다시 시도해주세요!", Toast.LENGTH_LONG).show();
+                }
                 adapter.setList(list);
                 Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_LONG).show();
 
@@ -136,6 +140,16 @@ public class SelectOptionsActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     Log.d("response", response.toString());
+
+                    try {
+                        if (response.getString("confirm_message").equals("success")) {
+                            ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance();
+                            dialogFragment.show(getSupportFragmentManager(), "test");
+                        }
+                    } catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
 
                 }
 

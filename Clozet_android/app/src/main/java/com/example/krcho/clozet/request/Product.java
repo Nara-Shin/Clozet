@@ -23,7 +23,7 @@ public class Product {
     String selected_size;
     String selected_color;
 
-    public Product(JSONObject json) {
+    public Product(JSONObject json) throws Exception {
         try {
             this.setProduct_code(json.getString("product_code"));
             this.setProduct_brand(json.getString("product_brand"));
@@ -39,6 +39,7 @@ public class Product {
 
         } catch (JSONException e) {
             e.printStackTrace();
+            throw new Exception();
         }
     }
 
