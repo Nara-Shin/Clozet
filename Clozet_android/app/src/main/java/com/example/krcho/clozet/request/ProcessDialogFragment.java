@@ -35,9 +35,9 @@ public class ProcessDialogFragment extends DialogFragment {
         return instance;
     }
 
-    public static ProcessDialogFragment getInstance() {
+    public static ProcessDialogFragment getInstance() throws Exception{
         if (instance == null) {
-            return newInstance();
+            throw new Exception();
         }
         return instance;
     }
@@ -84,7 +84,12 @@ public class ProcessDialogFragment extends DialogFragment {
     }
 
     public void setNextProcess() {
-        processnum++;
+        if (processnum < 3) {
+            processnum++;
+        }
+        else {
+            return;
+        }
         switch (processnum) {
             case 1:
                 imageView.setImageDrawable(getActivity().getDrawable(R.drawable.push_1));
@@ -94,6 +99,7 @@ public class ProcessDialogFragment extends DialogFragment {
                 break;
             case 3:
                 imageView.setImageDrawable(getActivity().getDrawable(R.drawable.push_3));
+                imageButton.setImageDrawable(getActivity().getDrawable(R.drawable.ok_btn));
                 break;
         }
     }

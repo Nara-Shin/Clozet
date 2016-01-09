@@ -16,6 +16,7 @@ import cz.msebera.android.httpclient.Header;
  */
 public class MyAccount {
     private static MyAccount instance;
+    public static String MEMBERCODE = "membercode";
 
     private MyAccount(){}
 
@@ -29,8 +30,12 @@ public class MyAccount {
 
     private String member_code;
 
-    public String getMember_code() {
-        return member_code;
+    public String getMember_code() throws Exception {
+        if (member_code != null) {
+            return member_code;
+        }else {
+            throw new Exception();
+        }
     }
 
     public void setMember_code(String member_code) {

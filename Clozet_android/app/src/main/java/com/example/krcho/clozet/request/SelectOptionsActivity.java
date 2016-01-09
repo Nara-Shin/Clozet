@@ -2,6 +2,7 @@ package com.example.krcho.clozet.request;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -73,7 +74,11 @@ public class SelectOptionsActivity extends AppCompatActivity {
 
         RequestParams params = new RequestParams();
         params.put("barcode", barcode);
-        params.put("member_code", MyAccount.getInstance().getMember_code());
+        try {
+            params.put("member_code", MyAccount.getInstance().getMember_code());
+        } catch (Exception e) {
+            params.put("member_code", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
+        }
 
         CommonHttpClient.post(NetDefine.SEARCH_BARCODE, params, new JsonHttpResponseHandler() {
             @Override
@@ -82,7 +87,7 @@ public class SelectOptionsActivity extends AppCompatActivity {
                 Log.d("response", response.toString());
                 try {
                     list.add(new Product(response));
-                }catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "잘못된 데이터입니다. 다시 시도해주세요!", Toast.LENGTH_LONG).show();
                 }
                 adapter.setList(list);
@@ -123,7 +128,11 @@ public class SelectOptionsActivity extends AppCompatActivity {
 //            member_code=6자리 회원코드
 //            option_code=6자리 옵션 코드
             RequestParams params = new RequestParams();
-            params.put("member_code", MyAccount.getInstance().getMember_code());
+            try {
+                params.put("member_code", MyAccount.getInstance().getMember_code());
+            } catch (Exception e) {
+                params.put("member_code", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
+            }
             String code = "";
             for (Product prod : list) {
                 code += prod.getOptionCode() + "#";
@@ -146,7 +155,7 @@ public class SelectOptionsActivity extends AppCompatActivity {
                             ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance();
                             dialogFragment.show(getSupportFragmentManager(), "test");
                         }
-                    } catch (JSONException e){
+                    } catch (JSONException e) {
                         e.printStackTrace();
                     }
 

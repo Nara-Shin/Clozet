@@ -197,6 +197,9 @@ public class MainActivity extends AppCompatActivity {
                                 memberCode = response.getString("member_code");
                                 MyAccount.getInstance().setMember_code(memberCode);
 
+                                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                                sp.edit().putString(MyAccount.MEMBERCODE, memberCode).commit();
+
                                 Log.d(TAG, "confirmMessage : " + confirmMessage);
                                 Log.d(TAG, "memberCode : " + memberCode);
                             } catch (Exception e) {

@@ -28,6 +28,7 @@ import android.util.Log;
 
 import com.example.krcho.clozet.MainActivity;
 import com.example.krcho.clozet.R;
+import com.example.krcho.clozet.request.ProcessDialogFragment;
 import com.google.android.gms.gcm.GcmListenerService;
 
 public class MyGcmListenerService extends GcmListenerService {
@@ -66,7 +67,15 @@ public class MyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        sendNotification(message);
+        if (message.equals("okay") || message.equals("deliveryokay")){
+            try {
+                ProcessDialogFragment.getInstance().setNextProcess();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else {
+            sendNotification(message);
+        }
         // [END_EXCLUDE]
     }
     // [END receive_message]
