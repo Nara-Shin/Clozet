@@ -61,6 +61,9 @@
             android:name=".camera.CameraPreviewActivity"
             android:label="@string/title_activity_camera_preview"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".gallery.GalleryActivity" />
+        <activity android:name=".promotion.PromotionActivity" />
+        <activity android:name=".setting.SettingActivity" />
 
         <!-- [START gcm_receiver] -->
         <receiver
@@ -98,9 +101,10 @@
             android:name=".gcm.RegistrationIntentService"
             android:exported="false" />
 
-        <activity android:name=".gallery.GalleryActivity" />
-        <activity android:name=".promotion.PromotionActivity" />
-        <activity android:name=".setting.SettingActivity"></activity>
+        <activity android:name=".gallery.GalleryDetailActivity" />
+        <activity android:name=".gallery.GalleryMatchingStartActivity" />
+        <activity android:name=".gallery.GalleryMatchingActivity" />
+        <activity android:name=".gallery.GalleryMatchingSelectActivity"></activity>
     </application>
 
 </manifest>
