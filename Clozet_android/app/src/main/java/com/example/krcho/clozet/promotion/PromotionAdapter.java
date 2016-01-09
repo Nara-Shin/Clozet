@@ -20,6 +20,7 @@ public class PromotionAdapter extends ArrayAdapter<PromotionModel> {
 	private LayoutInflater inflater;
 	private List<PromotionModel> items;
 	private int itemLayout;
+	private static Typeface fontBold, fontThin;
 
 	public PromotionAdapter(Context context, int itemLayout, List<PromotionModel> items) {
 		super(context, itemLayout, items);
@@ -27,6 +28,8 @@ public class PromotionAdapter extends ArrayAdapter<PromotionModel> {
 		this.itemLayout = itemLayout;
 		this.items = items;
 		this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		this.fontBold = Typeface.createFromAsset(context.getAssets(), "NotoSansCJKkr-Bold.otf");
+		this.fontThin = Typeface.createFromAsset(context.getAssets(), "NotoSansCJKkr-Thin.otf");
 	}
 
 	@Override
@@ -62,12 +65,9 @@ public class PromotionAdapter extends ArrayAdapter<PromotionModel> {
 		price.setText(String.valueOf(model.getPrice()));
 		image.setImageDrawable(model.getImage());
 
-		Typeface face = Typeface.createFromAsset(context.getAssets(),
-				"NotoSansCJKkr-Thin.otf");
-
-		brandName.setTypeface(face);
-		productName.setTypeface(face);
-		price.setTypeface(face);
+		brandName.setTypeface(fontThin);
+		productName.setTypeface(fontBold);
+		price.setTypeface(fontBold);
 
 		return convertView;
 	}
