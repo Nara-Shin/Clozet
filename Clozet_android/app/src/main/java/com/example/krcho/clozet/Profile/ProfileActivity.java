@@ -1,11 +1,18 @@
 package com.example.krcho.clozet.Profile;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.krcho.clozet.MyAccount;
@@ -28,10 +35,14 @@ public class ProfileActivity extends AppCompatActivity {
     SmartImageView ad1, ad2;
     ImageButton btn_logout;
 
+    Context mContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        mContext = this;
 
         back = (ImageButton) findViewById(R.id.btn_back);
         back.setOnClickListener(new View.OnClickListener() {
@@ -60,6 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         getUserInfo();
         getAdInfo();
+        setClickListeners();
     }
 
     public void getUserInfo() {
@@ -91,5 +103,138 @@ public class ProfileActivity extends AppCompatActivity {
     public void getAdInfo() {
         ad1.setImageUrl(NetDefine.BASE_URL + "img/promotion/0.png");
         ad2.setImageUrl(NetDefine.BASE_URL + "img/promotion/1.png");
+    }
+
+    public void setClickListeners() {
+        ((RelativeLayout) findViewById(R.id.weight_container)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder ab = new AlertDialog.Builder(mContext);
+                ab.setTitle("몸무게를 입력하세요!");
+                final EditText input = new EditText(mContext);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                ab.setView(input);
+                ab.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        sp.edit().putInt(MyAccount.MEMBERINFOWEIGHT, Integer.parseInt(input.getText().toString())).commit();
+                        MyAccount.getInstance().setWeight(sp.getInt(MyAccount.MEMBERINFOWEIGHT, -1));
+
+                        getUserInfo();
+                    }
+                });
+                ab.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = ab.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+            }
+        });
+
+        ((RelativeLayout) findViewById(R.id.height_container)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder ab = new AlertDialog.Builder(mContext);
+                ab.setTitle("키를 입력하세요!");
+                final EditText input = new EditText(mContext);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                ab.setView(input);
+                ab.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        sp.edit().putInt(MyAccount.MEMBERINFOHEIGHT, Integer.parseInt(input.getText().toString())).commit();
+                        MyAccount.getInstance().setHeight(sp.getInt(MyAccount.MEMBERINFOHEIGHT, -1));
+
+                        getUserInfo();
+                    }
+                });
+                ab.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = ab.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+            }
+        });
+
+        ((RelativeLayout) findViewById(R.id.age_container)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder ab = new AlertDialog.Builder(mContext);
+                ab.setTitle("나이를 입력하세요!");
+                final EditText input = new EditText(mContext);
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                ab.setView(input);
+                ab.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        sp.edit().putInt(MyAccount.MEMBERINFOAGE, Integer.parseInt(input.getText().toString())).commit();
+                        MyAccount.getInstance().setAge(sp.getInt(MyAccount.MEMBERINFOAGE, -1));
+
+                        getUserInfo();
+                    }
+                });
+                ab.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = ab.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+            }
+        });
+
+        ((RelativeLayout) findViewById(R.id.sex_container)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder ab = new AlertDialog.Builder(mContext);
+                ab.setTitle("성별을 입력하세요!");
+                String[] ar = {"남성", "여성"};
+                ab.setSingleChoiceItems(ar, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                        switch (which) {
+                            case 0:
+                                sp.edit().putString(MyAccount.MEMBERINFOSEX, "M").commit();
+                                break;
+                            case 1:
+                                sp.edit().putString(MyAccount.MEMBERINFOSEX, "W").commit();
+                                break;
+                        }
+
+                        MyAccount.getInstance().setSex(sp.getString(MyAccount.MEMBERINFOSEX, ""));
+
+                    }
+                });
+
+                ab.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        getUserInfo();
+                    }
+                });
+
+                AlertDialog dialog = ab.create();
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+            }
+        });
     }
 }

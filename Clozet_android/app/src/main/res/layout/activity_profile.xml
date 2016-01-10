@@ -113,6 +113,7 @@
             android:orientation="horizontal">
 
             <RelativeLayout
+                android:id="@+id/weight_container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -145,6 +146,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/height_container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -177,6 +179,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/age_container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -209,6 +212,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/sex_container"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
