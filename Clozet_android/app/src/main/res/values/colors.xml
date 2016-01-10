@@ -11,5 +11,6 @@
     <color name="pink">#ffc5c5</color>
     <color name="black_transparency">#BB000000</color>
     <color name="white_transparency">#BBffffff</color>
-
+    <color name="profile_boder">#F5BCBC</color>
+    <color name="blue_text">#142775</color>
 </resources>

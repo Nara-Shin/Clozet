@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.krcho.clozet.Profile.ProfileActivity;
 import com.example.krcho.clozet.camera.CameraGuideActivity;
 import com.example.krcho.clozet.gallery.GalleryActivity;
 import com.example.krcho.clozet.gcm.QuickstartPreferences;
@@ -200,6 +201,11 @@ public class MainActivity extends AppCompatActivity {
                                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                                 sp.edit().putString(MyAccount.MEMBERCODE, memberCode).commit();
 
+                                MyAccount.getInstance().setWeight(sp.getInt(MyAccount.MEMBERINFOWEIGHT, -1));
+                                MyAccount.getInstance().setHeight(sp.getInt(MyAccount.MEMBERINFOHEIGHT, -1));
+                                MyAccount.getInstance().setAge(sp.getInt(MyAccount.MEMBERINFOAGE, -1));
+                                MyAccount.getInstance().setSex(sp.getString(MyAccount.MEMBERINFOSEX, ""));
+
                                 Log.d(TAG, "confirmMessage : " + confirmMessage);
                                 Log.d(TAG, "memberCode : " + memberCode);
                             } catch (Exception e) {
@@ -254,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
         profileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
             }
         });
         promotionBtn.setOnClickListener(new View.OnClickListener() {

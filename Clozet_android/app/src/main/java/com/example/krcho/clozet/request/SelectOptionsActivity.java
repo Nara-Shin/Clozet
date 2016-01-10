@@ -152,7 +152,7 @@ public class SelectOptionsActivity extends AppCompatActivity {
 
                     try {
                         if (response.getString("confirm_message").equals("success")) {
-                            ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance();
+                            ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance(1);
                             dialogFragment.show(getSupportFragmentManager(), "test");
                         }
                     } catch (JSONException e) {

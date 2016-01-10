@@ -2,6 +2,7 @@ package com.example.krcho.clozet.request;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageButton;
+import android.widget.RatingBar;
 
 import com.example.krcho.clozet.R;
 
@@ -17,6 +20,9 @@ import com.example.krcho.clozet.R;
  * A simple {@link Fragment} subclass.
  */
 public class EvaluateDialogFragment extends DialogFragment {
+
+    RatingBar rating;
+    ImageButton img_btn;
 
     public static EvaluateDialogFragment newInstance() {
         EvaluateDialogFragment instance = new EvaluateDialogFragment();
@@ -35,6 +41,15 @@ public class EvaluateDialogFragment extends DialogFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_evaluate_dialog, container);
+        rating = (RatingBar) v.findViewById(R.id.rating);
+        img_btn = (ImageButton) v.findViewById(R.id.ok_btn);
+        img_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+                getActivity().finish();
+            }
+        });
         return v;
     }
 

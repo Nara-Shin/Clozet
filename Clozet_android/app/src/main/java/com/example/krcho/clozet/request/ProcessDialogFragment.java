@@ -2,6 +2,7 @@ package com.example.krcho.clozet.request;
 
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,14 +24,15 @@ import com.example.krcho.clozet.R;
 public class ProcessDialogFragment extends DialogFragment {
     public static ProcessDialogFragment instance;
 
-    ImageView imageView;
-    TextView textView;
-    ImageButton imageButton;
-    int processnum = 1;
+    public static ImageView imageView;
+    public static TextView textView;
+    public static ImageButton imageButton;
+    public static int processnum = 1;
 
-    public static ProcessDialogFragment newInstance() {
+    public static ProcessDialogFragment newInstance(int num) {
         instance = new ProcessDialogFragment();
         Bundle args = new Bundle();
+        args.putInt("process", num);
         instance.setArguments(args);
         return instance;
     }
@@ -46,20 +48,20 @@ public class ProcessDialogFragment extends DialogFragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        processnum = getArguments().getInt("process");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_process_dialog, container);
+
         textView = (TextView) v.findViewById(R.id.text);
         imageView = (ImageView) v.findViewById(R.id.image);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setNextProcess();
-            }
-        });
         imageButton = (ImageButton) v.findViewById(R.id.imgbtn);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,16 +82,7 @@ public class ProcessDialogFragment extends DialogFragment {
 
             }
         });
-        return v;
-    }
 
-    public void setNextProcess() {
-        if (processnum < 3) {
-            processnum++;
-        }
-        else {
-            return;
-        }
         switch (processnum) {
             case 1:
                 imageView.setImageDrawable(getActivity().getDrawable(R.drawable.push_1));
@@ -102,6 +95,7 @@ public class ProcessDialogFragment extends DialogFragment {
                 imageButton.setImageDrawable(getActivity().getDrawable(R.drawable.ok_btn));
                 break;
         }
+        return v;
     }
 
     @NonNull
@@ -113,5 +107,14 @@ public class ProcessDialogFragment extends DialogFragment {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         return dialog;
+    }
+
+    public void goNext() {
+        instance = null;
+        if (processnum < 3){
+            ProcessDialogFragment frag = ProcessDialogFragment.newInstance(processnum+1);
+            frag.show(getFragmentManager(), "test");
+        }
+        dismiss();
     }
 }
