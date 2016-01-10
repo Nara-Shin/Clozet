@@ -105,7 +105,10 @@
         <activity android:name=".gallery.GalleryMatchingStartActivity" />
         <activity android:name=".gallery.GalleryMatchingActivity" />
         <activity android:name=".gallery.GalleryMatchingSelectActivity" />
-        <activity android:name=".Profile.ProfileActivity"/>
+        <activity android:name=".Profile.ProfileActivity" />
+        <activity
+            android:name=".promotion.PromotionDialogActivity"
+            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>

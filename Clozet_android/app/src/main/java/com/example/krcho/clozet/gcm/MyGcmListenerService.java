@@ -1,12 +1,12 @@
 /**
  * Copyright 2015 Google Inc. All Rights Reserved.
- *
+ * <p/>
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * <p/>
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * <p/>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,8 +28,11 @@ import android.util.Log;
 
 import com.example.krcho.clozet.MainActivity;
 import com.example.krcho.clozet.R;
+import com.example.krcho.clozet.promotion.PromotionDialogActivity;
 import com.example.krcho.clozet.request.ProcessDialogFragment;
 import com.google.android.gms.gcm.GcmListenerService;
+
+import org.json.JSONObject;
 
 public class MyGcmListenerService extends GcmListenerService {
 
@@ -67,18 +70,50 @@ public class MyGcmListenerService extends GcmListenerService {
          * In some cases it may be useful to show a notification indicating to the user
          * that a message was received.
          */
-        if (message.equals("okay") || message.equals("deliveryokay")){
+        if (message.equals("okay") || message.equals("deliveryokay")) {
             try {
                 ProcessDialogFragment.getInstance().goNext();
-            }catch (Exception e){
+                return;
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else {
-            sendNotification(message);
         }
+
+//        {
+//            "prd_name":"블루 애니다운 하프점퍼",
+//            "stock":"5",
+//            "prd_url":"http://www.ssfshop.com/public/goods/detail/GM0015100755614/view?cate=SFMA02",
+//            "image_url":"http://godeung.woobi.co.kr/clozet/img/product/100001.jpg"
+//        }
+
+        try {
+            JSONObject json = new JSONObject(message);
+
+            String name = json.getString("prd_name");
+            int stock = json.getInt("stock");
+            String url = json.getString("prd_url");
+            String image = json.getString("image_url");
+
+            Context context = getApplicationContext();
+            Intent intent = new Intent(context, PromotionDialogActivity.class);
+            intent.putExtra("name", name);
+            intent.putExtra("stock", stock);
+            intent.putExtra("url", url);
+            intent.putExtra("image", image);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+
+            return;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        sendNotification(message);
         // [END_EXCLUDE]
     }
     // [END receive_message]
+
 
     /**
      * Create and show a simple notification containing the received GCM message.
