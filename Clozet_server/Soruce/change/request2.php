@@ -4,23 +4,23 @@
 	include "../lib/dbconnect.php";
 	
 	/*
-		±³È¯¿äÃ»(°í°´¿ë)
+		êµí™˜ìš”ì²­(ê³ ê°ìš©)
 		-
 		2016.01.06 by Junseok
 
 		1. Request
-		member_code=6ÀÚ¸® È¸¿øÄÚµå(Áß°£Æò°¡ ÀÌÀü¿£ ÀÓÀÇ°ª)
-		option_code=6ÀÚ¸® ¿É¼Ç ÄÚµå
-		fitroom_code=6ÀÚ¸® ÇÇÆÃ·ë ÄÚµå
+		member_code=6ìë¦¬ íšŒì›ì½”ë“œ(ì¤‘ê°„í‰ê°€ ì´ì „ì—” ì„ì˜ê°’)
+		option_code=6ìë¦¬ ì˜µì…˜ ì½”ë“œ
+		fitroom_code=6ìë¦¬ í”¼íŒ…ë£¸ ì½”ë“œ
 
 		2. Response
 		{
-		"confirm_message":¿äÃ»°á°ú ¸Ş½ÃÁö(success/fail)
-		"request_code":6ÀÚ¸® ¿äÃ»ÄÚµå
-		"req_product_name":¿äÃ» »óÇ°¸í
-		"req_product_size":¿äÃ» »óÇ°»çÀÌÁî
-		"req_product_color":¿äÃ» »óÇ°»ö»ó
-		"fitting_room":ÇÇÆÃ·ë ¹øÈ£
+		"confirm_message":ìš”ì²­ê²°ê³¼ ë©”ì‹œì§€(success/fail)
+		"request_code":6ìë¦¬ ìš”ì²­ì½”ë“œ
+		"req_product_name":ìš”ì²­ ìƒí’ˆëª…
+		"req_product_size":ìš”ì²­ ìƒí’ˆì‚¬ì´ì¦ˆ
+		"req_product_color":ìš”ì²­ ìƒí’ˆìƒ‰ìƒ
+		"fitting_room":í”¼íŒ…ë£¸ ë²ˆí˜¸
 		}
 
 	*/
@@ -31,14 +31,14 @@
 	$fitroom_code = $_POST[fitroom_code];
 
 
-	// Request Value°¡ ºó °ªÀÏ °æ¿ì ¹«Á¶°Ç fail
+	// Request Valueê°€ ë¹ˆ ê°’ì¼ ê²½ìš° ë¬´ì¡°ê±´ fail
 	if($member_code == "" || $option_code == "" || $fitroom_code == ""){
 
 		$confirm_message = "fail";
 
 	}else{
 
-		// Query 1 - ¿äÃ» ÄÚµå °¡Á®¿À±â
+		// Query 1 - ìš”ì²­ ì½”ë“œ ê°€ì ¸ì˜¤ê¸°
 		$query = sprintf("SELECT MAX(ReqCode)+1 AS ReqCode FROM ChangeRequest");
 
 		$result = mysql_query($query);
@@ -48,7 +48,7 @@
 		}
 			
 
-		// Query 2 - Á÷¿ø ÄÚµå °¡Á®¿À±â
+		// Query 2 - ì§ì› ì½”ë“œ ê°€ì ¸ì˜¤ê¸°
 		$query = sprintf("SELECT ClerkCode FROM ClerkInfo WHERE ClerkCode NOT IN (SELECT ReqClerkCode FROM ChangeRequest WHERE TIMESTAMPDIFF(MINUTE, RegDate, NOW()) < 1)");
 
 		$result = mysql_query($query);
@@ -59,7 +59,7 @@
 
 		$clerk_code = $clerk_codes[rand(0,count($clerk_codes))];
 
-		// Query 3 - ¿äÃ» DB¿¡ ÀÔ·ÂÇÏ±â
+		// Query 3 - ìš”ì²­ DBì— ì…ë ¥í•˜ê¸°
 		$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `RequestPrdOption2`, `RequestPrdOption3`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s', '%s','%s', '%s','%s', '%s','%s', '%s')",
 		mysql_real_escape_string($request_code),
 		mysql_real_escape_string($member_code),
@@ -75,7 +75,7 @@
 		if($result){
 			$confirm_message = "success";
 
-			// Query 4 - »óÇ° Á¤º¸ °¡Á®¿À±â
+			// Query 4 - ìƒí’ˆ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 			$query = sprintf("SELECT Info.PrdName, Opt.PrdSize, Opt.PrdColor FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Opt.OptionCode = '%s'",
 			mysql_real_escape_string($option_code));
 
@@ -87,7 +87,7 @@
 				$prd_color = $row[PrdColor];
 			}
 
-			// GCMÀ¸·Î Á÷¿ø¿¡°Ô ¹ß¼Û
+			// GCMìœ¼ë¡œ ì§ì›ì—ê²Œ ë°œì†¡
 
 
 		}else{
@@ -96,7 +96,7 @@
 
 	}
 		
-	// JSONÀ¸·Î ¹İÈ¯
+	// JSONìœ¼ë¡œ ë°˜í™˜
 	$val = array("confirm_message" => $confirm_message, "request_code" => $request_code, "request_code" => $req_product_name, "req_product_name" => $prd_name, "req_product_size" => $prd_size, "req_product_color" => $prd_color, "fitting_room" => $fitroom_code);
 	$output = json_encode($val);
 	echo urldecode($output);

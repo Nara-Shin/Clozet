@@ -4,24 +4,24 @@
 	include "../lib/dbconnect.php";
 	
 	/*
-		ºê·£µå °Ë»ö
-		NFC ÅÂ±×¸¦ ÅëÇØ ºê·£µå °Ë»ö ÈÄ Á¤º¸ ¹ÝÈ¯
+		ë¸Œëžœë“œ ê²€ìƒ‰
+		NFC íƒœê·¸ë¥¼ í†µí•´ ë¸Œëžœë“œ ê²€ìƒ‰ í›„ ì •ë³´ ë°˜í™˜
 		2016.01.06 by Junseok
 
 		1. Request
-		fitroom_code=6ÀÚ¸® ÇÇÆÃ·ë ÄÚµå
+		fitroom_code=6ìžë¦¬ í”¼íŒ…ë£¸ ì½”ë“œ
 
 		2. Response
 		{
-		"brand_name":ºê·£µå¸í
-		"branch_name":ÁöÁ¡¸í
-		"brand_img":¸ÞÀÎ ºê·£µå ¹è³Ê ÀÌ¹ÌÁö
+		"brand_name":ë¸Œëžœë“œëª…
+		"branch_name":ì§€ì ëª…
+		"brand_img":ë©”ì¸ ë¸Œëžœë“œ ë°°ë„ˆ ì´ë¯¸ì§€
 		}
 	*/
 
 	$fitroom_code = $_POST[fitroom_code];
 
-	// Query 1 - »óÁ¡ Á¤º¸ °¡Á®¿À±â
+	// Query 1 - ìƒì  ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 	$query = "SELECT Brand.BrandName, Shop.ShopName, Shop.ShopImage FROM ShopBrand Brand, ShopInfo Shop WHERE Brand.BrandCode = Shop.BrandCode AND Shop.ShopCode = (SELECT ShopCode FROM ShopFittingRoom WHERE FitRoomcode = '%s')";
 	
 	$query = sprintf("SELECT Brand.BrandName, Shop.ShopName, Shop.ShopImage FROM ShopBrand Brand, ShopInfo Shop WHERE Brand.BrandCode = Shop.BrandCode AND Shop.ShopCode = (SELECT ShopCode FROM ShopFittingRoom WHERE FitRoomcode = '%s')",
@@ -45,7 +45,7 @@
 	}
 
 
-	// JSONÀ¸·Î ¹ÝÈ¯
+	// JSONìœ¼ë¡œ ë°˜í™˜
 	$val = array("brand_name" => $brand_name, "branch_name" => $branch_name, "brand_img" => $brand_img);
 	$output = json_encode($val);
 	echo urldecode($output);

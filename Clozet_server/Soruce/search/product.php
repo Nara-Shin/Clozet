@@ -4,29 +4,29 @@
 	include "../lib/dbconnect.php";
 	
 	/*
-		»óÇ°°Ë»ö
-		¹ÙÄÚµå·Î »óÇ° °Ë»ö
+		ìƒí’ˆê²€ìƒ‰
+		ë°”ì½”ë“œë¡œ ìƒí’ˆ ê²€ìƒ‰
 		2016.01.06 by Junseok
 
 		1. Request
-		barcode=ÃÖ´ë 20ÀÚ¸®¹®ÀÚ¿­
-		member_code=6ÀÚ¸® È¸¿øÄÚµå
+		barcode=ìµœëŒ€ 20ìžë¦¬ë¬¸ìžì—´
+		member_code=6ìžë¦¬ íšŒì›ì½”ë“œ
 
 		2. Response
 		{
-		"product_code":6ÀÚ¸® ÄÚµå
-		"product_brand":ºê·£µå¸í
-		"product_name":»óÇ°¸í
-		"product_detail":»óÇ°¼³¸í
-		"product_price":»óÇ°°¡°Ý
-		"product_image":»óÇ°ÀÌ¹ÌÁö URL
-		"product_sizes":»óÇ°»çÀÌÁî(,·Î ±¸ºÐ)
-		"product_colors":»óÇ°»ö»ó(,·Î ±¸ºÐ)
+		"product_code":6ìžë¦¬ ì½”ë“œ
+		"product_brand":ë¸Œëžœë“œëª…
+		"product_name":ìƒí’ˆëª…
+		"product_detail":ìƒí’ˆì„¤ëª…
+		"product_price":ìƒí’ˆê°€ê²©
+		"product_image":ìƒí’ˆì´ë¯¸ì§€ URL
+		"product_sizes":ìƒí’ˆì‚¬ì´ì¦ˆ(,ë¡œ êµ¬ë¶„)
+		"product_colors":ìƒí’ˆìƒ‰ìƒ(,ë¡œ êµ¬ë¶„)
 		"options"[{
-			   "size":»óÇ°»çÀÌÁî
-			   "color":»óÇ°»ö»ó
-			   "stock":Àç°í¼ö
-			   "code":6ÀÚ¸® ¿É¼ÇÄÚµå
+			   "size":ìƒí’ˆì‚¬ì´ì¦ˆ
+			   "color":ìƒí’ˆìƒ‰ìƒ
+			   "stock":ìž¬ê³ ìˆ˜
+			   "code":6ìžë¦¬ ì˜µì…˜ì½”ë“œ
 		},]
 		}
 	*/
@@ -35,7 +35,7 @@
 	$member_code = $_POST[member_code];
 
 
-	// Query 1 - »óÇ° ºê·£µå Á¤º¸ °¡Á®¿À±â
+	// Query 1 - ìƒí’ˆ ë¸Œëžœë“œ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 	$query = sprintf("SELECT BrandName FROM ShopBrand WHERE BrandCode = (SELECT BrandCode FROM ShopInfo WHERE ShopCode = (SELECT ShopCode FROM ProductInfo WHERE PrdBarcode = '%s'))",
 	mysql_real_escape_string($barcode));
 
@@ -45,7 +45,7 @@
 		$product_brand = $row[BrandName];
 	}
 
-	// Query 2 - »óÇ° »ó¼¼ Á¤º¸ °¡Á®¿À±â
+	// Query 2 - ìƒí’ˆ ìƒì„¸ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 	$query = sprintf("SELECT * FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Info.PrdBarcode = '%s'",
 	mysql_real_escape_string($barcode));
 
@@ -60,7 +60,7 @@
 		$options[] = array("size" => $row[PrdSize], "color" => $row[PrdColor], "stock" => $row[PrdStock], "code" => $row[OptionCode]);
 	}
 
-	// Query 3 - »óÇ° »çÀÌÁî Á¤º¸ °¡Á®¿À±â
+	// Query 3 - ìƒí’ˆ ì‚¬ì´ì¦ˆ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 	$query = sprintf("SELECT DISTINCT PrdSize FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Info.PrdBarcode = '%s'",
 	mysql_real_escape_string($barcode));
 
@@ -70,7 +70,7 @@
 		$product_sizes .= $row[PrdSize].",";
 	}
 
-	// Query 4 - »óÇ° »ö»ó Á¤º¸ °¡Á®¿À±â
+	// Query 4 - ìƒí’ˆ ìƒ‰ìƒ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 	$query = sprintf("SELECT DISTINCT PrdColor FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Info.PrdBarcode = '%s'",
 	mysql_real_escape_string($barcode));
 
@@ -80,7 +80,7 @@
 		$product_colors .= $row[PrdColor].",";
 	}
 
-	// Query 5 - ·Î±× ÄÚµå °¡Á®¿À±â
+	// Query 5 - ë¡œê·¸ ì½”ë“œ ê°€ì ¸ì˜¤ê¸°
 	$query = sprintf("SELECT MAX(LogCode)+1 AS LogCode FROM ProductSearchLog");
 
 	$result = mysql_query($query);
@@ -90,7 +90,7 @@
 	}
 			
 
-	// Query 6 - °Ë»ö ·Î±× ÀÔ·ÂÇÏ±â
+	// Query 6 - ê²€ìƒ‰ ë¡œê·¸ ìž…ë ¥í•˜ê¸°
 	$query = sprintf("INSERT INTO ProductSearchLog(`LogCode`, `SearchMember`, `SearchProduct`, `RegDate`, `ModDate`) VALUES('%s', '%s', '%s', '%s', '%s')",
 	mysql_real_escape_string($log_code),
 	mysql_real_escape_string($member_code),
@@ -101,7 +101,7 @@
 	$result = mysql_query($query);
 
 		
-	// JSONÀ¸·Î ¹ÝÈ¯
+	// JSONìœ¼ë¡œ ë°˜í™˜
 	$val = array("product_code" => $product_code, "product_brand" => $product_brand, "product_name" => $product_name, "product_detail" => $product_detail, "product_price" => $product_price, "product_image" => $product_image, "product_sizes" => $product_sizes, "product_colors" => $product_colors, "options" => $options);
 	$output = json_encode($val);
 	echo urldecode($output);

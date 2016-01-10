@@ -4,18 +4,18 @@
 	include "../lib/dbconnect.php";
 	
 	/*
-		±³È¯¿äÃ»¼ö¶ô ¹× °ÅÀı
+		êµí™˜ìš”ì²­ìˆ˜ë½ ë° ê±°ì ˆ
 		-
 		2016.01.06 by Junseok
 
 		1. Request
-		request_code=6ÀÚ¸® ±³È¯¿äÃ» ÄÚµå
+		request_code=6ìë¦¬ êµí™˜ìš”ì²­ ì½”ë“œ
 		confirm=true/false/delay/cancel/over
 
 
 		2. Response
 		{
-		"confirm_message":¿äÃ»°á°ú ¸Ş½ÃÁö(success/fail)
+		"confirm_message":ìš”ì²­ê²°ê³¼ ë©”ì‹œì§€(success/fail)
 		}
 
 	*/
@@ -24,16 +24,16 @@
 	$confirm = $_POST[confirm];
 
 
-	// Request Value°¡ ºó °ªÀÏ °æ¿ì ¹«Á¶°Ç fail
+	// Request Valueê°€ ë¹ˆ ê°’ì¼ ê²½ìš° ë¬´ì¡°ê±´ fail
 	if($request_code == "" || $confirm == ""){
 
 		$confirm_message = "fail";
 
 	}else{
 
-		if($confirm == "okay"){ // ¼ö¶ô - »óÅÂº¯°æ -> °í°´¿¡°Ô Çª½¬
+		if($confirm == "okay"){ // ìˆ˜ë½ - ìƒíƒœë³€ê²½ -> ê³ ê°ì—ê²Œ í‘¸ì‰¬
 			
-			// Query 1 - ±³È¯ ¿äÃ» »óÅÂ º¯°æ (¼ö¶ô - 205)
+			// Query 1 - êµí™˜ ìš”ì²­ ìƒíƒœ ë³€ê²½ (ìˆ˜ë½ - 205)
 			$query = sprintf("UPDATE ChangeRequest SET ReqResult = '205' WHERE ReqCode = '%s'",
 			mysql_real_escape_string($request_code));
 
@@ -42,9 +42,9 @@
 			if($result){
 				$confirm_message = "success";
 
-				// GCMÀ¸·Î °í°´¿¡°Ô Çª½¬ ¹ß¼Û ½ÃÀÛ - ¿äÃ»ÀÌ ¼ö¶ôµÇ¾ú½À´Ï´Ù.
+				// GCMìœ¼ë¡œ ê³ ê°ì—ê²Œ í‘¸ì‰¬ ë°œì†¡ ì‹œì‘ - ìš”ì²­ì´ ìˆ˜ë½ë˜ì—ˆìŠµë‹ˆë‹¤.
 
-				// ¿äÃ» ¸â¹ö GCM RegId°ª °¡Á®¿À±â
+				// ìš”ì²­ ë©¤ë²„ GCM RegIdê°’ ê°€ì ¸ì˜¤ê¸°
 				$query = sprintf("SELECT GcmRegId FROM MemberInfo WHERE MemberCode = (SELECT ReqMember FROM ChangeRequest WHERE ReqCode = '%s')",
 				mysql_real_escape_string($request_code));
 
@@ -59,15 +59,15 @@
 
 				include "../lib/gcm/sendPushMessageLib.php";
 
-				// GCMÀ¸·Î °í°´¿¡°Ô Çª½¬ ¹ß¼Û ³¡
+				// GCMìœ¼ë¡œ ê³ ê°ì—ê²Œ í‘¸ì‰¬ ë°œì†¡ ë
 
 			}else{
 				$confirm_message = "fail";
 			}
 
-		}else if($confirm == "refuse"){ // °ÅÀı - ±âÁ¸ ¿äÃ» »óÅÂº¯°æ -> »õ·Î¿î Á÷¿ø ¹èÁ¤ ¹× ¿äÃ»µî·Ï -> »õ·Î¿î Á÷¿ø¿¡°Ô Çª½¬
+		}else if($confirm == "refuse"){ // ê±°ì ˆ - ê¸°ì¡´ ìš”ì²­ ìƒíƒœë³€ê²½ -> ìƒˆë¡œìš´ ì§ì› ë°°ì • ë° ìš”ì²­ë“±ë¡ -> ìƒˆë¡œìš´ ì§ì›ì—ê²Œ í‘¸ì‰¬
 
-			// Query 2 - ±³È¯ ¿äÃ» »óÅÂ º¯°æ (°ÅÀı - 204)
+			// Query 2 - êµí™˜ ìš”ì²­ ìƒíƒœ ë³€ê²½ (ê±°ì ˆ - 204)
 			$query = sprintf("UPDATE ChangeRequest SET ReqResult = '204' WHERE ReqCode = '%s'",
 			mysql_real_escape_string($request_code));
 
@@ -76,7 +76,7 @@
 			if($result){
 				$confirm_message = "success";
 
-				// Query 1 - ¿äÃ» ÄÚµå °¡Á®¿À±â
+				// Query 1 - ìš”ì²­ ì½”ë“œ ê°€ì ¸ì˜¤ê¸°
 				$query = sprintf("SELECT MAX(ReqCode)+1 AS ReqCode FROM ChangeRequest");
 
 				$result = mysql_query($query);
@@ -86,7 +86,7 @@
 				}
 
 
-				// Query 2 - Á÷¿ø ÄÚµå °¡Á®¿À±â
+				// Query 2 - ì§ì› ì½”ë“œ ê°€ì ¸ì˜¤ê¸°
 				$query = sprintf("SELECT ClerkCode FROM ClerkInfo WHERE ClerkCode NOT IN (SELECT ReqClerkCode FROM ChangeRequest WHERE TIMESTAMPDIFF(MINUTE, RegDate, NOW()) < 0)");
 
 				$result = mysql_query($query);
@@ -97,7 +97,7 @@
 
 				$clerk_code = $clerk_codes[rand(0,count($clerk_codes))];
 
-				// Query 3 - ¿äÃ» DB¿¡ ÀÔ·ÂÇÏ±â
+				// Query 3 - ìš”ì²­ DBì— ì…ë ¥í•˜ê¸°
 				$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s', '%s','%s', '%s','%s', '%s','%s', '%s')",
 				mysql_real_escape_string($request_code),
 				mysql_real_escape_string($member_code),
@@ -113,7 +113,7 @@
 				if($result){
 					$confirm_message = "success";
 
-					// Query 3 - ÇÇÆÃ·ë ¹æ¹øÈ£ °¡Á®¿À±â
+					// Query 3 - í”¼íŒ…ë£¸ ë°©ë²ˆí˜¸ ê°€ì ¸ì˜¤ê¸°
 					$query = sprintf("SELECT FitRoomNum FROM ShopFittingRoom WHERE FitRoomCode = (SELECT FitRoomCode FROM ChangeRequest WHERE ReqCode = '%s')",
 					mysql_real_escape_string($request_code));
 
@@ -123,7 +123,7 @@
 						$fitroom_number = $row[FitRoomNum];
 					}
 
-					// Query 4 - »óÇ° Á¤º¸ °¡Á®¿À±â
+					// Query 4 - ìƒí’ˆ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 					$query = sprintf("SELECT Info.PrdName, Info.PrdImage, Info.PrdShopCode, Info.PrdPrice, Info.PrdUrl, Opt.PrdSize, Opt.PrdColor FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Opt.OptionCode = '%s'",
 					mysql_real_escape_string($option_code));
 
@@ -139,9 +139,9 @@
 						$req_product_url = $row[PrdUrl];
 					}
 
-					// GCMÀ¸·Î Á÷¿ø¿¡°Ô Çª½¬ ¹ß¼Û ½ÃÀÛ
+					// GCMìœ¼ë¡œ ì§ì›ì—ê²Œ í‘¸ì‰¬ ë°œì†¡ ì‹œì‘
 
-					// ¿äÃ» Á÷¿ø GCM RegId°ª °¡Á®¿À±â
+					// ìš”ì²­ ì§ì› GCM RegIdê°’ ê°€ì ¸ì˜¤ê¸°
 					$query = sprintf("SELECT GcmRegId FROM ClerkInfo WHERE ClerkCode = (SELECT ReqClerkCode FROM ChangeRequest WHERE ReqCode = '%s')",
 					mysql_real_escape_string($request_code));
 
@@ -156,7 +156,7 @@
 
 					include "../lib/gcm/sendPushMessageLib.php";
 
-					// GCMÀ¸·Î Á÷¿ø¿¡°Ô Çª½¬ ¹ß¼Û ³¡
+					// GCMìœ¼ë¡œ ì§ì›ì—ê²Œ í‘¸ì‰¬ ë°œì†¡ ë
 
 				}else{
 					$confirm_message = "fail";
@@ -166,9 +166,9 @@
 				$confirm_message = "fail";
 			}
 
-		}else if($confirm == "delay"){ // Áö¿¬ - ±âÁ¸ ¿äÃ» »óÅÂº¯°æ -> »õ·Î¿î Á÷¿ø ¹èÁ¤ ¹× ¿äÃ»µî·Ï -> »õ·Î¿î Á÷¿ø¿¡°Ô Çª½¬
+		}else if($confirm == "delay"){ // ì§€ì—° - ê¸°ì¡´ ìš”ì²­ ìƒíƒœë³€ê²½ -> ìƒˆë¡œìš´ ì§ì› ë°°ì • ë° ìš”ì²­ë“±ë¡ -> ìƒˆë¡œìš´ ì§ì›ì—ê²Œ í‘¸ì‰¬
 			
-			// Query 3 - ±³È¯ ¿äÃ» »óÅÂ º¯°æ (30ÃÊ ÀÌ»ó Áö¿¬ - 202)
+			// Query 3 - êµí™˜ ìš”ì²­ ìƒíƒœ ë³€ê²½ (30ì´ˆ ì´ìƒ ì§€ì—° - 202)
 			$query = sprintf("UPDATE ChangeRequest SET ReqResult = '203' WHERE ReqCode = '%s'",
 			mysql_real_escape_string($request_code));
 
@@ -177,7 +177,7 @@
 			if($result){
 				$confirm_message = "success";
 
-				// Query 1 - ¿äÃ» ÄÚµå °¡Á®¿À±â
+				// Query 1 - ìš”ì²­ ì½”ë“œ ê°€ì ¸ì˜¤ê¸°
 				$query = sprintf("SELECT MAX(ReqCode)+1 AS ReqCode FROM ChangeRequest");
 
 				$result = mysql_query($query);
@@ -187,7 +187,7 @@
 				}
 
 
-				// Query 2 - Á÷¿ø ÄÚµå °¡Á®¿À±â
+				// Query 2 - ì§ì› ì½”ë“œ ê°€ì ¸ì˜¤ê¸°
 				$query = sprintf("SELECT ClerkCode FROM ClerkInfo WHERE ClerkCode NOT IN (SELECT ReqClerkCode FROM ChangeRequest WHERE TIMESTAMPDIFF(MINUTE, RegDate, NOW()) < 0)");
 
 				$result = mysql_query($query);
@@ -198,7 +198,7 @@
 
 				$clerk_code = $clerk_codes[rand(0,count($clerk_codes))];
 
-				// Query 3 - ¿äÃ» DB¿¡ ÀÔ·ÂÇÏ±â
+				// Query 3 - ìš”ì²­ DBì— ì…ë ¥í•˜ê¸°
 				$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s', '%s','%s', '%s','%s', '%s','%s', '%s')",
 				mysql_real_escape_string($request_code),
 				mysql_real_escape_string($member_code),
@@ -214,7 +214,7 @@
 				if($result){
 					$confirm_message = "success";
 
-					// Query 3 - ÇÇÆÃ·ë ¹æ¹øÈ£ °¡Á®¿À±â
+					// Query 3 - í”¼íŒ…ë£¸ ë°©ë²ˆí˜¸ ê°€ì ¸ì˜¤ê¸°
 					$query = sprintf("SELECT FitRoomNum FROM ShopFittingRoom WHERE FitRoomCode = (SELECT FitRoomCode FROM ChangeRequest WHERE ReqCode = '%s')",
 					mysql_real_escape_string($request_code));
 
@@ -224,7 +224,7 @@
 						$fitroom_number = $row[FitRoomNum];
 					}
 
-					// Query 4 - »óÇ° Á¤º¸ °¡Á®¿À±â
+					// Query 4 - ìƒí’ˆ ì •ë³´ ê°€ì ¸ì˜¤ê¸°
 					$query = sprintf("SELECT Info.PrdName, Info.PrdImage, Info.PrdShopCode, Info.PrdPrice, Info.PrdUrl, Opt.PrdSize, Opt.PrdColor FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Opt.OptionCode = '%s'",
 					mysql_real_escape_string($option_code));
 
@@ -240,9 +240,9 @@
 						$req_product_url = $row[PrdUrl];
 					}
 
-					// GCMÀ¸·Î Á÷¿ø¿¡°Ô Çª½¬ ¹ß¼Û ½ÃÀÛ
+					// GCMìœ¼ë¡œ ì§ì›ì—ê²Œ í‘¸ì‰¬ ë°œì†¡ ì‹œì‘
 
-					// ¿äÃ» Á÷¿ø GCM RegId°ª °¡Á®¿À±â
+					// ìš”ì²­ ì§ì› GCM RegIdê°’ ê°€ì ¸ì˜¤ê¸°
 					$query = sprintf("SELECT GcmRegId FROM ClerkInfo WHERE ClerkCode = (SELECT ReqClerkCode FROM ChangeRequest WHERE ReqCode = '%s')",
 					mysql_real_escape_string($request_code));
 
@@ -257,7 +257,7 @@
 
 					include "../lib/gcm/sendPushMessageLib.php";
 
-					// GCMÀ¸·Î Á÷¿ø¿¡°Ô Çª½¬ ¹ß¼Û ³¡
+					// GCMìœ¼ë¡œ ì§ì›ì—ê²Œ í‘¸ì‰¬ ë°œì†¡ ë
 
 				}else{
 					$confirm_message = "fail";
@@ -267,9 +267,9 @@
 				$confirm_message = "fail";
 			}
 
-		}else if($confirm == "cancel"){ // Ãë¼Ò - ±âÁ¸ ¿äÃ» »óÅÂ º¯°æ -> Á÷¿ø¿¡°Ô Çª½¬
+		}else if($confirm == "cancel"){ // ì·¨ì†Œ - ê¸°ì¡´ ìš”ì²­ ìƒíƒœ ë³€ê²½ -> ì§ì›ì—ê²Œ í‘¸ì‰¬
 			
-			// Query 4 - ±³È¯ ¿äÃ» »óÅÂ º¯°æ (Ãë¼Ò - 203)
+			// Query 4 - êµí™˜ ìš”ì²­ ìƒíƒœ ë³€ê²½ (ì·¨ì†Œ - 203)
 			$query = sprintf("UPDATE ChangeRequest SET ReqResult = '203' WHERE ReqCode = '%s'",
 			mysql_real_escape_string($request_code));
 
@@ -282,12 +282,12 @@
 				$confirm_message = "fail";
 			}
 
-		}else if($confirm == "over"){ // È½¼öÃÊ°ú
+		}else if($confirm == "over"){ // íšŸìˆ˜ì´ˆê³¼
 			
 
-		}else if($confirm == "deliveryokay"){ // ¹è´Ş¿Ï·á - ±âÁ¸ ¿äÃ» »óÅÂº¯°æ -> °í°´¿¡°Ô Çª½¬
+		}else if($confirm == "deliveryokay"){ // ë°°ë‹¬ì™„ë£Œ - ê¸°ì¡´ ìš”ì²­ ìƒíƒœë³€ê²½ -> ê³ ê°ì—ê²Œ í‘¸ì‰¬
 			
-			// Query 5 - ±³È¯ ¿äÃ» »óÅÂ º¯°æ (¹è´Ş¿Ï·á - 206)
+			// Query 5 - êµí™˜ ìš”ì²­ ìƒíƒœ ë³€ê²½ (ë°°ë‹¬ì™„ë£Œ - 206)
 			$query = sprintf("UPDATE ChangeRequest SET ReqResult = '206' WHERE ReqCode = '%s'",
 			mysql_real_escape_string($request_code));
 
@@ -296,9 +296,9 @@
 			if($result){
 				$confirm_message = "success";
 
-				// GCMÀ¸·Î °í°´¿¡°Ô Çª½¬ - ¹è´ŞÀÌ ¿Ï·áµÇ¾ú½À´Ï´Ù.
+				// GCMìœ¼ë¡œ ê³ ê°ì—ê²Œ í‘¸ì‰¬ - ë°°ë‹¬ì´ ì™„ë£Œë˜ì—ˆìŠµë‹ˆë‹¤.
 				
-				// ¿äÃ» ¸â¹ö GCM RegId°ª °¡Á®¿À±â
+				// ìš”ì²­ ë©¤ë²„ GCM RegIdê°’ ê°€ì ¸ì˜¤ê¸°
 				$query = sprintf("SELECT GcmRegId FROM MemberInfo WHERE MemberCode = (SELECT ReqMember FROM ChangeRequest WHERE ReqCode = '%s')",
 				mysql_real_escape_string($request_code));
 
@@ -313,7 +313,7 @@
 
 				include "../lib/gcm/sendPushMessageLib.php";
 
-				// GCMÀ¸·Î °í°´¿¡°Ô Çª½¬ ¹ß¼Û ³¡
+				// GCMìœ¼ë¡œ ê³ ê°ì—ê²Œ í‘¸ì‰¬ ë°œì†¡ ë
 
 			}else{
 				$confirm_message = "fail";
@@ -323,7 +323,7 @@
 
 	}
 		
-	// JSONÀ¸·Î ¹İÈ¯
+	// JSONìœ¼ë¡œ ë°˜í™˜
 	$val = array("confirm_message" => $confirm_message);
 	$output = json_encode($val);
 	echo urldecode($output);
