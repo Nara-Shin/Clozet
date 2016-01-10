@@ -9,4 +9,5 @@ public interface NetDefine {
     String JOIN_SERVICE = "member/join.php";
     String REQUEST_CHANGE = "change/request.php";
     String FIND_BRAND_INFO = "brand/search.php";
+    String LIKE_COUNT = "gallery/like_count.php";
 }
