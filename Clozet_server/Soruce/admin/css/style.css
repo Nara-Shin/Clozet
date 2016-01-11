@@ -11,7 +11,9 @@
 .contents .search input[type="image"] {float:left; height:30px; margin:2px 0 0 10px;}
 
 .contents .table {float:left; margin:23px 0 0 30px;}
-.contents .table table{width:1000px;}
+.contents .table table{width:1100px;}
 .contents .table th{border:solid 1px #231815; padding:5px; height:20px; font-weight:bold;}
 .contents .table td{border:solid 1px #231815; padding:5px; height:20px; font-weight:bold;}
-.contents .table td input[type="button"] {padding:3px; width:40px; height:30px; border:solid 1px #999; text-decoration: none; color:#231815; background-color:#fff;}
+.contents .table td input[type="button"] {padding:3px; width:30px; font-size:12px; height:30px; border:solid 1px #999; text-decoration: none; color:#231815; background-color:#fff;}
+
+.contents .image {margin:22px 0 0 40px; border:solid 1px #999; float:left;}

@@ -10,7 +10,7 @@
 
 		1. Request
 		product_code=6자리 상품코드
-		prdouct_size=옵션 사이즈
+		product_size=옵션 사이즈
 		product_color=옵션 색상
 		stock_count=재고수
 
@@ -28,13 +28,13 @@
 	*/
 
 	$product_code = $_POST[product_code];
-	$prdouct_size = $_POST[prdouct_size];
+	$product_size = $_POST[product_size];
 	$product_color = $_POST[product_color];
 	$stock_count = $_POST[stock_count];
 
 
 	// Request Value가 빈 값일 경우 무조건 fail
-	if($product_code == "" || $prdouct_size == "" || $product_color == "" || $stock_count == ""){
+	if($product_code == "" || $product_size == "" || $product_color == "" || $stock_count == ""){
 
 		$confirm_message = "fail";
 
@@ -44,7 +44,7 @@
 		$query = sprintf("UPDATE ProductOption SET PrdStock = '%s' WHERE PrdCode = '%s' AND PrdSize = '%s' AND PrdColor = '%s'",
 		mysql_real_escape_string($stock_count),
 		mysql_real_escape_string($product_code),
-		mysql_real_escape_string($prdouct_size),
+		mysql_real_escape_string($product_size),
 		mysql_real_escape_string($product_color));
 
 		$result = mysql_query($query);

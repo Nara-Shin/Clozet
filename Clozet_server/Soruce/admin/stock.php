@@ -30,38 +30,92 @@ include "../lib/dbconnect.php";
 
 		function selectSize(button){
 			var sizeButtons = button.form.size;
-			for(var i=0; i<sizeButtons.length; i++){
-				if(sizeButtons[i].value == button.value){
-					sizeButtons[i].style.border = "solid 3px #999";
-					button.form.prdouct_size.value = button.value;
-				}else{
-					sizeButtons[i].style.border = "solid 1px #999";
+			if(sizeButtons.length > 1){
+				for(var i=0; i<sizeButtons.length; i++){
+					if(sizeButtons[i].value == button.value){
+						sizeButtons[i].style.border = "solid 3px #999";
+						button.form.product_size.value = button.value;
+					}else{
+						sizeButtons[i].style.border = "solid 1px #999";
+					}
 				}
+			}else{
+				button.style.border = "solid 3px #999";
+				button.form.product_size.value = button.value;
 			}
 		}
 
 		function selectColor(button){
 			var colorButtons = button.form.color;
-			for(var i=0; i<colorButtons.length; i++){
-				if(colorButtons[i].value == button.value){
-					colorButtons[i].style.border = "solid 3px #999";
-					button.form.product_color.value = button.value;
-				}else{
-					colorButtons[i].style.border = "solid 1px #999";
+			if(colorButtons.length > 1){
+				for(var i=0; i<colorButtons.length; i++){
+					if(colorButtons[i].value == button.value){
+						colorButtons[i].style.border = "solid 3px #999";
+						button.form.product_color.value = button.value;
+					}else{
+						colorButtons[i].style.border = "solid 1px #999";
+					}
 				}
+			}else{
+				button.style.border = "solid 3px #999";
+				button.form.product_color.value = button.value;
 			}
 		}
 
-		$('#stockSubmit').click(function(){
-			$.ajax({
-				url:'/clozet/product/stock_change.php',
-				type:'post',
-				data:$('form').serialize(),
-				success:function(data){
-					alert('완료');
-				}
-			})
-		})
+		function changeImage(imgName, row){
+			document.getElementById('productImage').src = '../img/product/' + imgName;
+			//row.style.backgroundColor = '#eee';
+		}
+		
+		$(document).ready(function(){
+			$("input[name=size]").click(function(){
+				//alert($(this.form).serialize());
+				var form = $(this.form);
+				var text = $(this.form.stock_count);
+				$.ajax({
+					url:'/clozet/product/get_stock.php',
+					type:'post',
+					data:form.serialize(),
+					dataType:'json',
+					success:function(data){
+						//alert(JSON.stringify(data));
+						text.val(data.stock);
+					}
+				});
+			});
+
+			$("input[name=color]").click(function(){
+				//alert($(this.form).serialize());
+				var form = $(this.form);
+				var text = $(this.form.stock_count);
+				$.ajax({
+					url:'/clozet/product/get_stock.php',
+					type:'post',
+					data:form.serialize(),
+					dataType:'json',
+					success:function(data){
+						//alert(JSON.stringify(data));
+						text.val(data.stock);
+					}
+				});
+			});
+
+			$("input[name=stockSubmit]").click(function(){
+				$.ajax({
+					url:'/clozet/product/stock_change.php',
+					type:'post',
+					data:$(this.form).serialize(),
+					dataType:'json',
+					success:function(data){
+						if(data.confirm_message == "success"){
+							alert("재고가 반영되었습니다.");
+						}else if(data.confirm_message == "fail"){
+							alert("사이즈 및 색상을 선택하시기 바랍니다.");
+						}
+					}
+				});
+			});
+		});
 	//-->
 	</script>
 </head>
@@ -101,7 +155,7 @@ include "../lib/dbconnect.php";
 
 <?
 			// Query 1 - 상품 정보 가져오기
-			$query = sprintf("SELECT PrdCategory, PrdShopCode, PrdCode, PrdName FROM ProductInfo");
+			$query = sprintf("SELECT PrdCategory, PrdShopCode, PrdCode, PrdName, PrdImage FROM ProductInfo");
 
 			$result = mysql_query($query);
 
@@ -110,6 +164,7 @@ include "../lib/dbconnect.php";
 				$PrdShopCode = $row[PrdShopCode];
 				$PrdCode = $row[PrdCode];
 				$PrdName = $row[PrdName];
+				$PrdImage = $row[PrdImage];
 
 				$PrdSize = array();
 				$PrdColor = array();
@@ -137,7 +192,7 @@ include "../lib/dbconnect.php";
 
 ?>
 			<form method="post" name="stockForm" action="">
-				<tr>
+				<tr onclick="changeImage('<?=$PrdImage?>', this);">
 					<td style="text-align:center;"><?=$PrdCategory?></td>
 					<td>T-SHIRT</td>
 					<td style="text-align:center;"><?=$PrdShopCode?></td>
@@ -152,16 +207,19 @@ include "../lib/dbconnect.php";
 						<input type="button" value="<?=$PrdColor[$i]?>" onclick="selectColor(this);" name="color" style="background-color:#<?=$PrdColor[$i]?>; text-indent:-9999px;">
 						<?}?>
 					</td>
-					<input type="hidden" name="prdouct_size">
-					<input type="hidden" name="product_color">
+					<input type="hidden" name="product_size" value="">
+					<input type="hidden" name="product_color" value="">
 					<input type="hidden" name="product_code" value="<?=$PrdCode?>">
-					<td style="text-align:center;"><input type="text" name="stock_count"><input type="button" value="확인" id="stockSubmit" onclick=""></td>
+					<td style="text-align:center;"><input type="text" name="stock_count" style="border:none; width:45px; height:30px; font-size:16px; text-align:center;"><input type="button" value="반영" name="stockSubmit" onclick=""></td>
 				</tr>
 			</form>
 <?
 			}
 ?>			
 			</table>
+		</div>
+		<div class="image">
+			<img src="../img/product/100001.jpg" width="300" id="productImage">
 		</div>
 	</div>
 </body>
