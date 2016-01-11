@@ -10,8 +10,6 @@
 
 		1. Request
 		product_code=6자리 상품코드
-		prdouct_size=옵션 사이즈
-		product_color=옵션 색상
 		stock_count=재고수
 
 		2. Response
@@ -27,25 +25,21 @@
 
 	*/
 
-	$product_code = $_POST[product_code];
-	$prdouct_size = $_POST[prdouct_size];
-	$product_color = $_POST[product_color];
-	$stock_count = $_POST[stock_count];
+	$product_code = $_GET[product_code];
+	$stock_count = $_GET[stock_count];
 
 
 	// Request Value가 빈 값일 경우 무조건 fail
-	if($product_code == "" || $prdouct_size == "" || $product_color == "" || $stock_count == ""){
+	if($product_code == "" || $stock_count == ""){
 
 		$confirm_message = "fail";
 
 	}else{
 
 		// Query 2 - 재고 정보 업데이트
-		$query = sprintf("UPDATE ProductOption SET PrdStock = '%s' WHERE PrdCode = '%s' AND PrdSize = '%s' AND PrdColor = '%s'",
+		$query = sprintf("UPDATE ProductInfo SET PrdStock = '%s' WHERE PrdCode = '%s'",
 		mysql_real_escape_string($stock_count),
-		mysql_real_escape_string($product_code),
-		mysql_real_escape_string($prdouct_size),
-		mysql_real_escape_string($product_color));
+		mysql_real_escape_string($product_code));
 
 		$result = mysql_query($query);
 
@@ -63,6 +57,7 @@
 
 		while($row = mysql_fetch_array($result)){
 			$prd_name = $row[PrdName];
+			$stock = $row[PrdStock];
 			$prd_url = $row[PrdUrl];
 			$image_url = "http://godeung.woobi.co.kr/clozet/img/product/".$row[PrdImage];
 		}
@@ -79,7 +74,7 @@
 		}
 		
 		// 좋아요 누른 고객에게 재고 정보 푸쉬
-		$message = '{"prd_name":"'.$prd_name.'","stock":"'.$stock_count.'","prd_url":"'.$prd_url.'","image_url":"'.$image_url.'"}';
+		$message = '{"prd_name":"'.$prd_name.'","stock":"'.$stock.'","prd_url":"'.$prd_url.'","image_url":"'.$image_url.'"}';
 		$admin = "false";
 
 		include "../lib/gcm/sendPushMessageLib.php";
