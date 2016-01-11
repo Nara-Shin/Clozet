@@ -51,7 +51,7 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                startActivity(new Intent(GalleryActivity.this, GalleryMatchingStartActivity.class));
             }
         });
     }

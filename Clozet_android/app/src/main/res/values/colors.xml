@@ -10,6 +10,7 @@
     <color name="navy">#142775</color>
     <color name="pink">#ffc5c5</color>
     <color name="black_transparency">#BB000000</color>
+    <color name="black_transparency2">#55000000</color>
     <color name="white_transparency">#BBffffff</color>
 
 </resources>

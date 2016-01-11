@@ -1,6 +1,7 @@
 package com.example.krcho.clozet.camera;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -311,11 +312,10 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
                 //Thread.sleep(500);
                 camera.startPreview();
 
-                Log.d("test", String.valueOf(pictureFile));
-
-//                Intent intent = new Intent(context, CameraPreviewActivity.class);
-//                intent.putExtra("file", pictureFile);
-//                context.startActivity(intent);
+                Intent intent = new Intent(context, CameraPreviewActivity.class);
+                intent.putExtra("file", pictureFile.toString());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
             } catch (FileNotFoundException e) {
                 Log.d("Camera", "File not found: " + e.getMessage());
             } catch (IOException e) {
