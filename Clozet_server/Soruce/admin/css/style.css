@@ -1,0 +1,19 @@
+@import url("layout.css");
+
+.branch {float:right; width:150px; padding:0 15px 0 0;}
+.branch .preference {float:left;}
+.branch .name {font-size:17px; font-weight:bold; color:#1c2d77; padding:3px 0 3px 0;}
+
+.contents {float:left;}
+.contents h2 {color:#1c2d77; font-size:18px; font-weight:bold; margin:40px 0 23px 30px;}
+.contents .search {margin:0 0 0 30px;}
+.contents .search input[type="text"] {float:left; border:solid 1px #c5c5c5; color:#c5c5c5; background-color:#f2f2f2; width:380px; height:25px; padding:5px 15px 5px 15px; border-radius: 25px;}
+.contents .search input[type="image"] {float:left; height:30px; margin:2px 0 0 10px;}
+
+.contents .table {float:left; margin:23px 0 0 30px;}
+.contents .table table{width:1100px;}
+.contents .table th{border:solid 1px #231815; padding:5px; height:20px; font-weight:bold;}
+.contents .table td{border:solid 1px #231815; padding:5px; height:20px; font-weight:bold;}
+.contents .table td input[type="button"] {padding:3px; width:30px; font-size:12px; height:30px; border:solid 1px #999; text-decoration: none; color:#231815; background-color:#fff;}
+
+.contents .image {margin:22px 0 0 40px; border:solid 1px #999; float:left;}
