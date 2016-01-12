@@ -39,7 +39,7 @@ import java.util.Date;
 public class CameraGuideActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static String TAG = "CAMERA";
-    private int mCameraFacing;
+    public static int mCameraFacing;
     private boolean isTimer3 = true;
     private int time = 3;
 
