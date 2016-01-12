@@ -296,9 +296,16 @@
 			if($result){
 				$confirm_message = "success";
 
+				// Query 6 - 해당 직원 서비스 횟수 1 증가
+				$query = sprintf("UPDATE ClerkInfo SET ServiceCount = ServiceCount + 1 WHERE ClerkCode = (SELECT ReqClerkCode FROM ChangeRequest WHERE ReqCode='%s')",
+				mysql_real_escape_string($request_code));
+
+				$result = mysql_query($query);
+
+
 				// GCM으로 고객에게 푸쉬 - 배달이 완료되었습니다.
 				
-				// 요청 멤버 GCM RegId값 가져오기
+				// Query 7 - 요청 멤버 GCM RegId값 가져오기
 				$query = sprintf("SELECT GcmRegId FROM MemberInfo WHERE MemberCode = (SELECT ReqMember FROM ChangeRequest WHERE ReqCode = '%s')",
 				mysql_real_escape_string($request_code));
 
