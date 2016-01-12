@@ -30,7 +30,7 @@ import com.example.krcho.clozet.gcm.QuickstartPreferences;
 import com.example.krcho.clozet.gcm.RegistrationIntentService;
 import com.example.krcho.clozet.network.CommonHttpClient;
 import com.example.krcho.clozet.network.NetDefine;
-import com.example.krcho.clozet.request.SelectOptionsActivity;
+import com.example.krcho.clozet.request.OrderActivity;
 import com.example.krcho.clozet.promotion.PromotionActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -278,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         imageView_main_change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SelectOptionsActivity.class));
+                startActivity(new Intent(getApplicationContext(), OrderActivity.class));
 
             }
         });

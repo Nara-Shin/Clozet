@@ -16,7 +16,7 @@ import com.loopj.android.image.SmartImageView;
 public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
     SmartImageView image;
-    TextView brand, title, price;
+    TextView brand, title;
     LinearLayout sizes, colors;
 
     public RecyclerViewHolder(View itemView) {
@@ -24,7 +24,6 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         image = (SmartImageView) itemView.findViewById(R.id.image);
         brand = (TextView) itemView.findViewById(R.id.brand);
         title = (TextView) itemView.findViewById(R.id.title);
-        price = (TextView) itemView.findViewById(R.id.price);
         sizes = (LinearLayout) itemView.findViewById(R.id.size_container);
         colors = (LinearLayout) itemView.findViewById(R.id.color_container);
     }
@@ -33,7 +32,6 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         image.setImageUrl(data.getProduct_photo());
         brand.setText(data.getProduct_brand());
         title.setText(data.getProduct_name());
-        price.setText(data.getProduct_price()+"");
 
         sizes.removeAllViews();
         for(final String item : data.getSizes()){
