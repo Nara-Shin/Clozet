@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.krcho.clozet.gallery.GalleryMatchingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager_up"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager_down"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:background="@color/black_transparency2"
+        >
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="127dp"
+            android:layout_height="41dp"
+            android:background="@drawable/background_preview_save"
+            />
+    </RelativeLayout>
+
+</RelativeLayout>

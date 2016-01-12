@@ -17,6 +17,6 @@
         app:backgroundTint="@color/navy"
         />
 
-    <include layout="@layout/content_gallery"/>
+    <include layout="@layout/content_order"/>
 
 </android.support.design.widget.CoordinatorLayout>

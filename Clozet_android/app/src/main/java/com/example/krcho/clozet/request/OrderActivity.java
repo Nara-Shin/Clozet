@@ -7,7 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,20 +29,16 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class SelectOptionsActivity extends AppCompatActivity {
-    private Toolbar toolbar;
+public class OrderActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
-    RecyclerAdapter adapter;
+    private RecyclerAdapter adapter;
     private ArrayList<Product> list = new ArrayList<>();
     private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_options);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_order);
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

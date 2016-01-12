@@ -54,7 +54,7 @@
             android:label="@string/title_activity_barcode_detact"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".request.SelectOptionsActivity"
+            android:name=".request.OrderActivity"
             android:label="@string/title_activity_select_options"
             android:launchMode="singleTop" />
         <activity

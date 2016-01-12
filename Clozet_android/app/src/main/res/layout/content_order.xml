@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".request.OrderActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/abc_action_bar_default_height_material"
+        android:gravity="center_vertical">
+        <RelativeLayout
+            android:id="@+id/btn_back"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginLeft="6dp"
+            android:gravity="center"
+            >
+            <ImageView
+                android:layout_width="30.67dp"
+                android:layout_height="30.67dp"
+                android:src="@drawable/btn_back" />
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="147.33dp"
+            android:layout_height="30.67dp"
+            android:src="@drawable/title_order"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:scrollbars="none" />
+
+</LinearLayout>

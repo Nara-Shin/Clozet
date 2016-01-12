@@ -3,10 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.krcho.clozet.gallery.GalleryMatchingSelectActivity">
+
+    <GridView
+        android:id="@+id/gallery_matching_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center_horizontal"
+        android:numColumns="2"
+        android:drawSelectorOnTop="true"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:background="@color/black_transparency2"
+        >
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="127dp"
+            android:layout_height="41dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="42.67dp"
+            android:background="@drawable/btn_matching_cancel"
+            />
+        <Button
+            android:id="@+id/btn_select"
+            android:layout_width="127dp"
+            android:layout_height="41dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="42.67dp"
+            android:background="@drawable/background_gallery_matching_select"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>

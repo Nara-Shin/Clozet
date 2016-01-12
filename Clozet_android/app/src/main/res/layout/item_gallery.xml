@@ -10,7 +10,7 @@
         android:id="@+id/gallery_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="9.33dp"
+        android:layout_marginTop="9.33dp"
         android:scaleType="centerCrop"
         />
 
