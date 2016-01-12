@@ -67,8 +67,17 @@
 			$image_url = "http://godeung.woobi.co.kr/clozet/img/product/".$row[PrdImage];
 		}
 
+		// Query 3 - 상품 재고 가져오기
+		$query = sprintf("SELECT SUM(PrdStock) AS PrdStock FROM ProductOption WHERE PrdCode = '%s'",
+		mysql_real_escape_string($product_code));
 
-		// Query 3 - 좋아요 누른 고객 GCM ID 가져오기
+		$result = mysql_query($query);
+
+		while($row = mysql_fetch_array($result)){
+			$stock = $row[PrdStock];
+		}
+
+		// Query 4 - 좋아요 누른 고객 GCM ID 가져오기
 		$query = sprintf("SELECT GcmRegId FROM MemberInfo WHERE MemberCode IN (SELECT LikeMember FROM MemberLike WHERE PrdCode = '%s')",
 		mysql_real_escape_string($product_code));
 
@@ -79,7 +88,7 @@
 		}
 		
 		// 좋아요 누른 고객에게 재고 정보 푸쉬
-		$message = '{"prd_name":"'.$prd_name.'","stock":"'.$stock_count.'","prd_url":"'.$prd_url.'","image_url":"'.$image_url.'"}';
+		$message = '{"prd_name":"'.$prd_name.'","stock":"'.$stock.'","prd_url":"'.$prd_url.'","image_url":"'.$image_url.'"}';
 		$admin = "false";
 
 		include "../lib/gcm/sendPushMessageLib.php";

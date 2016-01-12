@@ -1,3 +1,4 @@
+	<div class="wrapper">
 	<div class="left">
 		<ul>
 			<li><a href="stock.php"><img src="./img/btn_stock_<?=(strpos($_SERVER["PHP_SELF"], "stock") > 0)?"on":"off"?>.png" <?=(strpos($_SERVER["PHP_SELF"], "stock") > 0)?'':'onmouseover="mouseOver(this);" onmouseout="mouseOut(this);"'?> /></a></li>

@@ -1,3 +1,5 @@
+* {font-family:¸¼Àº °íµñ;}
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -43,6 +45,7 @@ table {
 }
 
 body {background-image:url('../img/left_bg.png');}
+.wrapper {width:1900px;}
 .top {width:100%; padding:20px 0 20px 0; heght:30px; background:#ffc5c5; text-align:center;}
 .left {width:auto; height:100%; float:left; background:#f4f4f4; margin:0;}
 .left ul{margin:0;}
