@@ -49,7 +49,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             Button size = new Button(itemView.getContext());
             size.setBackground(itemView.getContext().getDrawable(R.drawable.box_order));
             size.setGravity(Gravity.CENTER);
-            size.setTextColor(itemView.getContext().getColor(R.color.pink));
+            size.setTextColor(Color.parseColor("#ffc5c5"));
             size.setTextSize(14);
             size.setText(item);
             size.setLayoutParams(new ViewGroup.LayoutParams(layoutParams));
