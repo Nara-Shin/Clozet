@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.krcho.clozet.MyAccount;
@@ -29,24 +30,22 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class OrderActivity extends AppCompatActivity {
+public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
     private RecyclerAdapter adapter;
     private ArrayList<Product> list = new ArrayList<>();
-    private FloatingActionButton fab;
+    private RelativeLayout backBtn, addBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openBarcodeDection();
-            }
-        });
+        backBtn = (RelativeLayout) findViewById(R.id.btn_back);
+        addBtn = (RelativeLayout) findViewById(R.id.btn_add);
+
+        backBtn.setOnClickListener(this);
+        addBtn.setOnClickListener(this);
 
         setRecyclerView();
         openBarcodeDection();
@@ -83,13 +82,13 @@ public class OrderActivity extends AppCompatActivity {
                 try {
                     list.add(new Product(response));
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "잘못된 데이터입니다. 다시 시도해주세요!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "잘못된 데이터입니다. 다시 시도해주세요!", Toast.LENGTH_SHORT).show();
                 }
                 adapter.setList(list);
-                Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_SHORT).show();
 
-                if (list.size() >= 2) {
-                    fab.hide();
+                if (list.size() >= 3) {
+                    addBtn.setVisibility(View.GONE);
                 }
             }
         });
@@ -176,5 +175,18 @@ public class OrderActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_back:
+                finish();
+                break;
+
+            case R.id.btn_add:
+                openBarcodeDection();
+                break;
+        }
     }
 }

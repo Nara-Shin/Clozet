@@ -14,7 +14,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20.67dp"
             android:orientation="horizontal"
             android:gravity="center"
             >
@@ -51,39 +51,82 @@
             android:singleLine="true"
             />
 
-        <com.loopj.android.image.SmartImageView
-            android:id="@+id/image"
+        <RelativeLayout
             android:layout_width="316dp"
             android:layout_height="316dp"
             android:layout_marginTop="13.33dp"
-            android:scaleType="centerCrop"
-            />
+            >
+            <com.loopj.android.image.SmartImageView
+                android:id="@+id/image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                />
+            <ImageView
+                android:id="@+id/order_like"
+                android:layout_width="41.33dp"
+                android:layout_height="41.33dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/btn_like"/>
+            <ImageView
+                android:id="@+id/order_delete"
+                android:layout_width="41.33dp"
+                android:layout_height="41.33dp"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@id/order_like"
+                android:src="@drawable/btn_gallery_delete"/>
+        </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/size_container"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:orientation="horizontal">
+            android:layout_height="36dp"
+            android:layout_marginTop="13.33dp"
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_width="55.33dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/textarea_size"
+                />
+            <LinearLayout
+                android:id="@+id/size_container"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:orientation="horizontal">
 
-            <!--<Button-->
-            <!--android:layout_width="45dp"-->
-            <!--android:layout_height="45dp"-->
-            <!--android:text="S" />-->
-
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/color_container"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:orientation="horizontal">
+            android:layout_height="36dp"
+            android:layout_marginLeft="15dp"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_width="55.33dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/textarea_color"
+                />
+            <LinearLayout
+                android:id="@+id/color_container"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:orientation="horizontal">
 
-            <!--<Button-->
-            <!--android:layout_width="45dp"-->
-            <!--android:layout_height="45dp"-->
-            <!--android:background="#FFFFFF" />-->
-
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="14dp"
+        android:background="@color/pink"
+        />
 
 </LinearLayout>
