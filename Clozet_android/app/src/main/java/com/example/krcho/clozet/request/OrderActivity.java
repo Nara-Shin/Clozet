@@ -120,9 +120,15 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                     adapter.setList(list);    
                 }else {
                     for(int i=0; i<list.size(); i++){
-                        
+                        if (product.getProduct_code().equals(list.get(i).getProduct_code())){
+                            list.remove(i);
+                            Toast.makeText(OrderActivity.this, "항목을 삭제했습니다.", Toast.LENGTH_SHORT).show();
+                            break;
+                        }
                     }
                 }
+
+                order.setText("ORDER (" + list.size() + ")");
                 
             }
         });
@@ -208,7 +214,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
                 try {
                     if (response.getString("confirm_message").equals("success")) {
-                        ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance(list.size() * -1);
+                        ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance(list.size() * -1, response.getInt("request_code"));
                         dialogFragment.show(getSupportFragmentManager(), "test");
                     }
                 } catch (JSONException e) {

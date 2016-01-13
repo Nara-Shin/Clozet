@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,6 +153,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                         super.onSuccess(statusCode, headers, response);
+                        Log.d("response", response.toString());
                         try {
                             data.setLike(response.getInt("status") == 1);
                             if (data.isLike()) {
