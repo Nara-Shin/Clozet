@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -33,6 +35,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class OrderActivity extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView recyclerView;
+    private LinearLayoutManager recyclerManager;
     private RecyclerAdapter adapter;
     private ArrayList<Product> list = new ArrayList<>();
     private RelativeLayout backBtn, addBtn;
@@ -103,86 +106,49 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
+
+    boolean scrollCheck = false;
     public void setRecyclerView() {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(recyclerManager);
         adapter = new RecyclerAdapter(list);
         recyclerView.setAdapter(adapter);
+        recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.d("position", "x : " + dx + " / y : " + dy);
+
+                int visibleItemCount = recyclerManager.getChildCount();
+                int totalItemCount = recyclerManager.getItemCount();
+
+                int firstVisibleItemPosition = recyclerManager.findFirstVisibleItemPosition();
+                if (dy > 0 && visibleItemCount > 1 && !scrollCheck) {
+                    scrollCheck = true;
+                    Animation ani = new TranslateAnimation(0, 0, 0, 300);
+                    ani.setDuration(500);
+                    order.startAnimation(ani);
+                    order.setVisibility(View.GONE);
+                } else if (dy < 0 && scrollCheck && firstVisibleItemPosition == 0) {
+                    scrollCheck = false;
+                    order.setVisibility(View.VISIBLE);
+                    Animation ani = new TranslateAnimation(0, 0, 300, 0);
+                    ani.setDuration(500);
+                    order.startAnimation(ani);
+
+                }
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_select_options, menu);
-        return true;
+        return false;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.request) {
-//            member_code=6자리 회원코드
-//            option_code=6자리 옵션 코드
-            RequestParams params = new RequestParams();
-            try {
-                params.put("member_code", MyAccount.getInstance().getMember_code());
-            } catch (Exception e) {
-                params.put("member_code", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
-            }
-            String code = "";
-            for (Product prod : list) {
-                code += prod.getOptionCode() + "#";
-            }
-            if (code.contains("-1")) {
-                Toast.makeText(getApplicationContext(), "선택하지 않은 옵션이 있습니다", Toast.LENGTH_LONG).show();
-                return false;
-            }
-            params.put("option_code", code);
-            params.put("fitroom_code", "100001");
-
-            CommonHttpClient.post(NetDefine.REQUEST_CHANGE, params, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    Log.d("response", response.toString());
-
-                    try {
-                        if (response.getString("confirm_message").equals("success")) {
-                            ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance(1);
-                            dialogFragment.show(getSupportFragmentManager(), "test");
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                }
-            });
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onClick(View v) {
@@ -196,8 +162,63 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.btn_order:
-
+                requestToChange();
                 break;
         }
+    }
+
+    public void requestToChange() {
+        //member_code=6자리 회원코드
+        //option_code=6자리 옵션 코드
+        RequestParams params = new RequestParams();
+        try {
+            params.put("member_code", MyAccount.getInstance().getMember_code());
+        } catch (Exception e) {
+            params.put("member_code", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
+        }
+        String code = "";
+        for (Product prod : list) {
+            code += prod.getOptionCode() + "#";
+        }
+        if (code.contains("-1")) {
+            Toast.makeText(getApplicationContext(), "선택하지 않은 옵션이 있습니다", Toast.LENGTH_LONG).show();
+            return;
+        }
+        params.put("option_code", code);
+        params.put("fitroom_code", "100001");
+
+        CommonHttpClient.post(NetDefine.REQUEST_CHANGE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.d("response", response.toString());
+
+                try {
+                    if (response.getString("confirm_message").equals("success")) {
+                        ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance(1);
+                        dialogFragment.show(getSupportFragmentManager(), "test");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                super.onFailure(statusCode, headers, responseString, throwable);
+            }
+        });
     }
 }
