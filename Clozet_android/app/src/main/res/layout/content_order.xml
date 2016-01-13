@@ -1,59 +1,76 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".request.OrderActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".request.OrderActivity">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/abc_action_bar_default_height_material"
-        android:gravity="center_vertical">
-        <RelativeLayout
-            android:id="@+id/btn_back"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginLeft="6dp"
-            android:gravity="center"
-            >
-            <ImageView
-                android:layout_width="30.67dp"
-                android:layout_height="30.67dp"
-                android:src="@drawable/btn_back" />
-        </RelativeLayout>
-        <ImageView
-            android:layout_width="147.33dp"
-            android:layout_height="30.67dp"
-            android:src="@drawable/title_order"
-            android:layout_alignWithParentIfMissing="false"
-            android:layout_centerInParent="true" />
-        <RelativeLayout
-            android:id="@+id/btn_add"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginRight="6dp"
-            android:layout_alignParentRight="true"
-            android:gravity="center"
-            >
-            <ImageView
-                android:layout_width="30.67dp"
-                android:layout_height="30.67dp"
-                android:src="@drawable/btn_add" />
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/pink"
-        />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    >
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:scrollbars="none" />
+        android:orientation="vertical"
+        >
 
-</LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/abc_action_bar_default_height_material"
+            android:gravity="center_vertical">
+            <RelativeLayout
+                android:id="@+id/btn_back"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginLeft="6dp"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="30.67dp"
+                    android:layout_height="30.67dp"
+                    android:src="@drawable/btn_back" />
+            </RelativeLayout>
+            <ImageView
+                android:layout_width="147.33dp"
+                android:layout_height="30.67dp"
+                android:src="@drawable/title_order"
+                android:layout_alignWithParentIfMissing="false"
+                android:layout_centerInParent="true" />
+            <RelativeLayout
+                android:id="@+id/btn_add"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_marginRight="6dp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="30.67dp"
+                    android:layout_height="30.67dp"
+                    android:src="@drawable/btn_add" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/pink"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_order"
+        android:layout_width="126.67dp"
+        android:layout_height="41.33dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:background="@drawable/btn_order_blank"
+        />
+</RelativeLayout>

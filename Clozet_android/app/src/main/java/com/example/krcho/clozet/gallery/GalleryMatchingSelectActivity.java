@@ -48,7 +48,7 @@ public class GalleryMatchingSelectActivity extends AppCompatActivity implements 
             model.setBrandName("BRAND NAME " + i);
             model.setProductName("버튼 투 포켓 티셔츠 " + i);
             model.setPrice(32800);
-            model.setImage((BitmapDrawable) getResources().getDrawable(R.drawable.change_btn_click));
+//            model.setImage(getResources().getDrawable(R.drawable.change_btn_click));
             items.add(model);
         }
         return items;
