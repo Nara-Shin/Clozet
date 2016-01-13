@@ -58,7 +58,7 @@ public class GalleryAdapter extends ArrayAdapter<GalleryModel> {
 
 		GalleryModel model = items.get(position);
 
-		image.setImageDrawable(model.getImage());
+		image.setImageBitmap(model.getImage());
 		if (model.getLike()) {
 			like.setImageDrawable(context.getDrawable(R.drawable.btn_like_click));
 		} else {

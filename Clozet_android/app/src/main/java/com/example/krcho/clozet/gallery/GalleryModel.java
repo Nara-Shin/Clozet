@@ -1,13 +1,13 @@
 package com.example.krcho.clozet.gallery;
 
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Bitmap;
 
 public class GalleryModel {
 
 	private String brandName;
 	private String productName;
 	private int price;
-	private BitmapDrawable image;
+	private Bitmap image;
 	private boolean like;
 	private String date;
 
@@ -23,7 +23,7 @@ public class GalleryModel {
 		return price;
 	}
 
-	public BitmapDrawable getImage() {
+	public Bitmap getImage() {
 		return image;
 	}
 
@@ -47,7 +47,7 @@ public class GalleryModel {
 		this.price = price;
 	}
 
-	public void setImage(BitmapDrawable image) {
+	public void setImage(Bitmap image) {
 		this.image = image;
 	}
 

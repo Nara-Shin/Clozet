@@ -11,6 +11,7 @@ import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -36,6 +37,8 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
         Intent intent = getIntent();
         path = intent.getExtras().getString("file");
         bitmap = BitmapFactory.decodeFile(path);
+
+        Log.d("path", path);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 6;
