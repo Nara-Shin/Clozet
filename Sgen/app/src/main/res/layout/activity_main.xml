@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.sgen.club.sgenapplication.MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/abc_action_bar_default_height_material">
+
+            <ImageView
+                android:id="@+id/imageView_activity_main_logo"
+                android:layout_width="147.33dp"
+                android:layout_height="30.67dp"
+                android:layout_gravity="center"
+                android:src="@drawable/main_clerk" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:background="#f3c0c0"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/frameLayout_activity_main_request_tab"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/imageView_activity_main_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/tab_request_click" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/frameLayout_activity_main_search_tab"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/imageView_activity_main_search_tab"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/tab_search_unclick" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/frameLayout_activity_main_contents"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/imageView_activity_main_noti"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/noti_blank"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout_activity_main_request"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusableInTouchMode="false"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="match_parent"
+                        android:layout_height="83.33dp"
+                        android:src="@drawable/fittingroom" />
+
+                    <TextView
+                        android:id="@+id/textView_activity_main_room_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="196.67dp"
+                        android:layout_marginTop="13dp"
+                        android:text="0X"
+                        android:textColor="#ffffffff"
+                        android:textSize="57.33dp" />
+                </FrameLayout>
+
+                <ListView
+                    android:id="@+id/listView_activity_main_request"
+                    android:layout_width="match_parent"
+                    android:layout_height="294.67dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <FrameLayout
+                        android:id="@+id/frameLayout_activity_main_cancel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="64dp"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/imageView_activity_main_cancel"
+                            android:layout_width="126.67dp"
+                            android:layout_height="41.33dp"
+                            android:clickable="false"
+                            android:src="@drawable/cancel_btn" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameLayout_activity_main_accept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true">
+
+                        <ImageView
+                            android:id="@+id/imageView_activity_main_accept"
+                            android:layout_width="126.67dp"
+                            android:layout_height="41.33dp"
+                            android:clickable="false"
+                            android:src="@drawable/accept_btn_click" />
+                    </FrameLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout_activity_main_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="83.33dp"
+                    android:background="@drawable/search_body">
+
+                    <FrameLayout
+                        android:layout_width="310.67dp"
+                        android:layout_height="41.33dp"
+                        android:layout_gravity="center"
+
+                        android:background="#000000">
+
+                        <EditText
+                            android:id="@+id/editText_main_activity_search"
+                            android:layout_width="248.67dp"
+                            android:layout_height="38dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="1.5dp"
+                            android:background="#ffffff"
+                            android:hint="상품번호/이름을 입력해주세요"
+                            android:paddingLeft="17.33dp"
+                            android:singleLine="true"
+                            android:textSize="14dp" />
+
+                        <FrameLayout
+                            android:id="@+id/frameLayout_activity_main_search_button"
+                            android:layout_width="62dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical|right"
+                            android:clickable="true"
+                            android:contextClickable="true">
+
+                            <ImageView
+                                android:id="@+id/imageView_activity_main_search"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:clickable="true"
+                                android:src="@drawable/search_btn" />
+                        </FrameLayout>
+                    </FrameLayout>
+                </FrameLayout>
+
+                <ListView
+                    android:id="@+id/listView_activity_main_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+        </FrameLayout>
+    </LinearLayout>
+
+
+</FrameLayout>
