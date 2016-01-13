@@ -38,8 +38,6 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
         path = intent.getExtras().getString("file");
         bitmap = BitmapFactory.decodeFile(path);
 
-        Log.d("path", path);
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 6;
         background = BitmapFactory.decodeFile(path, options);

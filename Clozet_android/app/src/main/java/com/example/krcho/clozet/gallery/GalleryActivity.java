@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -27,6 +28,7 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
     private ImageView dateBtn, brandBtn, likeBtn;
     private GridView gridView;
     private File[] fileList;
+    private List<GalleryModel> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,16 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
         setContentView(R.layout.activity_gallery);
 
         init();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Clozet");
+        File sampleStorageDir = new File(mediaStorageDir.getPath() + "/Sample");
+        fileList = sampleStorageDir.listFiles();
+        new LoadImageTask().execute(fileList);
     }
 
     private void init() {
@@ -57,12 +69,6 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
                 startActivity(new Intent(GalleryActivity.this, GalleryMatchingStartActivity.class));
             }
         });
-
-        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Clozet");
-        File sampleStorageDir = new File(mediaStorageDir.getPath() + "/Sample");
-        fileList = sampleStorageDir.listFiles();
-
-        new LoadImageTask().execute(fileList);
     }
 
     private class LoadImageTask extends AsyncTask<File[], Void, Bitmap[]> {
@@ -86,7 +92,7 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
         @Override
         protected void onPostExecute(Bitmap[] bitmap) {
             super.onPostExecute(bitmap);
-            List<GalleryModel> items = new ArrayList<>();
+            items = new ArrayList<>();
 
             for (int i=0; i<fileList.length; i++) {
                 GalleryModel model = new GalleryModel();
@@ -94,6 +100,7 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
                 model.setProductName("버튼 투 포켓 티셔츠 ");
                 model.setPrice(32800);
                 model.setImage(bitmap[i]);
+                model.setFileName(fileList[i].getName());
                 items.add(model);
             }
 
@@ -112,6 +119,8 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        startActivity(new Intent(GalleryActivity.this, GalleryDetailActivity.class));
+        Intent intent = new Intent(GalleryActivity.this, GalleryDetailActivity.class);
+        intent.putExtra("fileName", items.get(position).getFileName());
+        startActivity(intent);
     }
 }
