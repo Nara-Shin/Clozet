@@ -78,22 +78,35 @@ public class ProcessDialogFragment extends DialogFragment {
                         dialogFragment.show(getFragmentManager(), "test");
                         dismiss();
                         break;
+                    default:
+                        dismiss();
                 }
 
             }
         });
 
         switch (processnum) {
+            case -1:
+                textView.setText("해당 상품을 교환 요청 하였습니다.");
+                imageView.setImageDrawable(getActivity().getDrawable(R.drawable.push_1));
+                break;
             case 1:
+                textView.setText("해당 상품을 교환 요청 하였습니다.");
                 imageView.setImageDrawable(getActivity().getDrawable(R.drawable.push_1));
                 break;
             case 2:
+                textView.setText("직원이 요청을 수락하였습니다.");
                 imageView.setImageDrawable(getActivity().getDrawable(R.drawable.push_2));
                 break;
             case 3:
+                textView.setText("배달완료!");
                 imageView.setImageDrawable(getActivity().getDrawable(R.drawable.push_3));
                 imageButton.setImageDrawable(getActivity().getDrawable(R.drawable.ok_btn));
                 break;
+            default:
+                textView.setText("해당 상품 "+(processnum * -1)+"개를 교환 요청 하였습니다.");
+                imageView.setImageDrawable(getActivity().getDrawable(R.drawable.push_1));
+
         }
         return v;
     }

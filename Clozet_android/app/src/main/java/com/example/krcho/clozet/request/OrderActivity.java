@@ -73,7 +73,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    public void addProduct(String barcode) {
+    public void addProduct(final String barcode) {
 
         RequestParams params = new RequestParams();
         params.put("barcode", barcode);
@@ -89,7 +89,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 super.onSuccess(statusCode, headers, response);
                 Log.d("response", response.toString());
                 try {
-                    list.add(new Product(response));
+                    list.add(new Product(response, barcode));
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "잘못된 데이터입니다. 다시 시도해주세요!", Toast.LENGTH_SHORT).show();
                 }
@@ -112,7 +112,20 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(recyclerManager);
-        adapter = new RecyclerAdapter(list);
+        adapter = new RecyclerAdapter(list, new RecyclerViewHolderDelegate(){
+            @Override
+            public void onClickDelete(Product product) {
+                if (list.remove(product)) {
+                    Toast.makeText(OrderActivity.this, "항목을 삭제했습니다.", Toast.LENGTH_SHORT).show();
+                    adapter.setList(list);    
+                }else {
+                    for(int i=0; i<list.size(); i++){
+                        
+                    }
+                }
+                
+            }
+        });
         recyclerView.setAdapter(adapter);
         recyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -195,7 +208,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
                 try {
                     if (response.getString("confirm_message").equals("success")) {
-                        ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance(1);
+                        ProcessDialogFragment dialogFragment = ProcessDialogFragment.newInstance(list.size() * -1);
                         dialogFragment.show(getSupportFragmentManager(), "test");
                     }
                 } catch (JSONException e) {

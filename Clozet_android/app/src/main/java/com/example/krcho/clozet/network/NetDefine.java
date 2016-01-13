@@ -10,4 +10,5 @@ public interface NetDefine {
     String REQUEST_CHANGE = "change/request.php";
     String FIND_BRAND_INFO = "brand/search.php";
     String LIKE_COUNT = "gallery/like_count.php";
+    String SET_LIKE = "gallery/like.php";
 }

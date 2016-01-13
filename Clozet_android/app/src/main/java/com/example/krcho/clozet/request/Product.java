@@ -10,12 +10,14 @@ import java.util.ArrayList;
  * Created by krcho on 2015-11-15.
  */
 public class Product {
+    String barcode;
     String product_code;
     String product_brand;
     String product_name;
     String product_detail;
     int product_price;
     String product_photo;
+    boolean like;
     ArrayList<String> sizes = new ArrayList<>();
     ArrayList<String> colors = new ArrayList<>();
     ArrayList<Options> options = new ArrayList<>();
@@ -23,15 +25,16 @@ public class Product {
     String selected_size;
     String selected_color;
 
-    public Product(JSONObject json) throws Exception {
+    public Product(JSONObject json, String barcode) throws Exception {
         try {
+            this.setBarcode(barcode);
             this.setProduct_code(json.getString("product_code"));
             this.setProduct_brand(json.getString("product_brand"));
             this.setProduct_name(json.getString("product_name"));
             this.setProduct_detail(json.getString("product_detail"));
             this.setProduct_price(json.getInt("product_price"));
             this.setProduct_photo(json.getString("product_image"));
-
+            this.setLike(json.getInt("product_like") == 1);
             this.addSize(json.getString("product_sizes"));
             this.addColor(json.getString("product_colors"));
 
@@ -41,6 +44,22 @@ public class Product {
             e.printStackTrace();
             throw new Exception();
         }
+    }
+
+    public String getBarcode() {
+        return barcode;
+    }
+
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
+
+    public boolean isLike() {
+        return like;
+    }
+
+    public void setLike(boolean like) {
+        this.like = like;
     }
 
     public String getProduct_code() {

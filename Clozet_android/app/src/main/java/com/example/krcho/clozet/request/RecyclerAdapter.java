@@ -17,8 +17,11 @@ import java.util.ArrayList;
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     private ArrayList<Product> list = new ArrayList<>();
 
-    public RecyclerAdapter(ArrayList<Product> list) {
+    RecyclerViewHolderDelegate delegate;
+
+    public RecyclerAdapter(ArrayList<Product> list, RecyclerViewHolderDelegate dele) {
         Log.d("test", "construct");
+        this.delegate = dele;
         this.list.clear();
         this.list.addAll(list);
     }
@@ -41,7 +44,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Log.d("test", "update");
-        holder.update(list.get(position));
+        holder.update(list.get(position), delegate);
     }
 
     @Override
