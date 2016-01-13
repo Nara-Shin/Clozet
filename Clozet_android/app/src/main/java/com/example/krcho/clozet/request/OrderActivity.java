@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     private RecyclerAdapter adapter;
     private ArrayList<Product> list = new ArrayList<>();
     private RelativeLayout backBtn, addBtn;
+    private Button order;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,9 +45,13 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
         backBtn = (RelativeLayout) findViewById(R.id.btn_back);
         addBtn = (RelativeLayout) findViewById(R.id.btn_add);
+        order = (Button) findViewById(R.id.btn_order);
 
         backBtn.setOnClickListener(this);
         addBtn.setOnClickListener(this);
+        order.setOnClickListener(this);
+
+        order.setText("ORDER (0)");
 
         setRecyclerView();
         openBarcodeDection();
@@ -86,6 +92,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 }
                 adapter.setList(list);
                 Toast.makeText(getApplicationContext(), "추가", Toast.LENGTH_SHORT).show();
+                order.setText("ORDER (" + list.size() + ")");
 
                 if (list.size() >= 3) {
                     addBtn.setVisibility(View.GONE);
@@ -186,6 +193,10 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.btn_add:
                 openBarcodeDection();
+                break;
+
+            case R.id.btn_order:
+
                 break;
         }
     }
