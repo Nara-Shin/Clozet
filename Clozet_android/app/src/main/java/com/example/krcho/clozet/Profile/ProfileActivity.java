@@ -70,7 +70,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         getUserInfo();
-        getAdInfo();
         setClickListeners();
     }
 
@@ -98,11 +97,14 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             }
         });
+
+        getAdInfo();
     }
 
     public void getAdInfo() {
-        ad1.setImageUrl(NetDefine.BASE_URL + "img/promotion/0.png");
-        ad2.setImageUrl(NetDefine.BASE_URL + "img/promotion/1.png");
+        int timestemp = (int) System.currentTimeMillis();
+        ad1.setImageUrl(NetDefine.BASE_URL + "img/promotion/"+(timestemp % 5 + 1)+"_"+MyAccount.getInstance().getSex()+".png");
+        ad2.setImageUrl(NetDefine.BASE_URL + "img/promotion/"+(timestemp % 5 + 1 + 1 ) % 5+"_"+MyAccount.getInstance().getSex()+".png");
     }
 
     public void setClickListeners() {
