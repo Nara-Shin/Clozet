@@ -3,6 +3,8 @@ package com.example.krcho.clozet.camera;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -59,7 +61,7 @@ public class CameraGuideActivity extends AppCompatActivity implements View.OnCli
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mContext = this;
-        mCameraFacing  = Camera.CameraInfo.CAMERA_FACING_FRONT;
+        mCameraFacing = Camera.CameraInfo.CAMERA_FACING_FRONT;
 
         init();
 
@@ -179,7 +181,7 @@ public class CameraGuideActivity extends AppCompatActivity implements View.OnCli
                 guide.setVisibility(View.GONE);
 
                 // 전면 -> 후면 or 후면 -> 전면으로 카메라 상태 전환
-                mCameraFacing = (mCameraFacing==Camera.CameraInfo.CAMERA_FACING_BACK) ?
+                mCameraFacing = (mCameraFacing == Camera.CameraInfo.CAMERA_FACING_BACK) ?
                         Camera.CameraInfo.CAMERA_FACING_FRONT
                         : Camera.CameraInfo.CAMERA_FACING_BACK;
 
@@ -262,8 +264,7 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
 
             mCamera.setPreviewDisplay(mHolder);
 
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
             mCamera.release();
             mCamera = null;
 
@@ -279,41 +280,50 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         mCamera = null;
     }
 
-    public void capture(){
-        if(mCamera!=null)
+    public void capture() {
+        if (mCamera != null)
             mCamera.takePicture(shutterCallback, rawCallback, jpegCallback);
     }
 
     Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
-        public void onShutter () {
+        public void onShutter() {
         }
     };
 
-    Camera.PictureCallback rawCallback = new Camera.PictureCallback(){
-        public void onPictureTaken(byte[] data, Camera camera){
+    Camera.PictureCallback rawCallback = new Camera.PictureCallback() {
+        public void onPictureTaken(byte[] data, Camera camera) {
         }
     };
 
-    Camera.PictureCallback jpegCallback = new Camera.PictureCallback(){
+    Camera.PictureCallback jpegCallback = new Camera.PictureCallback() {
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
 
             // JPEG 이미지가 byte[] 형태로 들어옵니다.
-            File pictureFile = getOutputMediaFile();
-            if(pictureFile == null){
+            File[] pictureFile = getOutputMediaFile();
+            if (pictureFile == null) {
                 Toast.makeText(context, "Error camera image saving", Toast.LENGTH_SHORT).show();
                 return;
             }
 
             try {
-                FileOutputStream fos = new FileOutputStream(pictureFile);
+                FileOutputStream fos = new FileOutputStream(pictureFile[0]);
                 fos.write(data);
                 fos.close();
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 4;
+                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+
+                pictureFile[1].createNewFile();
+                FileOutputStream fos_sample = new FileOutputStream(pictureFile[1]);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos_sample);
+
                 //Thread.sleep(500);
                 camera.startPreview();
 
                 Intent intent = new Intent(context, CameraPreviewActivity.class);
-                intent.putExtra("file", pictureFile.toString());
+                intent.putExtra("file", pictureFile[0].toString());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             } catch (FileNotFoundException e) {
@@ -324,14 +334,23 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         }
     };
 
-    private static File getOutputMediaFile(){
+    private static File[] getOutputMediaFile() {
         //SD 카드가 마운트 되어있는지 먼저 확인
         // Environment.getExternalStorageState() 로 마운트 상태 확인 가능합니다
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Clozet");
+        File sampleStorageDir = new File(mediaStorageDir.getPath() + "/Sample");
 
         // 없는 경로라면 따로 생성®
-        if(!mediaStorageDir.exists()){
-            if(! mediaStorageDir.mkdirs()){
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Log.d("Clozet", "failed to create directory");
+                return null;
+            }
+        }
+
+        // 없는 경로라면 따로 생성®
+        if (!sampleStorageDir.exists()) {
+            if (!sampleStorageDir.mkdirs()) {
                 Log.d("Clozet", "failed to create directory");
                 return null;
             }
@@ -340,10 +359,12 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         // 파일명을 적당히 생성, 여기선 시간으로 파일명 중복을 피한다
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         File mediaFile;
+        File sampleFile;
 
         mediaFile = new File(mediaStorageDir.getPath() + File.separator + "Clozet_" + timestamp + ".jpg");
-        Log.i("Clozet", "Saved at"+Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
+        sampleFile = new File(mediaStorageDir.getPath() + File.separator + "Sample" + File.separator + "Clozet_" + timestamp + ".jpg");
+        Log.i("Clozet", "Saved at" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
         System.out.println(mediaFile.getPath());
-        return mediaFile;
+        return new File[]{mediaFile, sampleFile};
     }
 }

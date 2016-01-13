@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -57,8 +58,10 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
             }
         });
 
-        File root = new File("/storage/emulated/0/Pictures/Clozet/");
-        fileList = root.listFiles();
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Clozet");
+        File sampleStorageDir = new File(mediaStorageDir.getPath() + "/Sample");
+        fileList = sampleStorageDir.listFiles();
+
         new LoadImageTask().execute(fileList);
     }
 
@@ -68,11 +71,13 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
         protected Bitmap[] doInBackground(File[]... params) {
             Bitmap[] bitmap = new Bitmap[params[0].length];
 
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 4;
+            // 불러올때마다 샘플링을 해서 속도가 느린거임
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inSampleSize = 4;
 
             for(int i=0; i<params[0].length; i++) {
-                bitmap[i] = BitmapFactory.decodeFile(params[0][i].getPath(), options);
+//                bitmap[i] = BitmapFactory.decodeFile(params[0][i].getPath(), options);
+                bitmap[i] = BitmapFactory.decodeFile(params[0][i].getPath());
             }
 
             return bitmap;
