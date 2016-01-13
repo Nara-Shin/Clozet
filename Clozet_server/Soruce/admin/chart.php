@@ -76,6 +76,7 @@ $shopCode = "100001";
 			<div class="select">
 			연령대 
 			<select name="prdAge" onchange="this.form.submit();">
+				<option value="" <?=($_POST[prdAge]=="")?"selected":""?>>전체</option>
 				<option value="20" <?=($_POST[prdAge]=="20")?"selected":""?>>20대</option>
 				<option value="30" <?=($_POST[prdAge]=="30")?"selected":""?>>30대</option>
 				<option value="40" <?=($_POST[prdAge]=="40")?"selected":""?>>40대</option>
@@ -130,11 +131,13 @@ $shopCode = "100001";
 	<div class="contents3">
 		<h2>Statistic Table</h2>
 		<div class="area">
-			<div class="title">Monthly Statistics - JAN</div>
+			<div class="title">Monthly Statistics</div>
 			<div id="curve_chart" style="width: 960px; height: 400px"></div>
 			<div class="title">Generational Statistics</div>
 			<div id="donutchart" style="float:left; width: 480px; height: 450px;"></div>
 			<div id="donutchart2" style="float:left; width: 480px; height: 450px;"></div>
+			<div class="barcode"><!-- <img src="./img/barcode.png"> --><br/>350</div>
+			<div class="barcode2"><!-- <img src="./img/barcode.png"> --><br/>250</div>
 		</div>
 	</div>
 	</div>
@@ -160,12 +163,13 @@ $shopCode = "100001";
 	]);
 
 	var options = {
-		titlePosition: 'none',
+		title: 'JAN',
+		titlePosition: 'out',
 		titleTextStyle: {
 			color: '#888',
 			fontName: '맑은 고딕',
-			fontSize: '20',
-			bold: true
+			fontSize: '18',
+			bold: false
 		},
 		curveType: 'none',
 		legend: { position: 'top' },

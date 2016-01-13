@@ -76,6 +76,23 @@
 			if($result){
 				$confirm_message = "success";
 
+				// Query 2 - 기존 요청 정보 가져오기
+				$query = sprintf("SELECT * FROM ChangeRequest WHERE ReqCode = '%s'",
+				mysql_real_escape_string($request_code));
+
+				$result = mysql_query($query);
+
+				while($row = mysql_fetch_array($result)){
+					$member_code = $row[ReqMember];
+					$option_code = $row[RequestPrdOption1];
+					$option_code2 = $row[RequestPrdOption2];
+					$option_code3 = $row[RequestPrdOption3];
+					$clerk_codes = $row[ClerkCode];
+					$fitroom_code = $row[FtiRoomCode];
+				}
+
+				$option_codes = array($option_code, $option_code2, $option_code3);
+
 				// Query 1 - 요청 코드 가져오기
 				$query = sprintf("SELECT MAX(ReqCode)+1 AS ReqCode FROM ChangeRequest");
 
@@ -95,13 +112,16 @@
 					$clerk_codes[] = $row[ClerkCode];
 				}
 
-				$clerk_code = $clerk_codes[rand(0,count($clerk_codes))];
+				$clerk_code = $clerk_codes[rand(0,count($clerk_codes)-1)];
 
 				// Query 3 - 요청 DB에 입력하기
-				$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s', '%s','%s', '%s','%s', '%s','%s', '%s')",
+				$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `RequestPrdOption2`, `RequestPrdOption3`, `FtiRoomCode`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s','%s','%s','%s','%s','%s','%s','%s', '%s','%s', '%s')",
 				mysql_real_escape_string($request_code),
 				mysql_real_escape_string($member_code),
-				mysql_real_escape_string($option_code),
+				mysql_real_escape_string($option_codes[0]),
+				mysql_real_escape_string($option_codes[1]),
+				mysql_real_escape_string($option_codes[2]),
+				mysql_real_escape_string($fitroom_code),
 				mysql_real_escape_string("201"),
 				mysql_real_escape_string($clerk_code),
 				mysql_real_escape_string(date("Y-m-d H:i:s",strtotime("+30 seconds"))),
@@ -114,8 +134,8 @@
 					$confirm_message = "success";
 
 					// Query 3 - 피팅룸 방번호 가져오기
-					$query = sprintf("SELECT FitRoomNum FROM ShopFittingRoom WHERE FitRoomCode = (SELECT FitRoomCode FROM ChangeRequest WHERE ReqCode = '%s')",
-					mysql_real_escape_string($request_code));
+					$query = sprintf("SELECT FitRoomNum FROM ShopFittingRoom WHERE FitRoomCode = '%s'",
+					mysql_real_escape_string($fitroom_code));
 
 					$result = mysql_query($query);
 
@@ -123,20 +143,25 @@
 						$fitroom_number = $row[FitRoomNum];
 					}
 
-					// Query 4 - 상품 정보 가져오기
-					$query = sprintf("SELECT Info.PrdName, Info.PrdImage, Info.PrdShopCode, Info.PrdPrice, Info.PrdUrl, Opt.PrdSize, Opt.PrdColor FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Opt.OptionCode = '%s'",
-					mysql_real_escape_string($option_code));
+					for($i=0; $i<count($option_codes); $i++){
 
-					$result = mysql_query($query);
+						if($option_codes != ""){
+							// Query 5 - 상품 정보 가져오기
+							$query = sprintf("SELECT Info.PrdName, Info.PrdImage, Info.PrdShopCode, Info.PrdPrice, Info.PrdUrl, Opt.PrdSize, Opt.PrdColor FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Opt.OptionCode = '%s'",
+							mysql_real_escape_string($option_codes[$i]));
 
-					while($row = mysql_fetch_array($result)){
-						$req_product_name = $row[PrdName];
-						$req_product_size = $row[PrdSize];
-						$req_product_color = $row[PrdColor];
-						$req_product_image = $row[PrdImage];
-						$req_product_shopcode = $row[PrdShopCode];
-						$req_product_price = $row[PrdPrice];
-						$req_product_url = $row[PrdUrl];
+							$result = mysql_query($query);
+
+							while($row = mysql_fetch_array($result)){
+								$req_product_name[$rownum] = $row[PrdName];
+								$req_product_size[$rownum] = $row[PrdSize];
+								$req_product_color[$rownum] = $row[PrdColor];
+								$req_product_image[$rownum] = $row[PrdImage];
+								$req_product_shopcode[$rownum] = $row[PrdShopCode];
+								$req_product_price[$rownum] = $row[PrdPrice];
+								$req_product_url[$rownum++] = $row[PrdUrl];
+							}
+						}
 					}
 
 					// GCM으로 직원에게 푸쉬 발송 시작
@@ -151,7 +176,7 @@
 						$devices[] = $row[GcmRegId];
 					}
 
-					$message = '{"request_code":"'.$request_code.'","room":"'.$fitroom_number.'","prdname":"'.$req_product_name.'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image.'","size":"'.$req_product_size.'","color":"'.$req_product_color.'","count":"1","code":"'.$req_product_shopcode.'","price":"'.$req_product_price.'","stockURL":"'.$req_product_url.'"}';
+					$message = '{"request_code":"'.$request_code.'","room":"'.$fitroom_number.'","count":"'.$rownum.'",products:{{"code":"'.$req_product_shopcode[0].'","prdname":"'.$req_product_name[0].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[0].'","size":"'.$req_product_size[0].'","color":"'.$req_product_color[0].'","price":"'.$req_product_price[0].'","stockURL":"'.$req_product_url[0].'"},{"code":"'.$req_product_shopcode[1].'","prdname":"'.$req_product_name[1].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[1].'","size":"'.$req_product_size[1].'","color":"'.$req_product_color[1].'","price":"'.$req_product_price[1].'","stockURL":"'.$req_product_url[1].'"},{"code":"'.$req_product_shopcode[2].'","prdname":"'.$req_product_name[2].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[2].'","size":"'.$req_product_size[2].'","color":"'.$req_product_color[2].'","price":"'.$req_product_price[2].'","stockURL":"'.$req_product_url[2].'"}}}';
 					$admin = "true";
 
 					include "../lib/gcm/sendPushMessageLib.php";
@@ -177,6 +202,23 @@
 			if($result){
 				$confirm_message = "success";
 
+				// Query 2 - 기존 요청 정보 가져오기
+				$query = sprintf("SELECT * FROM ChangeRequest WHERE ReqCode = '%s'",
+				mysql_real_escape_string($request_code));
+
+				$result = mysql_query($query);
+
+				while($row = mysql_fetch_array($result)){
+					$member_code = $row[ReqMember];
+					$option_code = $row[RequestPrdOption1];
+					$option_code2 = $row[RequestPrdOption2];
+					$option_code3 = $row[RequestPrdOption3];
+					$clerk_codes = $row[ClerkCode];
+					$fitroom_code = $row[FtiRoomCode];
+				}
+
+				$option_codes = array($option_code, $option_code2, $option_code3);
+
 				// Query 1 - 요청 코드 가져오기
 				$query = sprintf("SELECT MAX(ReqCode)+1 AS ReqCode FROM ChangeRequest");
 
@@ -196,13 +238,16 @@
 					$clerk_codes[] = $row[ClerkCode];
 				}
 
-				$clerk_code = $clerk_codes[rand(0,count($clerk_codes))];
+				$clerk_code = $clerk_codes[rand(0,count($clerk_codes)-1)];
 
 				// Query 3 - 요청 DB에 입력하기
-				$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s', '%s','%s', '%s','%s', '%s','%s', '%s')",
+				$query = sprintf("INSERT INTO ChangeRequest(`ReqCode`, `ReqMember`, `RequestPrdOption`, `RequestPrdOption2`, `RequestPrdOption3`, `FtiRoomCode`, `ReqResult`, `ReqClerkCode`, `LimitTime`, `RegDate`, `ModDate`) VALUES('%s','%s','%s','%s','%s','%s','%s','%s', '%s','%s', '%s')",
 				mysql_real_escape_string($request_code),
 				mysql_real_escape_string($member_code),
-				mysql_real_escape_string($option_code),
+				mysql_real_escape_string($option_codes[0]),
+				mysql_real_escape_string($option_codes[1]),
+				mysql_real_escape_string($option_codes[2]),
+				mysql_real_escape_string($fitroom_code),
 				mysql_real_escape_string("201"),
 				mysql_real_escape_string($clerk_code),
 				mysql_real_escape_string(date("Y-m-d H:i:s",strtotime("+30 seconds"))),
@@ -215,8 +260,8 @@
 					$confirm_message = "success";
 
 					// Query 3 - 피팅룸 방번호 가져오기
-					$query = sprintf("SELECT FitRoomNum FROM ShopFittingRoom WHERE FitRoomCode = (SELECT FitRoomCode FROM ChangeRequest WHERE ReqCode = '%s')",
-					mysql_real_escape_string($request_code));
+					$query = sprintf("SELECT FitRoomNum FROM ShopFittingRoom WHERE FitRoomCode = '%s'",
+					mysql_real_escape_string($fitroom_code));
 
 					$result = mysql_query($query);
 
@@ -224,20 +269,25 @@
 						$fitroom_number = $row[FitRoomNum];
 					}
 
-					// Query 4 - 상품 정보 가져오기
-					$query = sprintf("SELECT Info.PrdName, Info.PrdImage, Info.PrdShopCode, Info.PrdPrice, Info.PrdUrl, Opt.PrdSize, Opt.PrdColor FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Opt.OptionCode = '%s'",
-					mysql_real_escape_string($option_code));
+					for($i=0; $i<count($option_codes); $i++){
 
-					$result = mysql_query($query);
+						if($option_codes != ""){
+							// Query 5 - 상품 정보 가져오기
+							$query = sprintf("SELECT Info.PrdName, Info.PrdImage, Info.PrdShopCode, Info.PrdPrice, Info.PrdUrl, Opt.PrdSize, Opt.PrdColor FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Opt.OptionCode = '%s'",
+							mysql_real_escape_string($option_codes[$i]));
 
-					while($row = mysql_fetch_array($result)){
-						$req_product_name = $row[PrdName];
-						$req_product_size = $row[PrdSize];
-						$req_product_color = $row[PrdColor];
-						$req_product_image = $row[PrdImage];
-						$req_product_shopcode = $row[PrdShopCode];
-						$req_product_price = $row[PrdPrice];
-						$req_product_url = $row[PrdUrl];
+							$result = mysql_query($query);
+
+							while($row = mysql_fetch_array($result)){
+								$req_product_name[$rownum] = $row[PrdName];
+								$req_product_size[$rownum] = $row[PrdSize];
+								$req_product_color[$rownum] = $row[PrdColor];
+								$req_product_image[$rownum] = $row[PrdImage];
+								$req_product_shopcode[$rownum] = $row[PrdShopCode];
+								$req_product_price[$rownum] = $row[PrdPrice];
+								$req_product_url[$rownum++] = $row[PrdUrl];
+							}
+						}
 					}
 
 					// GCM으로 직원에게 푸쉬 발송 시작
@@ -252,7 +302,7 @@
 						$devices[] = $row[GcmRegId];
 					}
 
-					$message = '{"request_code":"'.$request_code.'","room":"'.$fitroom_number.'","prdname":"'.$req_product_name.'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image.'","size":"'.$req_product_size.'","color":"'.$req_product_color.'","count":"1","code":"'.$req_product_shopcode.'","price":"'.$req_product_price.'","stockURL":"'.$req_product_url.'"}';
+					$message = '{"request_code":"'.$request_code.'","room":"'.$fitroom_number.'","count":"'.$rownum.'",products:{{"code":"'.$req_product_shopcode[0].'","prdname":"'.$req_product_name[0].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[0].'","size":"'.$req_product_size[0].'","color":"'.$req_product_color[0].'","price":"'.$req_product_price[0].'","stockURL":"'.$req_product_url[0].'"},{"code":"'.$req_product_shopcode[1].'","prdname":"'.$req_product_name[1].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[1].'","size":"'.$req_product_size[1].'","color":"'.$req_product_color[1].'","price":"'.$req_product_price[1].'","stockURL":"'.$req_product_url[1].'"},{"code":"'.$req_product_shopcode[2].'","prdname":"'.$req_product_name[2].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[2].'","size":"'.$req_product_size[2].'","color":"'.$req_product_color[2].'","price":"'.$req_product_price[2].'","stockURL":"'.$req_product_url[2].'"}}}';
 					$admin = "true";
 
 					include "../lib/gcm/sendPushMessageLib.php";

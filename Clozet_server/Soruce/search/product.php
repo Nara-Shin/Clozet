@@ -80,7 +80,22 @@
 		$product_colors .= $row[PrdColor].",";
 	}
 
-	// Query 5 - 로그 코드 가져오기
+	// Query 5 - 좋아요 유무 가져오기
+	$query = sprintf("SELECT * FROM MemberLike WHERE LikeMember = '%s' AND PrdCode = '%s' AND DeleteYN != 'Y'",
+	mysql_real_escape_string($member_code),
+	mysql_real_escape_string($product_code));
+
+	$result = mysql_query($query);
+
+	$rows = mysql_num_rows($result);
+
+	if($rows > 0){
+		$product_like = "1";
+	}else{
+		$product_like = "0";
+	}
+
+	// Query 6 - 로그 코드 가져오기
 	$query = sprintf("SELECT MAX(LogCode)+1 AS LogCode FROM ProductSearchLog");
 
 	$result = mysql_query($query);
@@ -90,7 +105,7 @@
 	}
 			
 
-	// Query 6 - 검색 로그 입력하기
+	// Query 7 - 검색 로그 입력하기
 	$query = sprintf("INSERT INTO ProductSearchLog(`LogCode`, `SearchMember`, `SearchProduct`, `RegDate`, `ModDate`) VALUES('%s', '%s', '%s', '%s', '%s')",
 	mysql_real_escape_string($log_code),
 	mysql_real_escape_string($member_code),
@@ -102,7 +117,7 @@
 
 		
 	// JSON으로 반환
-	$val = array("product_code" => $product_code, "product_brand" => $product_brand, "product_name" => $product_name, "product_detail" => $product_detail, "product_price" => $product_price, "product_image" => $product_image, "product_sizes" => $product_sizes, "product_colors" => $product_colors, "options" => $options);
+	$val = array("product_code" => $product_code, "product_brand" => $product_brand, "product_name" => $product_name, "product_detail" => $product_detail, "product_price" => $product_price, "product_image" => $product_image, "product_sizes" => $product_sizes, "product_colors" => $product_colors, "product_like" => $product_like, "options" => $options);
 	$output = json_encode($val);
 	echo urldecode($output);
 

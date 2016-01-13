@@ -48,6 +48,8 @@
 
 			$result = mysql_query($query);
 
+			$status = "0";
+
 		}else{
 
 			// Query 3 - 좋아요 코드 가져오기
@@ -69,7 +71,12 @@
 			mysql_real_escape_string(date("Y-m-d H:i:s")));
 
 			$result = mysql_query($query);
-
+			
+			if($result){
+				$status = "1";
+			}else{
+				$status = "0";
+			}
 		}
 
 		if($result){
@@ -81,7 +88,7 @@
 	}
 		
 	// JSON으로 반환
-	$val = array("confirm_message" => $confirm_message);
+	$val = array("confirm_message" => $confirm_message, "status" => $status);
 	$output = json_encode($val);
 	echo urldecode($output);
 
