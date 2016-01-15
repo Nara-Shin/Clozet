@@ -69,6 +69,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        try{
+            if(getIntent().getAction().equals("android.nfc.action.NDEF_DISCOVERED")){
+                Toast.makeText(MainActivity.this,"call ndef",Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+
+        }
+
+
         mContext = this;
 
         setUIView();
@@ -135,11 +144,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceiveMessage(NfcModel[] models) {
                 // TODO Auto-generated method stub
-                //0��° �� ���
-                // model- Ÿ�԰� ���̷ε�  �ƹ��ų� ��� ����(Write �ۿ��� ���� ����� �ν� ����.)
-//                Toast.makeText(MainActivity.this, "type : " + models[0].getTypeStr() + " , " + "payload : " + models[0].getPayloadStr(), Toast.LENGTH_SHORT).show();
                 Toast.makeText(MainActivity.this, models[0].getTypeStr() + "의 피팅룸에 입장했습니다!", Toast.LENGTH_SHORT).show();
-                // ralph, bean
                 RequestParams params = new RequestParams();
                 params.put("fitroom_code", models[0].getPayloadStr());
 
