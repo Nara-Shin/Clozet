@@ -1,26 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_promotion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_weight="1"
-    android:orientation="vertical"
     android:gravity="center_horizontal"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:orientation="horizontal"
         android:gravity="center"
-        >
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="1dp"
-            android:src="@drawable/stroke_black"
-            />
+            android:src="@drawable/stroke_black" />
+
         <TextView
             android:id="@+id/text_brand_name"
             android:layout_width="wrap_content"
@@ -28,51 +26,49 @@
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
             android:text="빈폴"
-            android:textSize="9.33sp"
             android:textColor="#536d79"
-            />
+            android:textSize="9.33sp" />
+
         <ImageView
             android:layout_width="20dp"
             android:layout_height="1dp"
-            android:src="@drawable/stroke_black"
-            />
+            android:src="@drawable/stroke_black" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/text_product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:text="버튼 투 포켓 티셔츠"
-        android:textSize="14sp"
-        android:textColor="#002496"
         android:singleLine="true"
-        />
+        android:text="버튼 투 포켓 티셔츠"
+        android:textColor="#002496"
+        android:textSize="14sp" />
+
     <TextView
         android:id="@+id/text_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="4dp"
-        android:text="32,800"
-        android:textSize="14sp"
-        android:textColor="#000000"
         android:singleLine="true"
-        />
-    <ImageView
+        android:text="32,800"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <com.loopj.android.image.SmartImageView
         android:id="@+id/image_image"
         android:layout_width="153.33dp"
         android:layout_height="153.33dp"
-        android:layout_marginTop="9.33dp"
         android:layout_marginBottom="10dp"
-        android:scaleType="centerCrop"
-        />
+        android:layout_marginTop="9.33dp"
+        android:scaleType="centerCrop" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/pink"
-        />
+        android:background="@color/pink" />
 
 </LinearLayout>

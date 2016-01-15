@@ -65,9 +65,9 @@ public class PromotionAdapter extends ArrayAdapter<PromotionModel> {
 		price.setText(String.valueOf(model.getPrice()));
 		image.setImageDrawable(model.getImage());
 
-		brandName.setTypeface(fontThin);
-		productName.setTypeface(fontBold);
-		price.setTypeface(fontBold);
+//		brandName.setTypeface(fontThin);
+//		productName.setTypeface(fontBold);
+//		price.setTypeface(fontBold);
 
 		return convertView;
 	}

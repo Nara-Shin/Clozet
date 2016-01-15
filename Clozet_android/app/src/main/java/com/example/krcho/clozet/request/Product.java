@@ -4,12 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by krcho on 2015-11-15.
  */
-public class Product {
+public class Product implements Serializable {
     String barcode;
     String product_code;
     String product_brand;
@@ -17,7 +18,9 @@ public class Product {
     String product_detail;
     int product_price;
     String product_photo;
+    boolean product_category; // 1 true - 상의 2 false - 하의
     boolean like;
+    String market_URL;
     ArrayList<String> sizes = new ArrayList<>();
     ArrayList<String> colors = new ArrayList<>();
     ArrayList<Options> options = new ArrayList<>();
@@ -25,7 +28,10 @@ public class Product {
     String selected_size;
     String selected_color;
 
+    public Product(){}
+
     public Product(JSONObject json, String barcode) throws Exception {
+        super();
         try {
             this.setBarcode(barcode);
             this.setProduct_code(json.getString("product_code"));
@@ -44,6 +50,35 @@ public class Product {
             e.printStackTrace();
             throw new Exception();
         }
+    }
+
+    public void setPromotionData(JSONObject json){
+        try {
+            this.setProduct_brand(json.getString("prd_brand"));
+            this.setProduct_name(json.getString("prd_name"));
+            this.setProduct_price(json.getInt("prd_price"));
+            this.setMarket_URL(json.getString("prd_url"));
+            this.setProduct_photo(json.getString("prd_image"));
+            this.setProduct_category((json.getInt("prd_category") == 1));
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    public boolean isProduct_category() {
+        return product_category;
+    }
+
+    public void setProduct_category(boolean product_category) {
+        this.product_category = product_category;
+    }
+
+    public String getMarket_URL() {
+        return market_URL;
+    }
+
+    public void setMarket_URL(String market_URL) {
+        this.market_URL = market_URL;
     }
 
     public String getBarcode() {

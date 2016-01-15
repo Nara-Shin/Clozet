@@ -107,7 +107,7 @@ public class ProcessDialogFragment extends DialogFragment {
                 if (items < 1) {
                     textView.setText("해당 상품을 교환 요청 하였습니다.");
                 } else {
-                    textView.setText("선택한 " + items + "개의 상품을 교환 요청 하였습니다.");
+                    textView.setText("선택한 " + items + "개의 상품을 \n 교환 요청 하였습니다.");
                 }
                 imageView.setImageDrawable(getActivity().getDrawable(R.drawable.push_1));
                 break;

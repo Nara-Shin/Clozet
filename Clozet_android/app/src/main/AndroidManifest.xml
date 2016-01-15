@@ -38,8 +38,12 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/com.example.krcho.clozet"/>
             </intent-filter>
         </activity>
         <activity
@@ -109,6 +113,7 @@
         <activity
             android:name=".promotion.PromotionDialogActivity"
             android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".promotion.PromotionDialog"></activity>
     </application>
 
 </manifest>

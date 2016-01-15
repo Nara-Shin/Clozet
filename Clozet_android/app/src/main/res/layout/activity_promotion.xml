@@ -26,6 +26,7 @@
                     android:layout_width="30.67dp"
                     android:layout_height="30.67dp"
                     android:src="@drawable/btn_back" />
+
             </RelativeLayout>
             <ImageView
                 android:layout_width="147.33dp"
@@ -42,7 +43,7 @@
             android:background="@color/pink"
             />
 
-        <GridView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/promotion_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -54,104 +55,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/promotion_popup"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black_transparency"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:visibility="gone"
-        >
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="1dp"
-                android:src="@drawable/line_pink"
-                />
-            <TextView
-                android:id="@+id/text_brand_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:text="빈폴"
-                android:textSize="12sp"
-                android:textColor="#ffc5c5"
-                />
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="1dp"
-                android:src="@drawable/line_pink"
-                />
-        </LinearLayout>
-        <TextView
-            android:id="@+id/text_product_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8.67dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:text="버튼 투 포켓 티셔츠"
-            android:textSize="20.67sp"
-            android:textColor="#ffffff"
-            android:singleLine="true"
-            />
-        <TextView
-            android:id="@+id/text_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:text="32,800"
-            android:textSize="20.67sp"
-            android:textColor="#ffffff"
-            android:singleLine="true"
-            />
-        <ImageView
-            android:id="@+id/image_image"
-            android:layout_width="316dp"
-            android:layout_height="316dp"
-            android:layout_marginTop="12dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/cont_1"
-            />
-        <ImageView
-            android:id="@+id/btn_clothes"
-            android:layout_width="80.67dp"
-            android:layout_height="80.67dp"
-            android:layout_marginTop="-40.335dp"
-            android:src="@drawable/btn_tshirts"
-            />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            >
-            <Button
-                android:id="@+id/btn_cancel"
-                android:layout_width="127dp"
-                android:layout_height="41dp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="42.67dp"
-                android:background="@drawable/background_guide_cancel"
-                />
-            <Button
-                android:id="@+id/btn_go"
-                android:layout_width="127dp"
-                android:layout_height="41dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="42.67dp"
-                android:background="@drawable/background_promotion_go"
-                />
-        </RelativeLayout>
-    </LinearLayout>
+
 
 </FrameLayout>

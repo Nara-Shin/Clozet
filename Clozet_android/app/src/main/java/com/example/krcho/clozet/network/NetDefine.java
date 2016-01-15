@@ -13,4 +13,5 @@ public interface NetDefine {
     String SET_LIKE = "gallery/like.php";
     String EVALUATION_CLERK = "clerk/evaluation.php";
     String CONFIRM_CHANGE = "change/confirm.php";
+    String PROMOTION = "promotion/list.php";
 }

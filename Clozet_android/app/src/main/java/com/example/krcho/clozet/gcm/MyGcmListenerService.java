@@ -76,6 +76,7 @@ public class MyGcmListenerService extends GcmListenerService {
                 return;
             } catch (Exception e) {
                 e.printStackTrace();
+                return;
             }
         }
 
