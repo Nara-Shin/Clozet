@@ -72,7 +72,12 @@ public class MyGcmListenerService extends GcmListenerService {
          */
         if (message.equals("okay") || message.equals("deliveryokay")) {
             try {
-                ProcessDialogFragment.getInstance().goNext();
+                if (message.equals("okay") && ProcessDialogFragment.getInstance().getProcessnum() == 1) {
+                    ProcessDialogFragment.getInstance().goNext();
+                }
+                else if (message.equals("deliveryokay") && ProcessDialogFragment.getInstance().getProcessnum() == 2) {
+                    ProcessDialogFragment.getInstance().goNext();
+                }
                 return;
             } catch (Exception e) {
                 e.printStackTrace();

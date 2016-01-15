@@ -38,6 +38,14 @@ public class ProcessDialogFragment extends DialogFragment {
     public static int items = 1;
     public static int request_code;
 
+    public static int getProcessnum() {
+        return processnum;
+    }
+
+    public static void setProcessnum(int processnum) {
+        ProcessDialogFragment.processnum = processnum;
+    }
+
     public static ProcessDialogFragment newInstance(int num, int request_code) {
         instance = new ProcessDialogFragment();
         Bundle args = new Bundle();
