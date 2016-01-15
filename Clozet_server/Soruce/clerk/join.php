@@ -24,7 +24,7 @@
 	$android_id = $_POST[android_id];
 
 	// Request Value가 빈 값일 경우 무조건 fail
-	if($gmc_id == "" || $android_id == ""){
+	if($gcm_id == "" || $android_id == ""){
 
 		$confirm_message = "fail";
 
@@ -44,7 +44,18 @@
 
 		if($rows > 0){ // 이미 회원일 경우
 
-			$confirm_message = "success";
+			// Query 3 - GCM ID 업데이트
+			$query = sprintf("UPDATE ClerkInfo SET GcmRegId = '%s', ModDate = NOW() WHERE ClerkCode = '%s'",
+			mysql_real_escape_string($gcm_id),
+			mysql_real_escape_string($clerk_code));
+
+			$result = mysql_query($query);
+
+			if($result){
+				$confirm_message = "success";
+			}else{
+				$confirm_message = "fail";
+			}
 
 		}else{ // 회원이 아닐 경우
 			

@@ -72,21 +72,32 @@ $shopCode = "100001";
 	?>
 	<div class="contents">
 		<h2>Staff Management</h2>
+<?
+		// Query 1 - 상품 정보 가져오기
+		$query = "SELECT * FROM ClerkInfo WHERE WorkingShop = '".$shopCode."'";
+
+		$result = mysql_query($query);
+
+		$rownum = 1;
+
+		while($row = mysql_fetch_array($result)){
+			// Query 2 - 상품 정보 가져오기
+			$query = "SELECT SUM(StarCount)/COUNT(*) AS StarCount FROM ClerkEvaluation WHERE ClerkCode = '".$row[ClerkCode]."'";
+
+			$result2 = mysql_query($query);
+
+			while($row2 = mysql_fetch_array($result2)){
+				$star_count = $row2[StarCount];
+			}
+?>
 		<div class="staff">
-			<div class="name">(1) 최보리</div>
-			<div class="evaluation"><span style="font-size:30px;">8</span><span style="color:#ffbc64; margin-left:60px;">★★★★</span>★</div>
-			<div class="service_count"><span style="font-size:30px;">서비스 횟수</span><span style="font-size:30px; margin-left:80px;">12</span></div>
+			<div class="name"><span><?=$rownum++?></span><span style="margin-left:77px;"><?=$row[ClerkName]?></span></div>
+			<div class="evaluation"><span style="font-size: 24px; font-weight: bold;"><?=ceil($star_count)?></span><span style="color:#ffbc64; margin-left:45px;"><?for($i=1; $i<=ceil($star_count); $i++){echo "★";}?></span><?for($i=1; $i<=5-ceil($star_count); $i++){echo "★";}?></div>
+			<div class="service_count"><span style="font-size:21px; font-weight:bold;">서비스 횟수</span><span style="font-size:21px; font-weight:bold; margin-left:20px;"><?=$row[ServiceCount]?></span></div>
 		</div>
-		<div class="staff">
-			<div class="name">(2) 윤소연</div>
-			<div class="evaluation"><span style="font-size:30px;">8</span><span style="color:#ffbc64; margin-left:60px;">★★★★</span>★</div>
-			<div class="service_count"><span style="font-size:30px;">서비스 횟수</span><span style="font-size:30px; margin-left:80px;">13</span></div>
-		</div>
-		<div class="staff">
-			<div class="name">(2) 신나라</div>
-			<div class="evaluation"><span style="font-size:30px;">10</span><span style="color:#ffbc64; margin-left:50px;">★★★★★</span></div>
-			<div class="service_count"><span style="font-size:30px;">서비스 횟수</span><span style="font-size:30px; margin-left:80px;">14</span></div>
-		</div>
+<?
+		}
+?>
 	</div>
 	</div>
 </body>

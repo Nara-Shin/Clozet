@@ -81,12 +81,12 @@ $shopCode = "100001";
 		<div class="table">
 			<table>
 			<colgroup>
+				<col width="8%" />
 				<col width="10%" />
-				<col width="15%" />
 				<col width="10%" />
+				<col width="22%" />
 				<col width="20%" />
 				<col width="20%" />
-				<col width="15%" />
 				<col width="10%" />
 			</colgroup>
 			<tr>
@@ -101,7 +101,7 @@ $shopCode = "100001";
 
 <?
 			// Query 1 - 상품 정보 가져오기
-			$query = "SELECT PrdCategory, PrdCategory2, PrdShopCode, PrdCode, PrdName, PrdImage FROM ProductInfo WHERE PrdShopCode LIKE '%".$_POST[searchTxt]."%' AND ShopCode = '".$shopCode."'";
+			$query = "SELECT PrdCategory, PrdCategory2, PrdShopCode, PrdCode, PrdName, PrdImage, PrdUrl FROM ProductInfo WHERE PrdShopCode LIKE '%".$_POST[searchTxt]."%' AND ShopCode = '".$shopCode."'";
 
 			$result = mysql_query($query);
 
@@ -112,6 +112,7 @@ $shopCode = "100001";
 				$PrdCode = $row[PrdCode];
 				$PrdName = $row[PrdName];
 				$PrdImage = $row[PrdImage];
+				$PrdUrl = $row[PrdUrl];
 
 				$PrdSize = array();
 				$PrdColor = array();
@@ -141,15 +142,15 @@ $shopCode = "100001";
 			<form method="post" name="stockForm" action="">
 				<tr onclick="changeImage('<?=$PrdImage?>', this);" style="cursor:pointer;">
 					<td style="text-align:center;"><?=$PrdCategory?></td>
-					<td><?=$PrdCategory2?></td>
+					<td style="text-align:center;"><?=$PrdCategory2?></td>
 					<td style="text-align:center;"><?=$PrdShopCode?></td>
-					<td><?=$PrdName?></td>
-					<td style="text-align:center;">
+					<td><a href="<?=$PrdUrl?>" target="_blank" style="padding-left:20px;"><?=$PrdName?></a></td>
+					<td style="padding-left:20px;">
 						<?for($i=0; $i<count($PrdSize); $i++){?>
 						<input type="button" value="<?=$PrdSize[$i]?>" onclick="selectSize(this);" name="size">
 						<?}?>
 					</td>
-					<td style="text-align:center;">
+					<td style="padding-left:20px;">
 						<?for($i=0; $i<count($PrdColor); $i++){?>
 						<input type="button" value="<?=$PrdColor[$i]?>" onclick="selectColor(this);" name="color" style="background-color:#<?=$PrdColor[$i]?>; text-indent:-9999px;">
 						<?}?>
@@ -157,7 +158,7 @@ $shopCode = "100001";
 					<input type="hidden" name="product_size" value="">
 					<input type="hidden" name="product_color" value="">
 					<input type="hidden" name="product_code" value="<?=$PrdCode?>">
-					<td style="text-align:center;"><input type="text" name="stock_count" style="border:none; width:45px; height:30px; font-size:16px; text-align:center;"><input type="button" value="반영" name="stockSubmit" onclick=""></td>
+					<td style="text-align:center;"><input type="text" name="stock_count" style="border:none; width:60px; height:30px; font-size:16px; text-align:center;"><input type="button" value="반영" name="stockSubmit" onclick="" style="background-color:#eee; width:50px; font-size:15px; font-weight:bold;"></td>
 				</tr>
 			</form>
 <?
@@ -165,9 +166,13 @@ $shopCode = "100001";
 ?>			
 			</table>
 		</div>
-		<div class="image">
-			<img src="../img/product/100001.jpg" width="300" id="productImage"><br/>
-			<input type="button" value="주문 요청하기" onclick="alert('주문이 완료되었습니다.');" style="width:300px; height:40px; font-size:17px; background-color:#ffc5c5; border:none; font-weight:bold;">
+		<div class="right">
+			<div class="image">
+				<img src="../img/product/100000.jpg" width="300" id="productImage"><br/>
+			</div>
+			<div class="button">
+				<input type="button" value="주문 요청하기" onclick="alert('주문이 완료되었습니다.');" style="width:300px; height:40px; font-size:17px; background-color:#ffc5c5; border:none; font-weight:bold;">
+			</div>
 		</div>
 	</div>
 	</div>
