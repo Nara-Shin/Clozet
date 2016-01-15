@@ -85,7 +85,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 //                    size.setTextColor(itemView.getContext().getColor(R.color.navy));
                     data.setSelectedSize(item);
                     for (int i = 0; i < sizes.getChildCount(); i++) {
-                        sizes.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+                        sizes.getChildAt(i).setBackground(itemView.getContext().getDrawable(R.drawable.box_order));
                     }
                     v.setBackgroundColor(Color.parseColor("#3C63B9"));
                 }
@@ -111,7 +111,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
                     data.setSelectedColor(item);
 
                     for (int i = 0; i < colors.getChildCount(); i++) {
-                        colors.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+                        colors.getChildAt(i).setBackground(itemView.getContext().getDrawable(R.drawable.box_order));
                     }
                     v.setBackgroundColor(Color.parseColor("#3C63B9"));
                 }
