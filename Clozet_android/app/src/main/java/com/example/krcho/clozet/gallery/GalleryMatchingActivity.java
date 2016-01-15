@@ -1,5 +1,6 @@
 package com.example.krcho.clozet.gallery;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.krcho.clozet.R;
+import com.hojung.nfc.HojungNFCReadLibrary;
+import com.hojung.nfc.interfaces.OnHojungNFCListener;
+import com.hojung.nfc.model.NfcModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -40,6 +44,42 @@ public class GalleryMatchingActivity extends AppCompatActivity {
     private ImageView guide;
     private Runnable mRunnable;
 
+    //NFC
+    HojungNFCReadLibrary hojungNFCReadLibrary;
+    Context mContext;
+
+    private void initNFC() {
+        try {
+            Log.d("NFC", "intent : " + getIntent().getAction());
+            Intent intent = getIntent();
+            hojungNFCReadLibrary.onResume(intent);
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initNFC();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("NFC", "onPause");
+        hojungNFCReadLibrary.onPause();
+
+    }
+
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        Log.d("NFC", "onNewIntent");
+        hojungNFCReadLibrary.onNewIntent(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +87,24 @@ public class GalleryMatchingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gallery_matching);
 
         init();
+
+        mContext = this;
+        //NFC is use?
+        android.nfc.NfcAdapter mNfcAdapter = android.nfc.NfcAdapter.getDefaultAdapter(mContext);
+        hojungNFCReadLibrary = new HojungNFCReadLibrary(getIntent(), mContext, new OnHojungNFCListener() {
+
+            @Override
+            public void onReceiveMessage(NfcModel[] models) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onError(String arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
     }
 
     private void init() {

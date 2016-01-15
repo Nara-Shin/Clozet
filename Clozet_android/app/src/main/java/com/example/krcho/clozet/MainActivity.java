@@ -135,15 +135,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReceiveMessage(NfcModel[] models) {
                 // TODO Auto-generated method stub
-<<<<<<< HEAD
-                //0��° �� ���
-                // model- Ÿ�԰� ���̷ε�  �ƹ��ų� ��� ����(Write �ۿ��� ���� ����� �ν� ����.)
-//                Toast.makeText(MainActivity.this, "type : " + models[0].getTypeStr() + " , " + "payload : " + models[0].getPayloadStr(), Toast.LENGTH_SHORT).show();
-
-                // ralph, bean
-=======
-                Toast.makeText(MainActivity.this, models[0].getTypeStr() + "의 피팅룸에 입장했습니다!", Toast.LENGTH_SHORT).show();
->>>>>>> 07d453d910246224bb72d7739452dafa123164bc
                 RequestParams params = new RequestParams();
                 params.put("fitroom_code", models[0].getPayloadStr());
 

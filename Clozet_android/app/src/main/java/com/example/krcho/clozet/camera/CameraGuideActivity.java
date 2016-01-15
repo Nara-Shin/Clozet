@@ -24,6 +24,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.krcho.clozet.R;
+import com.hojung.nfc.HojungNFCReadLibrary;
+import com.hojung.nfc.interfaces.OnHojungNFCListener;
+import com.hojung.nfc.model.NfcModel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,6 +57,41 @@ public class CameraGuideActivity extends AppCompatActivity implements View.OnCli
     private ImageView count, guide;
     private CountDownTimer countDown3, countDown5;
 
+    //NFC
+    HojungNFCReadLibrary hojungNFCReadLibrary;
+
+    private void initNFC() {
+        try {
+            Log.d("NFC", "intent : " + getIntent().getAction());
+            Intent intent = getIntent();
+            hojungNFCReadLibrary.onResume(intent);
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initNFC();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("NFC", "onPause");
+        hojungNFCReadLibrary.onPause();
+
+    }
+
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        Log.d("NFC", "onNewIntent");
+        hojungNFCReadLibrary.onNewIntent(intent);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +103,23 @@ public class CameraGuideActivity extends AppCompatActivity implements View.OnCli
         mCameraFacing = Camera.CameraInfo.CAMERA_FACING_FRONT;
 
         init();
+
+        //NFC is use?
+        android.nfc.NfcAdapter mNfcAdapter = android.nfc.NfcAdapter.getDefaultAdapter(mContext);
+        hojungNFCReadLibrary = new HojungNFCReadLibrary(getIntent(), mContext, new OnHojungNFCListener() {
+
+            @Override
+            public void onReceiveMessage(NfcModel[] models) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onError(String arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
 
         // 타이머 관련 인스턴스 생성
         countDown3 = new CountDownTimer(4000, 1000) {

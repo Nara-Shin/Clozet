@@ -1,5 +1,6 @@
 package com.example.krcho.clozet.camera;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +23,9 @@ import com.example.krcho.clozet.barcode.BarcodeDetactActivity;
 import com.example.krcho.clozet.network.CommonHttpClient;
 import com.example.krcho.clozet.network.NetDefine;
 import com.example.krcho.clozet.request.Product;
+import com.hojung.nfc.HojungNFCReadLibrary;
+import com.hojung.nfc.interfaces.OnHojungNFCListener;
+import com.hojung.nfc.model.NfcModel;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -41,13 +45,64 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
     private ImageView previewImage, backgroundImage;
     private Button imageBarcode1Btn, imageBarcode2Btn, barcodeBtn, cancelBtn, saveBtn;
     private File file, sampleFile;
+    //NFC
+    HojungNFCReadLibrary hojungNFCReadLibrary;
+    Context mContext;
 
+    private void initNFC() {
+        try {
+            Log.d("NFC", "intent : " + getIntent().getAction());
+            Intent intent = getIntent();
+            hojungNFCReadLibrary.onResume(intent);
+        } catch (Exception e) {
+
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initNFC();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("NFC", "onPause");
+        hojungNFCReadLibrary.onPause();
+
+    }
+
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        Log.d("NFC", "onNewIntent");
+        hojungNFCReadLibrary.onNewIntent(intent);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_preview);
 
         init();
+
+        //NFC is use?
+        android.nfc.NfcAdapter mNfcAdapter = android.nfc.NfcAdapter.getDefaultAdapter(mContext);
+        hojungNFCReadLibrary = new HojungNFCReadLibrary(getIntent(), mContext, new OnHojungNFCListener() {
+
+            @Override
+            public void onReceiveMessage(NfcModel[] models) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void onError(String arg0) {
+                // TODO Auto-generated method stub
+
+            }
+        });
     }
 
     private void init() {
