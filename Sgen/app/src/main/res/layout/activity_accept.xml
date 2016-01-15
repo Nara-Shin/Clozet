@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="55.33dp"
+        android:background="#f6c0c0">
+
+        <ImageView
+            android:layout_width="147.33dp"
+            android:layout_height="30.67dp"
+            android:id="@+id/imageView2"
+            android:layout_gravity="center"
+            android:src="@drawable/main_accept" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="14.67dp"
+            android:id="@+id/frameLayout_fragment_accept_cancel">
+
+            <ImageView
+                android:layout_width="30.67dp"
+                android:layout_height="30.67dp"
+                android:id="@+id/imageView_fragment_accept_cancel"
+
+                android:src="@drawable/main_cancel_btn" />
+        </FrameLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="55.33dp"
+        android:background="#002496">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="해당의류(x)를"
+                android:id="@+id/textView_fragment_1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="12.67dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&quot;x번&quot; 피팅룸에 전달해주세요."
+                android:id="@+id/textView_fragment_2"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="12.67dp" />
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:id="@+id/listView_fragment_accept" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:clickable="false"
+            android:layout_gravity="center">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/frameLayout_fragment_accept_accept"
+                android:clickable="true">
+
+                <ImageView
+                    android:layout_width="126.67dp"
+                    android:layout_height="41.33dp"
+                    android:id="@+id/imageView_fragment_accept_accept"
+                    android:src="@drawable/finish_btn_click"
+                    android:clickable="false" />
+            </FrameLayout>
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

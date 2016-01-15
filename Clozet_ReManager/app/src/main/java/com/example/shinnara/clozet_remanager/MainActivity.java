@@ -32,6 +32,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     int mCurrentFragmentIndex;
     public final static int FRAGMENT_ONE = 0;
     public final static int FRAGMENT_TWO = 1;
+
     //GCM
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = "MainActivity";
