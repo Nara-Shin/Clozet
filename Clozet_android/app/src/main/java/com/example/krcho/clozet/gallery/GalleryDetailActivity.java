@@ -36,7 +36,7 @@ import cz.msebera.android.httpclient.Header;
 public class GalleryDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout popup;
-    private ImageView image, backBtn, deleteBtn, barcodeBtn, likeBtn, shareBtn, clothesImage;
+    private ImageView image, backBtn, deleteBtn, barcodeBtn, likeBtn, shareBtn, clothesImage, guide;
     private SmartImageView popupImage;
     private TextView brandNameText, productNameText, priceText;
     private Button cancelBtn, goBtn, tshritsBtn, skirtBtn;
@@ -45,6 +45,7 @@ public class GalleryDetailActivity extends AppCompatActivity implements View.OnC
     private boolean isBarcodeActive = true;
     private HashMap<Integer, Product> list = new HashMap<>(2);
     private int curruntPopup;
+    private Runnable mRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,21 @@ public class GalleryDetailActivity extends AppCompatActivity implements View.OnC
         skirtBtn = (Button) findViewById(R.id.btn_skirt);
         cancelBtn = (Button) findViewById(R.id.btn_cancel);
         goBtn = (Button) findViewById(R.id.btn_go);
+        guide = (ImageView) findViewById(R.id.background_guide);
+
+        guide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guide.setVisibility(View.GONE);
+            }
+        });
+
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                guide.setVisibility(View.GONE);
+            }
+        };
 
         popupImage = (SmartImageView) findViewById(R.id.image_image);
         clothesImage = (ImageView) findViewById(R.id.image_clothes);

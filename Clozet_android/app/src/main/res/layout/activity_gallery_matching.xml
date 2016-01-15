@@ -39,4 +39,13 @@
             />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/background_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/background_matchingguide"
+        />
+
 </RelativeLayout>
