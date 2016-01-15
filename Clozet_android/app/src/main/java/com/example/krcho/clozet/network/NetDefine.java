@@ -14,4 +14,6 @@ public interface NetDefine {
     String EVALUATION_CLERK = "clerk/evaluation.php";
     String CONFIRM_CHANGE = "change/confirm.php";
     String PROMOTION = "promotion/list.php";
+    String FIND_CATEGORY = "product/check_category.php";
+
 }

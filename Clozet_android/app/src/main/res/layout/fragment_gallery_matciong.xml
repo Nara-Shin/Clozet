@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.krcho.clozet.gallery.GalleryMatciongFragment">
+    tools:context=".gallery.GalleryMatchingFragment">
 
     <ImageView
         android:id="@+id/gallery_matching_image"

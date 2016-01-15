@@ -1,6 +1,7 @@
 package com.example.krcho.clozet.gallery;
 
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,12 +11,13 @@ import android.widget.ImageView;
 
 import com.example.krcho.clozet.R;
 
-public class GalleryMatciongFragment extends Fragment {
+public class GalleryMatchingFragment extends Fragment {
 
     ImageView imageView;
+    Bitmap bitmap;
 
-    public GalleryMatciongFragment() {
-        // Required empty public constructor
+    public GalleryMatchingFragment(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
 
@@ -25,6 +27,7 @@ public class GalleryMatciongFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_gallery_matciong, container, false);
 
         imageView = (ImageView) view.findViewById(R.id.gallery_matching_image);
+        imageView.setImageBitmap(bitmap);
 
         return view;
     }

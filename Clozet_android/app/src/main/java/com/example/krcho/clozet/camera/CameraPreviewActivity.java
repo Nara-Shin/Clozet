@@ -3,9 +3,8 @@ package com.example.krcho.clozet.camera;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.hardware.Camera;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
@@ -15,15 +14,33 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.example.krcho.clozet.MyAccount;
 import com.example.krcho.clozet.R;
+import com.example.krcho.clozet.barcode.BarcodeDetactActivity;
+import com.example.krcho.clozet.network.CommonHttpClient;
+import com.example.krcho.clozet.network.NetDefine;
+import com.example.krcho.clozet.request.Product;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.HashMap;
+
+import cz.msebera.android.httpclient.Header;
 
 public class CameraPreviewActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private String path;
+    private String path, samplePath, newPath, newSamplePath;
     private Bitmap bitmap, background;
     private ImageView previewImage, backgroundImage;
     private Button imageBarcode1Btn, imageBarcode2Btn, barcodeBtn, cancelBtn, saveBtn;
+    private File file, sampleFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +53,10 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
     private void init() {
         Intent intent = getIntent();
         path = intent.getExtras().getString("file");
+        samplePath = intent.getExtras().getString("sampleFile");
         bitmap = BitmapFactory.decodeFile(path);
+        file = new File(path);
+        sampleFile = new File(samplePath);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 6;
@@ -70,6 +90,7 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
                 break;
 
             case R.id.btn_barcode:
+                startActivityForResult(new Intent(getApplicationContext(), BarcodeDetactActivity.class), 1000);
                 break;
 
             case R.id.btn_cancel:
@@ -77,8 +98,93 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
                 break;
 
             case R.id.btn_save:
+                file.renameTo(new File(path));
+                sampleFile.renameTo(new File(samplePath));
+                finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000 && resultCode == RESULT_OK && data.getStringExtra("barcode") != null) {
+            findCategory(data.getStringExtra("barcode"));
+        }
+    }
+
+    public void findCategory(final String barcode) {
+
+        RequestParams params = new RequestParams();
+        params.put("barcode", barcode);
+
+        CommonHttpClient.post(NetDefine.FIND_CATEGORY, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.d("response", response.toString());
+
+                try {
+                    if (response.getString("prd_category").equals("1")) { // 상의
+                        // 원본 파일명 바꾸기
+                        String[] split = path.split("\\$");
+                        newPath = split[0] + "$" + barcode + "$" + split[2] + "$" + split[3];
+
+                        // 샘플 파일명 바꾸기
+                        String[] sampleSplit = samplePath.split("\\$");
+                        newSamplePath = sampleSplit[0] + "$" + barcode + "$" + sampleSplit[2] + "$" + sampleSplit[3];
+
+                        searchBarcode(barcode, 1);
+                    }
+                    if (response.getString("prd_category").equals("2")) { // 하의
+                        // 원본 파일명 바꾸기
+                        String[] split = path.split("\\$");
+                        newPath = split[0] + "$" + split[1] + "$" + barcode + "$" + split[3];
+
+                        // 샘플 파일명 바꾸기
+                        String[] sampleSplit = samplePath.split("\\$");
+                        newSamplePath = sampleSplit[0] + "$" + sampleSplit[1] + "$" + barcode + "$" + sampleSplit[3];
+
+                        searchBarcode(barcode, 2);
+                    }
+
+                    path = newPath;
+                    samplePath = newSamplePath;
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "잘못된 데이터입니다. 다시 시도해주세요!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void searchBarcode(final String barcode, final int category) {
+        RequestParams params = new RequestParams();
+        params.put("barcode", barcode);
+        try {
+            params.put("member_code", MyAccount.getInstance().getMember_code());
+        } catch (Exception e) {
+            params.put("member_code", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
+        }
+
+        CommonHttpClient.post(NetDefine.SEARCH_BARCODE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.d("response", response.toString());
+                try {
+                    if (category == 1) {
+                        imageBarcode1Btn.setVisibility(View.VISIBLE);
+                    }
+                    if (category == 2){
+                        imageBarcode2Btn.setVisibility(View.VISIBLE);
+                    }
+                    Toast.makeText(getApplicationContext(), response.getString("product_name"), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public Bitmap blurBitmap(Bitmap bitmap){

@@ -19,6 +19,7 @@ public class Product implements Serializable {
     int product_price;
     String product_photo;
     boolean product_category; // 1 true - 상의 2 false - 하의
+    String product_url;
     boolean like;
     String market_URL;
     ArrayList<String> sizes = new ArrayList<>();
@@ -196,5 +197,13 @@ public class Product implements Serializable {
             }
         }
         return "-1";
+    }
+
+    public String getProduct_url() {
+        return this.product_url;
+    }
+
+    public void setProduct_url(String product_url) {
+        this.product_url = product_url;
     }
 }

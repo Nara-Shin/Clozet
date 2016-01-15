@@ -38,6 +38,7 @@
             android:layout_width="68dp"
             android:layout_height="35dp"
             android:layout_centerHorizontal="true"
+            android:visibility="gone"
             android:background="@drawable/background_preview_image_barcode"
             />
 
@@ -47,6 +48,7 @@
             android:layout_height="35dp"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
+            android:visibility="gone"
             android:background="@drawable/background_preview_image_barcode2"
             />
 
