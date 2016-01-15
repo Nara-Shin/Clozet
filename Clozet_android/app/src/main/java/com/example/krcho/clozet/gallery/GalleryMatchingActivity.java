@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.krcho.clozet.R;
 
@@ -36,6 +37,8 @@ public class GalleryMatchingActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private File[] fileList;
     private LoadImageTask task;
+    private ImageView guide;
+    private Runnable mRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,22 @@ public class GalleryMatchingActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        guide = (ImageView) findViewById(R.id.background_guide);
+
+        guide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                guide.setVisibility(View.GONE);
+            }
+        });
+
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                guide.setVisibility(View.GONE);
+            }
+        };
 
         upPager = (ViewPager) findViewById(R.id.pager_up);
         downPager = (ViewPager) findViewById(R.id.pager_down);
