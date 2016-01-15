@@ -122,7 +122,12 @@
 				$devices[] = $row[GcmRegId];
 			}
 
-			$message = '{"request_code":"'.$request_code.'","room":"'.$fitroom_number.'","count":"'.$rownum.'",products:[{"code":"'.$req_product_shopcode[0].'","prdname":"'.$req_product_name[0].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[0].'","size":"'.$req_product_size[0].'","color":"'.$req_product_color[0].'","price":"'.$req_product_price[0].'","stockURL":"'.$req_product_url[0].'"},{"code":"'.$req_product_shopcode[1].'","prdname":"'.$req_product_name[1].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[1].'","size":"'.$req_product_size[1].'","color":"'.$req_product_color[1].'","price":"'.$req_product_price[1].'","stockURL":"'.$req_product_url[1].'"},{"code":"'.$req_product_shopcode[2].'","prdname":"'.$req_product_name[2].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[2].'","size":"'.$req_product_size[2].'","color":"'.$req_product_color[2].'","price":"'.$req_product_price[2].'","stockURL":"'.$req_product_url[2].'"}]}';
+			for($i=0; $i<count($req_product_name); $i++){
+				$products_string .= '{"code":"'.$req_product_shopcode[$i].'","prdname":"'.$req_product_name[$i].'","img":"http://godeung.woobi.co.kr/clozet/img/product/'.$req_product_image[$i].'","size":"'.$req_product_size[$i].'","color":"'.$req_product_color[$i].'","price":"'.$req_product_price[$i].'","stockURL":"'.$req_product_url[$i].'"}';
+				if($i < (count($req_product_name) - 1)) $products_string .= ",";
+			}
+
+			$message = '{"request_code":"'.$request_code.'","room":"'.$fitroom_number.'","count":"'.$rownum.'",products:['.$products_string.']}';
 			$admin = "true";
 
 			include "../lib/gcm/sendPushMessageLib.php";
