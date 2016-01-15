@@ -40,7 +40,7 @@ public class GalleryDetailActivity extends AppCompatActivity implements View.OnC
     private SmartImageView popupImage;
     private TextView brandNameText, productNameText, priceText;
     private Button cancelBtn, goBtn, tshritsBtn, skirtBtn;
-    private String filePath, sampleFilePath, fileName;
+    private String filePath, sampleFilePath;
     private Bitmap bitmap;
     private boolean isBarcodeActive = true;
     private HashMap<Integer, Product> list = new HashMap<>(2);
@@ -84,7 +84,6 @@ public class GalleryDetailActivity extends AppCompatActivity implements View.OnC
         goBtn.setOnClickListener(this);
 
         Intent intent = getIntent();
-        fileName = intent.getExtras().getString("fileName");
         filePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Clozet/" + intent.getExtras().getString("fileName");
         sampleFilePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/Clozet/Sample/" + intent.getExtras().getString("fileName");
         bitmap = BitmapFactory.decodeFile(filePath);
@@ -137,8 +136,6 @@ public class GalleryDetailActivity extends AppCompatActivity implements View.OnC
                     params.put("member_code", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
                 }
 
-                Log.d("barcode", list.get(0).getBarcode());
-
                 CommonHttpClient.post(NetDefine.SET_LIKE, params, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -153,7 +150,7 @@ public class GalleryDetailActivity extends AppCompatActivity implements View.OnC
                             } else {
                                 likeBtn.setImageDrawable(getApplicationContext().getDrawable(R.drawable.btn_like));
                             }
-                        } catch (JSONException e) {
+                        } catch (Exception e) {
                             Toast.makeText(getApplicationContext(), "바코드가 등록되어있지 않습니다.", Toast.LENGTH_SHORT);
                         }
 
@@ -163,8 +160,7 @@ public class GalleryDetailActivity extends AppCompatActivity implements View.OnC
 
             case R.id.btn_share:
                 String type = "image/*";
-                String fileName = "/" + fileName;
-                String mediaPath = Environment.getExternalStorageDirectory() + filename;
+                String mediaPath = filePath;
 
                 createInstagramIntent(type, mediaPath);
                 break;
