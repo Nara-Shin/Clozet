@@ -14,6 +14,7 @@ public class CallListAdapter extends BaseAdapter {
     private ArrayList<CallListItem> items;
     private Context context;
     private static CallListAdapter adapter;
+    public ArrayList<String> requestCodeArray;
 
 
     public static CallListAdapter getInstance(){
@@ -25,7 +26,12 @@ public class CallListAdapter extends BaseAdapter {
 
 
 
-    private CallListAdapter(){items=new ArrayList<>();}
+    private CallListAdapter(){
+
+        items=new ArrayList<>();
+        requestCodeArray=new ArrayList<>();
+
+    }
 
     @Override
     public int getCount() {

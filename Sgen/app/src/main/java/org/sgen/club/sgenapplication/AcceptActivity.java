@@ -72,32 +72,40 @@ public class AcceptActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, "수락이 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                ArrayList<CallListItem> items=adapter.getAllItem();
-                if(!items.isEmpty()){
 
-                    RequestParams params=new RequestParams();
-                    params.put("request_code", items.get(0).getRequest_code());
-                    params.put("confirm", "deliveryokay");
-                    CommonHttpClient.post(NetDefine.CONFIRM_URL, params, new JsonHttpResponseHandler() {
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            super.onSuccess(statusCode, headers, response);
-                            try {
-                                if (response.has("confirm_message")) {
-                                    LogProcess.normalLog(getClass(), "accept_confirm_message : " + response.getString("confirm_message"));
+                if(!adapter.requestCodeArray.isEmpty()){
 
+                    for(String str:adapter.requestCodeArray){
+                        RequestParams params=new RequestParams();
+                        params.put("request_code", str);
+                        params.put("confirm", "deliveryokay");
+                        CommonHttpClient.post(NetDefine.CONFIRM_URL, params, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                super.onSuccess(statusCode, headers, response);
+                                try {
+                                    if (response.has("confirm_message")) {
+                                        LogProcess.normalLog(getClass(), "accept_confirm_message : " + response.getString("confirm_message"));
+                                        Toast.makeText(AcceptActivity.this,"accept_confirm_message : " + response.getString("confirm_message"),Toast.LENGTH_SHORT).show();
+
+                                        if(response.getString("confirm_message").equals("success")){
+                                            Intent intent=new Intent().putExtra("finish_success",true);
+                                            AcceptActivity.this.setResult(RESULT_OK, intent);
+                                            finish();
+                                        }else{
+                                            Toast.makeText(AcceptActivity.this,"전송 실패 다시 시도",Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    LogProcess.errorLog(e);
                                 }
-                            } catch (Exception e) {
-                                LogProcess.errorLog(e);
                             }
-
-                        }
-                    });
-
+                        });
+                    }
                 }
                 adapter.removeAllItem();
 
-                finish();
             }
         });
         frameLayout_fragment_accept_cancel.setOnClickListener(new View.OnClickListener() {
@@ -118,9 +126,15 @@ public class AcceptActivity extends Activity {
                                     LogProcess.normalLog(getClass(), "cancel confirm_message : " + response.getString("confirm_message"));
                                     if (response.getString("confirm_message").equals("fail")) {
                                         Toast.makeText(context,"서버에서도 거절은 거절한다",Toast.LENGTH_SHORT).show();
+                                        Intent intent=new Intent().putExtra("reject_success",false);
+                                        AcceptActivity.this.setResult(RESULT_OK, intent);
+                                        AcceptActivity.this.finish();
                                     }else{
                                         Toast.makeText(context, "거절은 거절하려고 했지만 봐준다.", Toast.LENGTH_SHORT).show();
                                         adapter.removeAllItem();
+                                        Intent intent=new Intent().putExtra("reject_success",true);
+                                        AcceptActivity.this.setResult(RESULT_OK, intent);
+                                        AcceptActivity.this.finish();
                                     }
                                 }
                             } catch (Exception e) {
@@ -136,7 +150,7 @@ public class AcceptActivity extends Activity {
                     });
 
                 }
-                finish();
+
             }
         });
         imageView_fragment_accept_accept.setOnTouchListener(new View.OnTouchListener() {

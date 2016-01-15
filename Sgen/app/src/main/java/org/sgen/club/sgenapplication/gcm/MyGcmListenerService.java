@@ -159,7 +159,7 @@ public class MyGcmListenerService extends GcmListenerService {
 //        Intent intent = this.getPackageManager().getLaunchIntentForPackage("org.sgen.club.sgenapplication");
         Intent intent=new Intent(this,MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra("roomNumber",roomNumber);//key, value
+        intent.putExtra("roomNumber", roomNumber);//key, value
 
         intent.putExtra("prdName",prdName);//key, value
         intent.putExtra("imageUrl",imageUrl);//key, value
@@ -171,13 +171,25 @@ public class MyGcmListenerService extends GcmListenerService {
         intent.putExtra("stockURL", stockURL);
         intent.putExtra("request_code", request_code);
 
+        CallListAdapter adapter = CallListAdapter.getInstance();
+
+
+        if(!arrayList.isEmpty()){
+            for(int i=0;i<arrayList.size();i++){
+
+                if(!adapter.requestCodeArray.contains(arrayList.get(i).getRequest_code())){
+                    adapter.requestCodeArray.add(arrayList.get(i).getRequest_code());
+                }
+
+            }
+        }
+
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
-                CallListAdapter adapter = CallListAdapter.getInstance();
 
-                LogProcess.normalLog(getClass(),"color : "+arrayList.get(0).getColor());
+                CallListAdapter adapter = CallListAdapter.getInstance();
 
                 adapter.addAllItems(arrayList);
             }

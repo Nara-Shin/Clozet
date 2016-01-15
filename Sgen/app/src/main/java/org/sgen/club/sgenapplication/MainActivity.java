@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         findView();
         imageView_activity_main_noti.setVisibility(View.VISIBLE);
-        Glide.with(MainActivity.this).load(NOTI_URL).into(imageView_activity_main_noti);
+        Glide.with(MainActivity.this).load(R.drawable.noti_blank).into(imageView_activity_main_noti);
         adapter = CallListAdapter.getInstance();
 
         Intent intent = getIntent();//인텐트
@@ -133,6 +133,7 @@ public class MainActivity extends Activity {
     }
 
     private void processIntent(Intent intent) {
+
         if (intent.hasExtra(QuickstartPreferences.REGISTRATION_COMPLETE)) {
 
 
@@ -231,22 +232,41 @@ public class MainActivity extends Activity {
 //        adapter.addItem(item);
         listView_activity_main_request.setAdapter(adapter);
         listView_activity_main_search.setAdapter(adapter);
-        allViewGone();
-        linearLayout_activity_main_request.setVisibility(View.VISIBLE);
+        if(adapter.getCount()>0){
+            allViewGone();
+            linearLayout_activity_main_request.setVisibility(View.VISIBLE);
+        }
+
 
 
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_ACCEPT) {
-            allViewGone();
-            if (adapter.getAllItem().isEmpty()) {
-                imageView_activity_main_noti.setVisibility(View.VISIBLE);
-            } else {
-                linearLayout_activity_main_request.setVisibility(View.VISIBLE);
-            }
+        if (requestCode == REQUEST_CODE_ACCEPT&&resultCode==RESULT_OK) {
+            LogProcess.normalLog(getClass(),"REQUEST_CODE_ACCEPT || RESULT_OK");
+            if(data.hasExtra("reject_success")){
+                allViewGone();
+                if(data.getBooleanExtra("reject_success",true)){
+                    imageView_activity_main_noti.setVisibility(View.VISIBLE);
+                    LogProcess.normalLog(getClass(), "Reject Success");
 
+                }else{
+                    linearLayout_activity_main_request.setVisibility(View.VISIBLE);
+                    LogProcess.normalLog(getClass(), "Reject fail");
+
+                }
+            }
+            if(data.hasExtra("finish_success")){
+                allViewGone();
+                if(data.getBooleanExtra("finish_success",true)) {
+                    imageView_activity_main_noti.setVisibility(View.VISIBLE);
+                    LogProcess.normalLog(getClass(), "Finish Success");
+                }else{
+                    Toast.makeText(MainActivity.this,"wrong way",Toast.LENGTH_SHORT).show();
+
+                }
+            }
 
         }
 
@@ -309,6 +329,7 @@ public class MainActivity extends Activity {
                 if (founditems.size() > 0) {
                     adapter.changeAllItem(founditems);
 
+
                 } else {
                     adapter.removeAllItem();
                 }
@@ -330,9 +351,9 @@ public class MainActivity extends Activity {
                 intent.putExtra("roomNumber", roomNumber);
 
                 ArrayList<CallListItem> items = adapter.getAllItem();
-                for (CallListItem item : items) {
+                for (String item : adapter.requestCodeArray) {
                     RequestParams params = new RequestParams();
-                    params.put("request_code", item.getRequest_code());
+                    params.put("request_code", item);
                     params.put("confirm", "okay");
                     CommonHttpClient.post(NetDefine.CONFIRM_URL, params, new JsonHttpResponseHandler() {
                         @Override
@@ -341,6 +362,8 @@ public class MainActivity extends Activity {
                             try {
                                 if (response.has("confirm_message")) {
                                     LogProcess.normalLog(getClass(), "confirm_message : " + response.getString("confirm_message"));
+                                    Toast.makeText(MainActivity.this,"accept_confirm_message : " + response.getString("confirm_message"),Toast.LENGTH_SHORT).show();
+
                                 }
                             } catch (Exception e) {
                                 LogProcess.errorLog(e);
