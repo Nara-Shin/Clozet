@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,13 +14,24 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.example.krcho.clozet.MyAccount;
 import com.example.krcho.clozet.R;
+import com.example.krcho.clozet.network.CommonHttpClient;
+import com.example.krcho.clozet.network.NetDefine;
+import com.example.krcho.clozet.request.Product;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 public class GalleryActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,
         View.OnClickListener {
@@ -27,8 +39,9 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
     private RelativeLayout backBtn;
     private ImageView dateBtn, brandBtn, likeBtn;
     private GridView gridView;
+    private ProgressBar progressBar;
     private File[] fileList;
-    private List<GalleryModel> items;
+    public static List<GalleryModel> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +54,8 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
     @Override
     protected void onResume() {
         super.onResume();
+
+        progressBar.setVisibility(View.VISIBLE);
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Clozet");
         File sampleStorageDir = new File(mediaStorageDir.getPath() + "/Sample");
@@ -56,6 +71,7 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
         dateBtn = (ImageView) findViewById(R.id.gallery_tab_date);
         brandBtn = (ImageView) findViewById(R.id.gallery_tab_brand);
         likeBtn = (ImageView) findViewById(R.id.gallery_tab_like);
+        progressBar = (ProgressBar) findViewById(R.id.gallery_progress);
 
         backBtn.setOnClickListener(this);
         dateBtn.setOnClickListener(this);
@@ -95,16 +111,16 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
             items = new ArrayList<>();
 
             for (int i=0; i<fileList.length; i++) {
-                GalleryModel model = new GalleryModel();
-                model.setBrandName("BRAND NAME ");
-                model.setProductName("버튼 투 포켓 티셔츠 ");
-                model.setPrice(32800);
-                model.setImage(bitmap[i]);
-                model.setFileName(fileList[i].getName());
-                items.add(model);
+                String[] split = fileList[i].getPath().split("\\$");
+                if (split[1].equals("") && split[2].equals("")) { // 바코드 등록이 되어있지 않은 경우
+                    items.add(new GalleryModel(bitmap[i], fileList[i].getName()));
+                } else {
+                    searchBarcode(split[1], bitmap[i], fileList[i].getName());
+                }
             }
 
             gridView.setAdapter(new GalleryAdapter(getApplicationContext(), R.layout.item_gallery, items));
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -121,6 +137,32 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(GalleryActivity.this, GalleryDetailActivity.class);
         intent.putExtra("fileName", items.get(position).getFileName());
+        intent.putExtra("barcode", items.get(position).getBarcode());
         startActivity(intent);
+    }
+
+    public void searchBarcode(final String barcode, final Bitmap bitmap, final String fileName) {
+        RequestParams params = new RequestParams();
+        params.put("barcode", barcode);
+        try {
+            params.put("member_code", MyAccount.getInstance().getMember_code());
+        } catch (Exception e) {
+            params.put("member_code", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
+        }
+
+        CommonHttpClient.post(NetDefine.SEARCH_BARCODE, params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.d("response", response.toString());
+                try {
+                    items.add(new GalleryModel(response, barcode, bitmap, fileName));
+                    gridView.setAdapter(new GalleryAdapter(getApplicationContext(), R.layout.item_gallery, items));
+                    progressBar.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

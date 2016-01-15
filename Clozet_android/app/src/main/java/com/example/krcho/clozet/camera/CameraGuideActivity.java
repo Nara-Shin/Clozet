@@ -348,7 +348,8 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
                 camera.startPreview();
 
                 Intent intent = new Intent(context, CameraPreviewActivity.class);
-                intent.putExtra("file", pictureFile[0].toString());
+                intent.putExtra("file", pictureFile[0].getPath());
+                intent.putExtra("sampleFile", pictureFile[1].getPath());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
             } catch (FileNotFoundException e) {
@@ -412,8 +413,8 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
         File mediaFile;
         File sampleFile;
 
-        mediaFile = new File(mediaStorageDir.getPath() + File.separator + "Clozet_" + timestamp + ".jpg");
-        sampleFile = new File(mediaStorageDir.getPath() + File.separator + "Sample" + File.separator + "Clozet_" + timestamp + ".jpg");
+        mediaFile = new File(mediaStorageDir.getPath() + File.separator + "Clozet_" + timestamp + "$$$.jpg");
+        sampleFile = new File(mediaStorageDir.getPath() + File.separator + "Sample" + File.separator + "Clozet_" + timestamp + "$$$.jpg");
         Log.i("Clozet", "Saved at" + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
         System.out.println(mediaFile.getPath());
         return new File[]{mediaFile, sampleFile};

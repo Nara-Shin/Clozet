@@ -11,4 +11,5 @@ public interface NetDefine {
     String FIND_BRAND_INFO = "brand/search.php";
     String LIKE_COUNT = "gallery/like_count.php";
     String SET_LIKE = "gallery/like.php";
+    String FIND_CATEGORY = "product/check_category.php";
 }

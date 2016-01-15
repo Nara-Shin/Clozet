@@ -47,24 +47,26 @@
             android:layout_toLeftOf="@id/btn_barcode"
             android:src="@drawable/background_gallery_delete" />
     </RelativeLayout>
-    
-    <ImageView
+
+    <Button
         android:id="@+id/btn_tshirts"
         android:layout_width="80.67dp"
         android:layout_height="80.67dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="181.33dp"
-        android:src="@drawable/background_gallery_tshirts"
+        android:enabled="false"
+        android:background="@drawable/background_gallery_tshirts"
         />
 
-    <ImageView
+    <Button
         android:id="@+id/btn_skirt"
         android:layout_width="80.67dp"
         android:layout_height="80.67dp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="194dp"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/background_gallery_skirt"
+        android:enabled="false"
+        android:background="@drawable/background_gallery_skirt"
         />
 
     <LinearLayout
@@ -128,16 +130,14 @@
             android:textColor="#ffffff"
             android:singleLine="true"
             />
-        <ImageView
+        <com.loopj.android.image.SmartImageView
             android:id="@+id/image_image"
             android:layout_width="316dp"
             android:layout_height="316dp"
             android:layout_marginTop="12dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/cont_1"
-            />
+            android:scaleType="centerCrop" />
         <ImageView
-            android:id="@+id/btn_clothes"
+            android:id="@+id/image_clothes"
             android:layout_width="80.67dp"
             android:layout_height="80.67dp"
             android:layout_marginTop="-40.335dp"

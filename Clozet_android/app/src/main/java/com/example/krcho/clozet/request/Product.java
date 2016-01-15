@@ -17,6 +17,7 @@ public class Product {
     String product_detail;
     int product_price;
     String product_photo;
+    String product_url;
     boolean like;
     ArrayList<String> sizes = new ArrayList<>();
     ArrayList<String> colors = new ArrayList<>();
@@ -24,6 +25,9 @@ public class Product {
 
     String selected_size;
     String selected_color;
+
+    public Product() {
+    }
 
     public Product(JSONObject json, String barcode) throws Exception {
         try {
@@ -161,5 +165,13 @@ public class Product {
             }
         }
         return "-1";
+    }
+
+    public String getProduct_url() {
+        return this.product_url;
+    }
+
+    public void setProduct_url(String product_url) {
+        this.product_url = product_url;
     }
 }

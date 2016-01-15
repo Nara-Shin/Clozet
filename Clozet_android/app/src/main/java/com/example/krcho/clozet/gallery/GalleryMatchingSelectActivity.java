@@ -1,7 +1,11 @@
 package com.example.krcho.clozet.gallery;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +16,7 @@ import android.widget.GridView;
 
 import com.example.krcho.clozet.R;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +25,8 @@ public class GalleryMatchingSelectActivity extends AppCompatActivity implements 
 
     private Button cancelBtn, selectBtn;
     private GridView gridView;
-    private int selectNum;
+    private File[] fileList;
+    public List<GalleryModel> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,21 +43,43 @@ public class GalleryMatchingSelectActivity extends AppCompatActivity implements 
 
         cancelBtn.setOnClickListener(this);
         selectBtn.setOnClickListener(this);
-        gridView.setAdapter(new GalleryAdapter(getApplicationContext(), R.layout.item_gallery, createItemList()));
         gridView.setOnItemClickListener(this);
+
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Clozet");
+        File sampleStorageDir = new File(mediaStorageDir.getPath() + "/Sample");
+        fileList = sampleStorageDir.listFiles();
+        new LoadImageTask().execute(fileList);
     }
 
-    private List<GalleryModel> createItemList(){
-        List<GalleryModel> items = new ArrayList<>();
-        for(int i=0; i<10; i++){
-            GalleryModel model = new GalleryModel();
-            model.setBrandName("BRAND NAME " + i);
-            model.setProductName("버튼 투 포켓 티셔츠 " + i);
-            model.setPrice(32800);
-//            model.setImage(getResources().getDrawable(R.drawable.change_btn_click));
-            items.add(model);
+    private class LoadImageTask extends AsyncTask<File[], Void, Bitmap[]> {
+
+        @Override
+        protected Bitmap[] doInBackground(File[]... params) {
+            Bitmap[] bitmap = new Bitmap[params[0].length];
+
+            // 불러올때마다 샘플링을 해서 속도가 느린거임
+//            BitmapFactory.Options options = new BitmapFactory.Options();
+//            options.inSampleSize = 4;
+
+            for(int i=0; i<params[0].length; i++) {
+//                bitmap[i] = BitmapFactory.decodeFile(params[0][i].getPath(), options);
+                bitmap[i] = BitmapFactory.decodeFile(params[0][i].getPath());
+            }
+
+            return bitmap;
         }
-        return items;
+
+        @Override
+        protected void onPostExecute(Bitmap[] bitmap) {
+            super.onPostExecute(bitmap);
+            items = new ArrayList<>();
+
+            for (int i=0; i<fileList.length; i++) {
+                items.add(new GalleryModel(bitmap[i], fileList[i].getName()));
+            }
+
+            gridView.setAdapter(new GalleryAdapter(getApplicationContext(), R.layout.item_gallery, items));
+        }
     }
 
     @Override
@@ -62,14 +90,15 @@ public class GalleryMatchingSelectActivity extends AppCompatActivity implements 
                 break;
 
             case R.id.btn_select:
-                startActivity(new Intent(GalleryMatchingSelectActivity.this, GalleryMatchingActivity.class));
-                finish();
                 break;
         }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        selectNum++;
+        Intent intent = new Intent(GalleryMatchingSelectActivity.this, GalleryMatchingActivity.class);
+        intent.putExtra("fileName", items.get(position).getFileName());
+        startActivity(intent);
+        finish();
     }
 }

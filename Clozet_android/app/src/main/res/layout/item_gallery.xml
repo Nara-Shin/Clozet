@@ -18,6 +18,7 @@
         android:id="@+id/gallery_like"
         android:layout_width="41.33dp"
         android:layout_height="41.33dp"
+        android:layout_marginTop="9.33dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/btn_like"
