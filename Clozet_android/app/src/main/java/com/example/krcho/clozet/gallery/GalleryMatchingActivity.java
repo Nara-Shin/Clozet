@@ -72,7 +72,7 @@ public class GalleryMatchingActivity extends AppCompatActivity {
                     fos.close();
 
                     FileOutputStream fosSample = new FileOutputStream(saveSampleFile);
-                    saveBitmap.compress(Bitmap.CompressFormat.JPEG, 25, fos);
+                    saveBitmap.compress(Bitmap.CompressFormat.JPEG, 25, fosSample);
                     fosSample.close();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
