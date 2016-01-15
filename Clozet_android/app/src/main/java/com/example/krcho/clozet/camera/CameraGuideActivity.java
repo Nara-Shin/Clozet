@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -41,7 +42,7 @@ import java.util.Date;
 public class CameraGuideActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static String TAG = "CAMERA";
-    public static int mCameraFacing;
+    private int mCameraFacing;
     private boolean isTimer3 = true;
     private int time = 3;
 
@@ -307,13 +308,37 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
             }
 
             try {
+                // 이미지 회전을 위한 Matrix 생성
+                Matrix frontMatrix = new Matrix();
+                frontMatrix.postRotate(-90);
+
+                Matrix backMatrix = new Matrix();
+                backMatrix.postRotate(90);
+
+                Bitmap bigBitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                //전면, 후면 여부에 따른 이미지 회전 (원본 이미지)
+                if (mCameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                    bigBitmap = rotate(bigBitmap, -90);
+                } else {
+                    bigBitmap = rotate(bigBitmap, 90);
+                }
+
+                pictureFile[0].createNewFile();
                 FileOutputStream fos = new FileOutputStream(pictureFile[0]);
-                fos.write(data);
-                fos.close();
+                bigBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
 
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inSampleSize = 4;
+
                 Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+
+                //전면, 후면 여부에 따른 이미지 회전 (셈플 이미지)
+                if (mCameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                    bitmap = rotate(bitmap, -90);
+                } else {
+                    bitmap = rotate(bitmap, 90);
+                }
 
                 pictureFile[1].createNewFile();
                 FileOutputStream fos_sample = new FileOutputStream(pictureFile[1]);
@@ -333,6 +358,32 @@ class CameraView extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
     };
+
+    public Bitmap rotate(Bitmap bitmap, int degrees)
+    {
+        if(degrees != 0 && bitmap != null)
+        {
+            Matrix m = new Matrix();
+            m.setRotate(degrees, (float) bitmap.getWidth() / 2,
+                    (float) bitmap.getHeight() / 2);
+
+            try
+            {
+                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), m, true);
+                if(bitmap != converted)
+                {
+                    bitmap.recycle();
+                    bitmap = converted;
+                }
+            }
+            catch(OutOfMemoryError ex)
+            {
+                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
+            }
+        }
+        return bitmap;
+    }
 
     private static File[] getOutputMediaFile() {
         //SD 카드가 마운트 되어있는지 먼저 확인

@@ -38,8 +38,6 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
         path = intent.getExtras().getString("file");
         bitmap = BitmapFactory.decodeFile(path);
 
-        Log.d("path", path);
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 6;
         background = BitmapFactory.decodeFile(path, options);
@@ -58,13 +56,8 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
         cancelBtn.setOnClickListener(this);
         saveBtn.setOnClickListener(this);
 
-        if (CameraGuideActivity.mCameraFacing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            previewImage.setImageBitmap(imgRotate(bitmap, -90));
-            backgroundImage.setImageBitmap(imgRotate(blurBitmap(background), -90));
-        } else {
-            previewImage.setImageBitmap(imgRotate(bitmap, 90));
-            backgroundImage.setImageBitmap(imgRotate(blurBitmap(background), 90));
-        }
+        previewImage.setImageBitmap(bitmap);
+        backgroundImage.setImageBitmap(blurBitmap(background));
     }
 
     @Override
@@ -86,19 +79,6 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
             case R.id.btn_save:
                 break;
         }
-    }
-
-    private Bitmap imgRotate(Bitmap bmp, int rotate){
-        int width = bmp.getWidth();
-        int height = bmp.getHeight();
-
-        Matrix matrix = new Matrix();
-        matrix.postRotate(rotate);
-
-        Bitmap resizedBitmap = Bitmap.createBitmap(bmp, 0, 0, width, height, matrix, true);
-        bmp.recycle();
-
-        return resizedBitmap;
     }
 
     public Bitmap blurBitmap(Bitmap bitmap){

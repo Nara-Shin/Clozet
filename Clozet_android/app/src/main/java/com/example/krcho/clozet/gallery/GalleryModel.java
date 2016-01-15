@@ -10,6 +10,7 @@ public class GalleryModel {
 	private Bitmap image;
 	private boolean like;
 	private String date;
+	private String fileName;
 
 	public String getBrandName() {
 		return brandName;
@@ -35,6 +36,10 @@ public class GalleryModel {
 		return this.date;
 	}
 
+	public String getFileName() {
+		return this.fileName;
+	}
+
 	public void setBrandName(String brandName) {
 		this.brandName = brandName;
 	}
@@ -57,6 +62,10 @@ public class GalleryModel {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 }
