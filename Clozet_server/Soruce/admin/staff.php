@@ -92,6 +92,7 @@ $shopCode = "100001";
 ?>
 		<div class="staff">
 			<div class="name"><span><?=$rownum++?></span><span style="margin-left:77px;"><?=$row[ClerkName]?></span></div>
+			<div class="image"><img src="../img/clerk/<?=$row[ClerkImage]?>" width="226" height="226" /></div>
 			<div class="evaluation"><span style="font-size: 24px; font-weight: bold;"><?=ceil($star_count)?></span><span style="color:#ffbc64; margin-left:45px;"><?for($i=1; $i<=ceil($star_count); $i++){echo "★";}?></span><?for($i=1; $i<=5-ceil($star_count); $i++){echo "★";}?></div>
 			<div class="service_count"><span style="font-size:21px; font-weight:bold;">서비스 횟수</span><span style="font-size:21px; font-weight:bold; margin-left:20px;"><?=$row[ServiceCount]?></span></div>
 		</div>

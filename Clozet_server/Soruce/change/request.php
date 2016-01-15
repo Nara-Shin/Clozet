@@ -91,7 +91,7 @@
 
 			for($i=0; $i<count($option_codes); $i++){
 
-				if($option_codes != ""){
+				if($option_codes[$i] != ""){
 					// Query 5 - 상품 정보 가져오기
 					$query = sprintf("SELECT Info.PrdName, Info.PrdImage, Info.PrdShopCode, Info.PrdPrice, Info.PrdUrl, Opt.PrdSize, Opt.PrdColor FROM ProductInfo Info, ProductOption Opt WHERE Info.PrdCode = Opt.PrdCode AND Opt.OptionCode = '%s'",
 					mysql_real_escape_string($option_codes[$i]));

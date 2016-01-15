@@ -27,7 +27,7 @@
 	$result = mysql_query($query);
 
 	while($row = mysql_fetch_array($result)){
-	   $prd_category = $row[prd_category];
+	   $prd_category = $row[PrdCategory];
 	}
 
 

@@ -56,6 +56,7 @@
 		$product_name = $row[PrdName];
 		$product_detail = $row[PrdDetail];
 		$product_price = $row[PrdPrice];
+		$product_url = $row[PrdUrl];
 		$product_image = "http://godeung.woobi.co.kr/clozet/img/product/" . $row[PrdImage];
 		$options[] = array("size" => $row[PrdSize], "color" => $row[PrdColor], "stock" => $row[PrdStock], "code" => $row[OptionCode]);
 	}
@@ -117,7 +118,7 @@
 
 		
 	// JSON으로 반환
-	$val = array("product_code" => $product_code, "product_brand" => $product_brand, "product_name" => $product_name, "product_detail" => $product_detail, "product_price" => $product_price, "product_image" => $product_image, "product_sizes" => $product_sizes, "product_colors" => $product_colors, "product_like" => $product_like, "options" => $options);
+	$val = array("product_code" => $product_code, "product_brand" => $product_brand, "product_name" => $product_name, "product_detail" => $product_detail, "product_price" => $product_price, "product_image" => $product_image, "product_sizes" => $product_sizes, "product_colors" => $product_colors, "product_like" => $product_like, "product_url" => $product_url, "options" => $options);
 	$output = json_encode($val);
 	echo urldecode($output);
 

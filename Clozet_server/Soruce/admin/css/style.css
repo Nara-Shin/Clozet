@@ -27,6 +27,7 @@
 
 .contents .staff {float: left; margin: 30px 0 23px 30px; width: 275px; height: 425px; background-image: url('../img/staff_bg.png'); /* box-shadow: 0px 0px 5px #7C7C7C; */ /* border-radius: 7px; */}
 .contents .staff .name {width: 100%; padding: 20px 0 13px 22px; height: 15px; font-size: 21px; color: #fff; font-weight: bold;}
+.contents .staff .image {float: left; padding: 25px 0 0 25px;}
 .contents .staff .evaluation {font-size: 30px; width: 100%; margin-top: 258px; padding-left: 24px; color: #333342;}
 .contents .staff .service_count {width: 100%; margin-top: 30px; padding-left: 23px; color: #333342;}
 
