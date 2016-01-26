@@ -4,6 +4,8 @@
     android:id="@+id/item_promotion"
     android:layout_width="153.33dp"
     android:layout_height="233.33dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginRight="5dp"
     >
 
     <ImageView

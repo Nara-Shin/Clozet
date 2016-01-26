@@ -1,18 +1,16 @@
 package com.example.krcho.clozet.gallery;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridLayout;
-import android.widget.GridView;
 
 import com.example.krcho.clozet.R;
 
@@ -20,11 +18,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GalleryMatchingSelectActivity extends AppCompatActivity implements View.OnClickListener,
-        AdapterView.OnItemClickListener {
+public class GalleryMatchingSelectActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button cancelBtn, selectBtn;
-    private GridView gridView;
+    private RecyclerView recyclerView;
     private File[] fileList;
     public List<GalleryModel> items;
 
@@ -39,11 +36,12 @@ public class GalleryMatchingSelectActivity extends AppCompatActivity implements 
     private void init() {
         cancelBtn = (Button) findViewById(R.id.btn_cancel);
         selectBtn = (Button) findViewById(R.id.btn_select);
-        gridView = (GridView) findViewById(R.id.gallery_matching_list);
+        recyclerView = (RecyclerView) findViewById(R.id.gallery_matching_list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         cancelBtn.setOnClickListener(this);
         selectBtn.setOnClickListener(this);
-        gridView.setOnItemClickListener(this);
 
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Clozet");
         File sampleStorageDir = new File(mediaStorageDir.getPath() + "/Sample");
@@ -78,7 +76,7 @@ public class GalleryMatchingSelectActivity extends AppCompatActivity implements 
                 items.add(new GalleryModel(bitmap[i], fileList[i].getName()));
             }
 
-            gridView.setAdapter(new GalleryAdapter(getApplicationContext(), R.layout.item_gallery, items));
+            recyclerView.setAdapter(new GalleryAdapter(getApplicationContext(), R.layout.item_gallery, items, 1));
         }
     }
 
@@ -92,13 +90,5 @@ public class GalleryMatchingSelectActivity extends AppCompatActivity implements 
             case R.id.btn_select:
                 break;
         }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(GalleryMatchingSelectActivity.this, GalleryMatchingActivity.class);
-        intent.putExtra("fileName", items.get(position).getFileName());
-        startActivity(intent);
-        finish();
     }
 }

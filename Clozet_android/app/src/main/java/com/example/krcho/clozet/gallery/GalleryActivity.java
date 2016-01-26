@@ -9,10 +9,10 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -21,7 +21,6 @@ import com.example.krcho.clozet.MyAccount;
 import com.example.krcho.clozet.R;
 import com.example.krcho.clozet.network.CommonHttpClient;
 import com.example.krcho.clozet.network.NetDefine;
-import com.example.krcho.clozet.request.Product;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -33,14 +32,14 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class GalleryActivity extends AppCompatActivity implements AdapterView.OnItemClickListener,
-        View.OnClickListener {
+public class GalleryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private RelativeLayout backBtn;
     private ImageView dateBtn, brandBtn, likeBtn;
-    private GridView gridView;
+    private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private File[] fileList;
+    private GalleryAdapter galleryAdapter;
     public static List<GalleryModel> items;
 
     @Override
@@ -64,8 +63,9 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
     }
 
     private void init() {
-        gridView = (GridView) findViewById(R.id.gallery_list);
-        gridView.setOnItemClickListener(this);
+        recyclerView = (RecyclerView) findViewById(R.id.gallery_list);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         backBtn = (RelativeLayout) findViewById(R.id.btn_back);
         dateBtn = (ImageView) findViewById(R.id.gallery_tab_date);
@@ -108,7 +108,9 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
         @Override
         protected void onPostExecute(Bitmap[] bitmap) {
             super.onPostExecute(bitmap);
+
             items = new ArrayList<>();
+            galleryAdapter = new GalleryAdapter(getApplicationContext(), R.layout.item_gallery, items, 0);
 
             for (int i=0; i<fileList.length; i++) {
                 String[] split = fileList[i].getPath().split("\\$");
@@ -119,7 +121,7 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
                 }
             }
 
-            gridView.setAdapter(new GalleryAdapter(getApplicationContext(), R.layout.item_gallery, items));
+            recyclerView.setAdapter(galleryAdapter);
             progressBar.setVisibility(View.GONE);
         }
     }
@@ -131,14 +133,6 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
                 finish();
                 break;
         }
-    }
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(GalleryActivity.this, GalleryDetailActivity.class);
-        intent.putExtra("fileName", items.get(position).getFileName());
-        intent.putExtra("barcode", items.get(position).getBarcode());
-        startActivity(intent);
     }
 
     public void searchBarcode(final String barcode, final Bitmap bitmap, final String fileName) {
@@ -157,7 +151,7 @@ public class GalleryActivity extends AppCompatActivity implements AdapterView.On
                 Log.d("response", response.toString());
                 try {
                     items.add(new GalleryModel(response, barcode, bitmap, fileName));
-                    gridView.setAdapter(new GalleryAdapter(getApplicationContext(), R.layout.item_gallery, items));
+                    recyclerView.setAdapter(galleryAdapter);
                     progressBar.setVisibility(View.GONE);
                 } catch (Exception e) {
                     e.printStackTrace();
