@@ -91,7 +91,7 @@ $shopCode = "100001";
 			</colgroup>
 			<tr>
 				<th>제품 분류</th>
-				<th>제품 분류</th>
+				<th>상세 분류</th>
 				<th>제품 번호</th>
 				<th>제품 이름</th>
 				<th>SIZE</th>
