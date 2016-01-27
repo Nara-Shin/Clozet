@@ -1,8 +1,10 @@
 package com.example.krcho.clozet.gallery;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,71 +27,67 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class GalleryAdapter extends ArrayAdapter<GalleryModel> {
-
+public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.TextViewHolder> {
 	private Context context;
-	private LayoutInflater inflater;
-	private List<GalleryModel> items;
 	private int itemLayout;
-	private static Typeface fontBold, fontThin;
+	private List<GalleryModel> items;
+	private int mode;
 
-	public GalleryAdapter(Context context, int itemLayout, List<GalleryModel> items) {
-		super(context, itemLayout, items);
+	public GalleryAdapter(Context context, int itemLayout, List<GalleryModel> items, int mode) {
 		this.context = context;
 		this.itemLayout = itemLayout;
 		this.items = items;
-		this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		this.fontBold = Typeface.createFromAsset(context.getAssets(), "NotoSansCJKkr-Bold.otf");
-		this.fontThin = Typeface.createFromAsset(context.getAssets(), "NotoSansCJKkr-Thin.otf");
+		this.mode = mode;
 	}
 
 	@Override
-	public int getCount() {
-		return items.size();
+	public TextViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+		View view = LayoutInflater.from(parent.getContext()).inflate(itemLayout, parent, false);
+		return new TextViewHolder(view);
 	}
 
 	@Override
-	public GalleryModel getItem(int position) {
-		return items.get(position);
-	}
+	public void onBindViewHolder(final TextViewHolder holder, final int position) {
 
-	@Override
-	public long getItemId(int id) {
-		return id;
-	}
+		holder.image.setImageBitmap(items.get(position).getImage());
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		if(convertView == null) {
-			convertView = inflater.inflate(itemLayout, parent, false);
+		if (items.get(position).getBarcode() == null) {
+			holder.like.setVisibility(View.GONE);
 		}
 
-		ImageView image = (ImageView)convertView.findViewById(R.id.gallery_image);
-		final ImageView like = (ImageView)convertView.findViewById(R.id.gallery_like);
-
-		final GalleryModel model = items.get(position);
-
-		image.setImageBitmap(model.getImage());
-
-		if (GalleryActivity.items.get(position).getBarcode() == null) {
-			like.setVisibility(View.GONE);
-		}
-
-		if (model.isLike()) {
-			like.setImageDrawable(context.getDrawable(R.drawable.btn_like_click));
+		if (items.get(position).isLike()) {
+			holder.like.setImageDrawable(context.getDrawable(R.drawable.btn_like_click));
 		} else {
-			like.setImageDrawable(context.getDrawable(R.drawable.btn_like));
+			holder.like.setImageDrawable(context.getDrawable(R.drawable.btn_like));
 		}
 
-		like.setOnClickListener(new View.OnClickListener() {
+		holder.image.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mode == 0) {
+					Intent intent = new Intent(context, GalleryDetailActivity.class);
+					intent.putExtra("fileName", items.get(position).getFileName());
+					intent.putExtra("barcode", items.get(position).getBarcode());
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					context.startActivity(intent);
+				} else if (mode == 1) {
+					Intent intent = new Intent(context, GalleryMatchingActivity.class);
+					intent.putExtra("fileName", items.get(position).getFileName());
+					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					context.startActivity(intent);
+				}
+			}
+		});
+
+		holder.like.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				RequestParams params = new RequestParams();
-				params.put("barcode", model.getBarcode());
+				params.put("barcode", items.get(position).getBarcode());
 				try {
 					params.put("member_code", MyAccount.getInstance().getMember_code());
 				} catch (Exception e) {
-					params.put("member_code", PreferenceManager.getDefaultSharedPreferences(getContext().getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
+					params.put("member_code", PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
 				}
 
 				CommonHttpClient.post(NetDefine.SET_LIKE, params, new JsonHttpResponseHandler() {
@@ -97,11 +95,11 @@ public class GalleryAdapter extends ArrayAdapter<GalleryModel> {
 					public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 						super.onSuccess(statusCode, headers, response);
 						try {
-							model.setLike(response.getInt("status") == 1);
-							if (model.isLike()) {
-								like.setImageDrawable(getContext().getApplicationContext().getDrawable(R.drawable.btn_like_click));
+							items.get(position).setLike(response.getInt("status") == 1);
+							if (items.get(position).isLike()) {
+								holder.like.setImageDrawable(context.getApplicationContext().getDrawable(R.drawable.btn_like_click));
 							} else {
-								like.setImageDrawable(getContext().getApplicationContext().getDrawable(R.drawable.btn_like));
+								holder.like.setImageDrawable(context.getApplicationContext().getDrawable(R.drawable.btn_like));
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -111,8 +109,21 @@ public class GalleryAdapter extends ArrayAdapter<GalleryModel> {
 				});
 			}
 		});
-
-		return convertView;
 	}
 
+	@Override
+	public int getItemCount() {
+		return items.size();
+	}
+
+	public class TextViewHolder extends RecyclerView.ViewHolder {
+		private ImageView image;
+		private ImageView like;
+
+		public TextViewHolder(View itemView) {
+			super(itemView);
+			image = (ImageView)itemView.findViewById(R.id.gallery_image);
+			like = (ImageView)itemView.findViewById(R.id.gallery_like);
+		}
+	}
 }
