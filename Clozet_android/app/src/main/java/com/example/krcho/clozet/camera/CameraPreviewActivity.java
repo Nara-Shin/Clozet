@@ -87,6 +87,7 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
 
         init();
 
+        mContext = this;
         //NFC is use?
         android.nfc.NfcAdapter mNfcAdapter = android.nfc.NfcAdapter.getDefaultAdapter(mContext);
         hojungNFCReadLibrary = new HojungNFCReadLibrary(getIntent(), mContext, new OnHojungNFCListener() {
