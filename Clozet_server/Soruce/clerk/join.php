@@ -45,9 +45,14 @@
 		if($rows > 0){ // 이미 회원일 경우
 
 			// Query 3 - GCM ID 업데이트
+			/*
 			$query = sprintf("UPDATE ClerkInfo SET GcmRegId = '%s', ModDate = NOW() WHERE ClerkCode = '%s'",
 			mysql_real_escape_string($gcm_id),
 			mysql_real_escape_string($clerk_code));
+			*/
+
+			$query = sprintf("UPDATE ClerkInfo SET GcmRegId = '%s', ModDate = NOW()",
+			mysql_real_escape_string($gcm_id));
 
 			$result = mysql_query($query);
 
