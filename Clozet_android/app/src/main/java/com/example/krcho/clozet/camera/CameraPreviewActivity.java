@@ -80,6 +80,7 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
         Log.d("NFC", "onNewIntent");
         hojungNFCReadLibrary.onNewIntent(intent);
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -154,12 +155,34 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
                 break;
 
             case R.id.btn_save:
-                file.renameTo(new File(path));
-                sampleFile.renameTo(new File(samplePath));
+                fileCopy(file.getPath(), path);
+                fileCopy(sampleFile.getPath(), samplePath);
                 finish();
                 break;
         }
     }
+
+    public void fileCopy(String inFileName, String outFileName) {
+        if (!inFileName.equals(outFileName)) {
+            try {
+                FileInputStream fis = new FileInputStream(inFileName);
+                FileOutputStream fos = new FileOutputStream(outFileName);
+
+                int data = 0;
+                while ((data = fis.read()) != -1) {
+                    fos.write(data);
+                }
+                fis.close();
+                fos.close();
+
+                new File(inFileName).delete();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -232,7 +255,7 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
                     if (category == 1) {
                         imageBarcode1Btn.setVisibility(View.VISIBLE);
                     }
-                    if (category == 2){
+                    if (category == 2) {
                         imageBarcode2Btn.setVisibility(View.VISIBLE);
                     }
                     Toast.makeText(getApplicationContext(), response.getString("product_name"), Toast.LENGTH_SHORT).show();
@@ -243,7 +266,7 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
         });
     }
 
-    public Bitmap blurBitmap(Bitmap bitmap){
+    public Bitmap blurBitmap(Bitmap bitmap) {
 
         //Let's create an empty bitmap with the same size of the bitmap we want to blur
         Bitmap outBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);

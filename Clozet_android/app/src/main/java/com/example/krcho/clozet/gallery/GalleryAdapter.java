@@ -56,9 +56,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.TextView
 		}
 
 		if (items.get(position).isLike()) {
-			holder.like.setImageDrawable(context.getDrawable(R.drawable.btn_like_click));
+			holder.like.setImageResource(R.drawable.btn_like_click);
 		} else {
-			holder.like.setImageDrawable(context.getDrawable(R.drawable.btn_like));
+			holder.like.setImageResource(R.drawable.btn_like);
 		}
 
 		holder.image.setOnClickListener(new View.OnClickListener() {
@@ -97,9 +97,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.TextView
 						try {
 							items.get(position).setLike(response.getInt("status") == 1);
 							if (items.get(position).isLike()) {
-								holder.like.setImageDrawable(context.getApplicationContext().getDrawable(R.drawable.btn_like_click));
+								holder.like.setImageResource(R.drawable.btn_like_click);
 							} else {
-								holder.like.setImageDrawable(context.getApplicationContext().getDrawable(R.drawable.btn_like));
+								holder.like.setImageResource(R.drawable.btn_like);
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();

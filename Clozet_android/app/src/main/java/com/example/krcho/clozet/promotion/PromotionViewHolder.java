@@ -61,9 +61,9 @@ public class PromotionViewHolder extends RecyclerView.ViewHolder {
         });
 
         if (data.isLike()) {
-            like.setImageDrawable(itemView.getContext().getApplicationContext().getDrawable(R.drawable.btn_like_click));
+            like.setImageResource(R.drawable.btn_like_click);
         } else {
-            like.setImageDrawable(itemView.getContext().getApplicationContext().getDrawable(R.drawable.btn_like));
+            like.setImageResource(R.drawable.btn_like);
         }
 
         like.setOnClickListener(new View.OnClickListener() {
@@ -84,9 +84,9 @@ public class PromotionViewHolder extends RecyclerView.ViewHolder {
                         try {
                             data.setLike(response.getInt("status") == 1);
                             if (data.isLike()) {
-                                like.setImageDrawable(itemView.getContext().getApplicationContext().getDrawable(R.drawable.btn_like_click));
+                                like.setImageResource(R.drawable.btn_like_click);
                             } else {
-                                like.setImageDrawable(itemView.getContext().getApplicationContext().getDrawable(R.drawable.btn_like));
+                                like.setImageResource(R.drawable.btn_like);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

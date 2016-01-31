@@ -167,7 +167,7 @@ public class GalleryActivity extends AppCompatActivity implements View.OnClickLi
 
             for (int i=0; i<fileList.length; i++) {
                 String[] split = fileList[i].getPath().split("\\$");
-                if (split[1].equals("") && split[2].equals("")) { // 바코드 등록이 되어있지 않은 경우
+                if (split[1].equals("") || split[2].equals("")) { // 바코드 등록이 되어있지 않은 경우
                     items.add(new GalleryModel(bitmap[i], fileList[i].getName()));
                 } else {
                     searchBarcode(split[1], bitmap[i], fileList[i].getName());

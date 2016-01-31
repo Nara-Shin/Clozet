@@ -128,13 +128,13 @@ public class CameraGuideActivity extends AppCompatActivity implements View.OnCli
 
                 switch (time) {
                     case 1:
-                        count.setBackground(getDrawable(R.drawable.count_1));
+                        count.setBackgroundResource(R.drawable.count_1);
                         break;
                     case 2:
-                        count.setBackground(getDrawable(R.drawable.count_2));
+                        count.setBackgroundResource(R.drawable.count_2);
                         break;
                     case 3:
-                        count.setBackground(getDrawable(R.drawable.count_3));
+                        count.setBackgroundResource(R.drawable.count_3);
                         break;
                 }
 
@@ -155,19 +155,19 @@ public class CameraGuideActivity extends AppCompatActivity implements View.OnCli
 
                 switch (time) {
                     case 1:
-                        count.setBackground(getDrawable(R.drawable.count_1));
+                        count.setBackgroundResource(R.drawable.count_1);
                         break;
                     case 2:
-                        count.setBackground(getDrawable(R.drawable.count_2));
+                        count.setBackgroundResource(R.drawable.count_2);
                         break;
                     case 3:
-                        count.setBackground(getDrawable(R.drawable.count_3));
+                        count.setBackgroundResource(R.drawable.count_3);
                         break;
                     case 4:
-                        count.setBackground(getDrawable(R.drawable.count_4));
+                        count.setBackgroundResource(R.drawable.count_4);
                         break;
                     case 5:
-                        count.setBackground(getDrawable(R.drawable.count_5));
+                        count.setBackgroundResource(R.drawable.count_5);
                         break;
                 }
 
@@ -225,10 +225,10 @@ public class CameraGuideActivity extends AppCompatActivity implements View.OnCli
 
                 isTimer3 = !isTimer3;
                 if (isTimer3) {
-                    timer.setBackground(getDrawable(R.drawable.btn_timer_3sc));
+                    timer.setBackgroundResource(R.drawable.btn_timer_3sc);
                     time = 3;
                 } else {
-                    timer.setBackground(getDrawable(R.drawable.btn_timer_5sc));
+                    timer.setBackgroundResource(R.drawable.btn_timer_5sc);
                     time = 5;
                 }
                 break;

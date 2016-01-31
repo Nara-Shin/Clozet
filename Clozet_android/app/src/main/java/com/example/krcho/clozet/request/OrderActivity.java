@@ -46,6 +46,8 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
     HojungNFCReadLibrary hojungNFCReadLibrary;
     Context mContext;
 
+    private boolean isInitialOpen = false;
+
     private void initNFC() {
         try {
             Log.d("NFC", "intent : " + getIntent().getAction());
@@ -109,10 +111,12 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
         order.setText("ORDER (0)");
 
         setRecyclerView();
+        Log.d("checkpoint", "onCreate");
         openBarcodeDection();
     }
 
     public void openBarcodeDection() {
+        Log.d("checkpoint", "onBarcodeDection");
         startActivityForResult(new Intent(getApplicationContext(), BarcodeDetactActivity.class), 1000);
     }
 
@@ -229,6 +233,7 @@ public class OrderActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.btn_add:
+                Log.d("checkpoint", "onClick_btn_add");
                 openBarcodeDection();
                 break;
 

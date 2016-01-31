@@ -1,5 +1,7 @@
 package com.example.krcho.clozet.request;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,6 +56,7 @@ public class Product implements Serializable {
     }
 
     public void setPromotionData(JSONObject json){
+        Log.d("promotion", json.toString());
         try {
             this.setProduct_brand(json.getString("prd_brand"));
             this.setProduct_name(json.getString("prd_name"));
@@ -61,6 +64,8 @@ public class Product implements Serializable {
             this.setMarket_URL(json.getString("prd_url"));
             this.setProduct_photo(json.getString("prd_image"));
             this.setProduct_category((json.getInt("prd_category") == 1));
+            this.setBarcode(json.getString("prd_barcode"));
+            this.setLike((json.getInt("like_status") == 1));
         }catch (JSONException e){
             e.printStackTrace();
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.krcho.clozet.MyAccount;
 import com.example.krcho.clozet.R;
 import com.example.krcho.clozet.network.CommonHttpClient;
 import com.example.krcho.clozet.network.NetDefine;
@@ -138,8 +140,14 @@ public class PromotionActivity extends AppCompatActivity {
 //        productText.setTypeface(fontBold);
 //        priceText.setTypeface(fontBold);
 
+        RequestParams params = new RequestParams();
+        try {
+            params.put("member_code", MyAccount.getInstance().getMember_code());
+        } catch (Exception e) {
+            params.put("member_code", PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString(MyAccount.MEMBERCODE, ""));
+        }
 
-        CommonHttpClient.post(NetDefine.PROMOTION, new RequestParams(), new JsonHttpResponseHandler() {
+        CommonHttpClient.post(NetDefine.PROMOTION, params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
