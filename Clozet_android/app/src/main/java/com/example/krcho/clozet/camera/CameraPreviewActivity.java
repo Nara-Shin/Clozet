@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.renderscript.Allocation;
@@ -162,24 +163,30 @@ public class CameraPreviewActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    public void fileCopy(String inFileName, String outFileName) {
+    public void fileCopy(final String inFileName, final String outFileName) {
         if (!inFileName.equals(outFileName)) {
-            try {
-                FileInputStream fis = new FileInputStream(inFileName);
-                FileOutputStream fos = new FileOutputStream(outFileName);
+            new AsyncTask<Void, Void, Void>(){
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+                        FileInputStream fis = new FileInputStream(inFileName);
+                        FileOutputStream fos = new FileOutputStream(outFileName);
 
-                int data = 0;
-                while ((data = fis.read()) != -1) {
-                    fos.write(data);
+                        int data = 0;
+                        while ((data = fis.read()) != -1) {
+                            fos.write(data);
+                        }
+                        fis.close();
+                        fos.close();
+
+                        new File(inFileName).delete();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return null;
                 }
-                fis.close();
-                fos.close();
-
-                new File(inFileName).delete();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            };
         }
     }
 

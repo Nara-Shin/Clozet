@@ -61,18 +61,18 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         title.setText(data.getProduct_name());
 
         if (data.isLike()) {
-            like.setImageDrawable(itemView.getContext().getApplicationContext().getDrawable(R.drawable.like_btn_click2));
+            like.setImageResource(R.drawable.like_btn_click2);
         }
 
         sizes.removeAllViews();
 
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((int) convertDpToPixel(36, itemView.getContext()), (int) convertDpToPixel(36, itemView.getContext()));
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams((int) convertDpToPixel(42, itemView.getContext()), (int) convertDpToPixel(36, itemView.getContext()));
         layoutParams.setMargins(0, 0, 5, 0);
         RelativeLayout.LayoutParams colorViewParams = new RelativeLayout.LayoutParams((int) convertDpToPixel(12, itemView.getContext()), (int) convertDpToPixel(12, itemView.getContext()));
 
         for (final String item : data.getSizes()) {
             final Button size = new Button(itemView.getContext());
-            size.setBackground(itemView.getContext().getDrawable(R.drawable.box_order));
+            size.setBackgroundResource(R.drawable.box_order);
             size.setGravity(Gravity.CENTER);
             size.setTextColor(Color.parseColor("#ffc5c5"));
             size.setTextSize(14);
@@ -85,7 +85,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 //                    size.setTextColor(itemView.getContext().getColor(R.color.navy));
                     data.setSelectedSize(item);
                     for (int i = 0; i < sizes.getChildCount(); i++) {
-                        sizes.getChildAt(i).setBackground(itemView.getContext().getDrawable(R.drawable.box_order));
+                        sizes.getChildAt(i).setBackgroundResource(R.drawable.box_order);
                     }
                     v.setBackgroundColor(Color.parseColor("#3C63B9"));
                 }
@@ -100,7 +100,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
             view.setLayoutParams(colorViewParams);
 
             RelativeLayout color = new RelativeLayout(itemView.getContext());
-            color.setBackground(itemView.getContext().getDrawable(R.drawable.box_order));
+            color.setBackgroundResource(R.drawable.box_order);
             color.setGravity(Gravity.CENTER);
             color.setLayoutParams(new ViewGroup.LayoutParams(layoutParams));
             color.setOnClickListener(new View.OnClickListener() {
@@ -111,7 +111,7 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
                     data.setSelectedColor(item);
 
                     for (int i = 0; i < colors.getChildCount(); i++) {
-                        colors.getChildAt(i).setBackground(itemView.getContext().getDrawable(R.drawable.box_order));
+                        colors.getChildAt(i).setBackgroundResource(R.drawable.box_order);
                     }
                     v.setBackgroundColor(Color.parseColor("#3C63B9"));
                 }
@@ -157,9 +157,9 @@ public class RecyclerViewHolder extends RecyclerView.ViewHolder {
                         try {
                             data.setLike(response.getInt("status") == 1);
                             if (data.isLike()) {
-                                like.setImageDrawable(itemView.getContext().getApplicationContext().getDrawable(R.drawable.like_btn_click2));
+                                like.setImageResource(R.drawable.like_btn_click2);
                             } else {
-                                like.setImageDrawable(itemView.getContext().getApplicationContext().getDrawable(R.drawable.btn_like));
+                                like.setImageResource(R.drawable.btn_like);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
